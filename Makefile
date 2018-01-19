@@ -1,17 +1,19 @@
 PROJ=mygbemu
+DIR=emulator
 
 CC=gcc
-CFLAGS=-I.
+CFLAGS=-I$(DIR)
 
-DEPS = emulator/main.h
-OBJ = emulator/main.o 
 
-emulator/%.o: %.c $(DEPS)
-	$(CC) -c -o $@ $< $(CFLAGS)
+DEPS = sys.h cartridge.h
+OBJ = $(DIR)/main.o $(DIR)/cartridge.o $(DIR)/sys.o
+
+$(DIR)/%.o: %.c $(DEPS)
+	$(CC) -g -c -o $@ $< $(CFLAGS)
 
 $(PROJ): $(OBJ)
-	gcc -o $@ $^ $(CFLAGS)
+	$(CC) -g -o $@ $^ $(CFLAGS)
 
 .PHONY: clean
 clean: 
-	rm -f *.o $(PROJ)
+	rm -f $(DIR)/*.o $(PROJ)

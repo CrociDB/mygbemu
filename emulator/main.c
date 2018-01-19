@@ -1,11 +1,7 @@
-#include "main.h"
+#include "sys.h"
+#include "cartridge.h"
 
-void sys_usage()
-{
-    printf(SYS_USAGE_INSTRUCTIONS);
-}
-
-int main(int argc, const char* argv) 
+int main(int argc, const char* argv[]) 
 {
     if (argc < 2)
     {
@@ -13,7 +9,8 @@ int main(int argc, const char* argv)
         exit(-1);
     }
 
-    
+    cartridge_t *rom = cartridge_load(argv[1]);
+    cartridge_free(rom);
 
     return 0;
 }
