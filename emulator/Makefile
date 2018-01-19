@@ -1,4 +1,4 @@
-PROJ=gbcemu
+PROJ=mygbemu
 
 CC=gcc
 CFLAGS=-I.
