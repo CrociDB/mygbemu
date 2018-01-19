@@ -3,10 +3,10 @@ PROJ=mygbemu
 CC=gcc
 CFLAGS=-I.
 
-DEPS = main.h
-OBJ = main.o 
+DEPS = emulator/main.h
+OBJ = emulator/main.o 
 
-$(ODIR)/%.o: %.c $(DEPS)
+emulator/%.o: %.c $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 $(PROJ): $(OBJ)
@@ -14,4 +14,4 @@ $(PROJ): $(OBJ)
 
 .PHONY: clean
 clean: 
-	rm -f *.o
+	rm -f *.o $(PROJ)
