@@ -13,10 +13,13 @@
 typedef struct _mmu_t
 {
     bool inbios;
-    int8_t addr[MEMORY_ADDRESSES];
+    uint8_t addr[MEMORY_ADDRESSES];
 } mmu_t;
 
 mmu_t* mmu_create();
 void mmu_insert_rom(mmu_t* mmu, cartridge_t* cartridge);
+
+uint8_t mmu_read_addr8(mmu_t* mmu, uint16_t addr);
+uint16_t mmu_read_addr16(mmu_t* mmu, uint16_t addr);
 
 #endif

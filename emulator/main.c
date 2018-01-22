@@ -17,5 +17,8 @@ int main(int argc, const char* argv[])
     mmu_insert_rom(mmu, rom);
     cartridge_free(rom);
 
+    uint8_t a = mmu_read_addr8(mmu, 0x0104);
+    uint16_t b = mmu_read_addr16(mmu, 0x0104);
+
     return 0;
 }
