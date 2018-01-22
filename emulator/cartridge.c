@@ -1,6 +1,8 @@
 #include "sys.h"
 #include "cartridge.h"
 
+#include <string.h>
+
 cartridge_t* cartridge_load(const char* filename)
 {
     cartridge_t* c = NULL;
@@ -23,7 +25,7 @@ cartridge_t* cartridge_load(const char* filename)
                 fclose(file);
                 sys_error("Problem loading cartridge");
             }
-            c->title = strdup(filename);
+            c->title = _strdup(filename);
         }
         fclose(file);
     } 
