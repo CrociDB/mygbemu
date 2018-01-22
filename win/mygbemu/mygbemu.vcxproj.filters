@@ -24,12 +24,18 @@
     <ClCompile Include="..\..\emulator\sys.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\emulator\mmu.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\emulator\cartridge.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\emulator\sys.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\emulator\mmu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

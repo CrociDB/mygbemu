@@ -1,4 +1,5 @@
 #include "sys.h"
+#include "mmu.h"
 #include "cartridge.h"
 
 int main(int argc, const char* argv[]) 
@@ -9,7 +10,11 @@ int main(int argc, const char* argv[])
         exit(-1);
     }
 
-    cartridge_t *rom = cartridge_load(argv[1]);
+    mmu_t* mmu = mmu_create();
+
+    cartridge_t* rom = cartridge_load(argv[1]);
+
+    mmu_insert_rom(mmu, rom);
     cartridge_free(rom);
 
     return 0;

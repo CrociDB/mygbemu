@@ -119,10 +119,12 @@
   <ItemGroup>
     <ClCompile Include="..\..\emulator\cartridge.c" />
     <ClCompile Include="..\..\emulator\main.c" />
+    <ClCompile Include="..\..\emulator\mmu.c" />
     <ClCompile Include="..\..\emulator\sys.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\emulator\cartridge.h" />
+    <ClInclude Include="..\..\emulator\mmu.h" />
     <ClInclude Include="..\..\emulator\sys.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
