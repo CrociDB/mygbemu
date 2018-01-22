@@ -5,8 +5,8 @@ CC=gcc
 CFLAGS=-I$(DIR)
 
 
-DEPS = sys.h cartridge.h
-OBJ = $(DIR)/main.o $(DIR)/cartridge.o $(DIR)/sys.o
+DEPS = sys.h cartridge.h mmu.h
+OBJ = $(DIR)/main.o $(DIR)/cartridge.o $(DIR)/sys.o $(DIR)/mmu.o
 
 $(DIR)/%.o: %.c $(DEPS)
 	$(CC) -g -c -o $@ $< $(CFLAGS)
