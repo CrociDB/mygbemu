@@ -6,18 +6,19 @@
 cartridge_t* cartridge_load(const char* filename)
 {
     cartridge_t* c = NULL;
+    FILE *file = NULL;
 
-    FILE *file = fopen(filename, "rb");
+    file = fopen(filename, "rb");
     if (file)
     {
         fseek(file, 0, SEEK_END);
-        uint8_t total = ftell(file);
+        uint32_t total = ftell(file);
+        fseek(file, 0, SEEK_SET);
         if (total > 0)
         {
             c = (cartridge_t*)malloc(sizeof(cartridge_t));
-            c->rom = (uint8_t*)malloc(sizeof(uint8_t));
+            c->rom = (uint8_t*)malloc(sizeof(uint8_t) * total);
             c->size = total;
-            fseek(file, 0, SEEK_SET);
             if (fread(c->rom, 1, total, file) != total)
             {
                 free(c->rom);
@@ -26,6 +27,7 @@ cartridge_t* cartridge_load(const char* filename)
                 sys_error("Problem loading cartridge");
             }
             c->title = _strdup(filename);
+
         }
         fclose(file);
     } 
@@ -35,9 +37,12 @@ cartridge_t* cartridge_load(const char* filename)
 
 void cartridge_free(cartridge_t* c)
 {
-    free(c->title);
-    free(c->rom);
-    free(c);
+    if (c)
+    {
+        free(c->title);
+        free(c->rom);
+        free(c);
+    }
 }
 
 
