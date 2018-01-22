@@ -1,5 +1,6 @@
 #include "sys.h"
 #include "mmu.h"
+#include "cpu.h"
 #include "cartridge.h"
 
 int main(int argc, const char* argv[]) 
@@ -11,6 +12,7 @@ int main(int argc, const char* argv[])
     }
 
     mmu_t* mmu = mmu_create();
+    cpu_t* cpu = cpu_create();
 
     cartridge_t* rom = cartridge_load(argv[1]);
 

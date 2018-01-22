@@ -14,6 +14,5 @@ typedef struct _cartridge_t
 
 cartridge_t* cartridge_load(const char* filename);
 void cartridge_free(cartridge_t* c);
-void cartridge_run(cartridge_t* c);
 
 #endif
