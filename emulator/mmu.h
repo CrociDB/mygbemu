@@ -1,6 +1,8 @@
 #ifndef _MMU_H_
 #define _MMU_H_
 
+#define _DEBUG_MEM
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
@@ -10,20 +12,30 @@
 
 typedef struct _mmu_t
 {
-    uint8_t* addr;
+    uint8_t bios[0xFF1];
     struct
     {
-        uint8_t bios[0xFF1];
-        uint8_t rom[2][0x4000];
-        uint8_t vram[0x2000];
-        uint8_t eram[0x2000];
-        uint8_t wram[0x2000];
-        uint8_t oam[0xA0];
-        uint8_t zram[0x7F];
-        uint8_t joyflags;
-        uint8_t intflags;
-        uint8_t intenable;
+        union
+        {
+            uint8_t addr[0xFFFF + 0x0001];
+            struct
+            {
+                uint8_t rom[2][0x4000];
+                uint8_t vram[0x2000];
+                uint8_t eram[0x2000];
+                uint8_t wram[0x2000];
+                uint8_t wrams[0x1E00];
+                uint8_t oam[0xA0];
+                uint8_t empty[0x60];
+                uint8_t io[0x80];
+                uint8_t zram[0x80];
+                uint8_t intenable;
+            };
+        };
     };
+
+    uint8_t* joyflags;
+    uint8_t* intflags;
 
     bool inbios;
 } mmu_t;

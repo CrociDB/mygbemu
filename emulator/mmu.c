@@ -3,7 +3,23 @@
 mmu_t* mmu_create()
 {
     mmu_t* mmu = (mmu_t*)malloc(sizeof(mmu_t));
-    mmu->addr = mmu->rom;
+    mmu->joyflags = mmu->addr + 0xFF00;
+    mmu->intflags = mmu->addr + 0xFF0F;
+
+#ifdef _DEBUG_MEM
+    // This will fill memory with specific values for each "block"
+    memset(mmu->addr, 0xAA, sizeof(mmu->addr));
+    memset(mmu->rom, 0x11, sizeof(mmu->rom));
+    memset(mmu->vram, 0x22, sizeof(mmu->vram));
+    memset(mmu->eram, 0x33, sizeof(mmu->eram));
+    memset(mmu->wram, 0x44, sizeof(mmu->wram));
+    memset(mmu->wrams, 0xBB, sizeof(mmu->wrams));
+    memset(mmu->oam, 0x55, sizeof(mmu->oam));
+    memset(mmu->empty, 0x66, sizeof(mmu->empty));
+    memset(mmu->io, 0x77, sizeof(mmu->io));
+    memset(mmu->zram, 0x88, sizeof(mmu->zram));
+#endif
+
     return mmu;
 }
 
@@ -81,10 +97,7 @@ uint8_t mmu_read_byte(mmu_t * mmu, uint16_t addr)
                         switch (addr & 0x00F0)
                         {
                             case 0x00:
-                                if (addr == 0xFF00)
-                                    return mmu->joyflags;
-                                if (addr == 0XFF0F)
-                                    return mmu->intflags;
+                                return mmu->io[addr & 0xFF];
 
                             // GPU
                             case 0x40: case 0x50: case 0x60: case 0x70:
@@ -127,10 +140,9 @@ uint16_t mmu_read_addr16(mmu_t* mmu, uint16_t addr)
   *   3 - wrote to wram
   *   4 - wrote to wram shadow
   *   5 - wrote to oam
-  *   6 - wrote to joyflags
-  *   7 - wrote to intflags
-  *   8 - wrote to gpu regs
-  *   9 - wrote to zram
+  *   6 - wrote to io
+  *   7 - wrote to gpu regs
+  *   8 - wrote to zram
   *   0xA - wrote to intenable
   */
 uint8_t mmu_write_byte(mmu_t* mmu, uint16_t addr, uint8_t data)
@@ -203,16 +215,8 @@ uint8_t mmu_write_byte(mmu_t* mmu, uint16_t addr, uint8_t data)
                         switch (addr & 0x00F0)
                         {
                             case 0x00:
-                                if (addr == 0xFF00)
-                                {
-                                    mmu->joyflags = data;
-                                    return 6;
-                                }
-                                if (addr == 0XFF0F)
-                                {
-                                    return mmu->intflags = data;
-                                    return 7;
-                                }
+                                mmu->io[addr & 0xFF] = data;
+                                return 6;
 
 
                              // GPU
@@ -222,7 +226,7 @@ uint8_t mmu_write_byte(mmu_t* mmu, uint16_t addr, uint8_t data)
                             case 0x80: case 0x90: case 0xA0: case 0xB0:
                             case 0xC0: case 0xD0: case 0xE0: case 0xF0:
                                 mmu->zram[addr & 0x7F] = data;
-                                return 9;
+                                return 8;
                         }
                     }
             }
