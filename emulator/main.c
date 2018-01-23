@@ -25,5 +25,19 @@ int main(int argc, const char* argv[])
     uint8_t c = mmu_read_byte(mmu, 0x0104);
     uint16_t d = mmu_read_word(mmu, 0x0104);
 
+    // Writing test
+
+    //mmu_write_byte(mmu, 0xD2C6, 0xF4);
+    mmu_write_addr8(mmu, 0xD2C6, 0xF4);
+
+    uint8_t test = mmu_read_byte(mmu, 0xD2C6);
+    uint8_t test2 = mmu_read_addr8(mmu, 0xD2C6);
+
+    mmu_write_word(mmu, 0xD8D6, 0x114A);
+    //mmu_write_addr16(mmu, 0xD8D6, 0x114A);
+
+    uint16_t test3 = mmu_read_word(mmu, 0xD8D6);
+    uint16_t test4 = mmu_read_addr16(mmu, 0xD8D6);
+
     return 0;
 }

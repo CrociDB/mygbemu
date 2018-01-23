@@ -12,6 +12,8 @@ void mmu_insert_rom(mmu_t* mmu, cartridge_t* cartridge)
     memcpy((void*)mmu->addr, (const void*)cartridge->rom, cartridge->size);
 }
 
+// Reading routines
+
 uint8_t mmu_read_byte(mmu_t * mmu, uint16_t addr)
 {
     if (mmu->inbios && addr >= 0x00 && addr <= 0xFF)
@@ -72,7 +74,7 @@ uint8_t mmu_read_byte(mmu_t * mmu, uint16_t addr)
 
                 case 0xF00:
                     if (addr == 0xFFFF)
-                        return 0; // This is something with the last interruption. TODO later
+                        return mmu->intenable;
                     else
                     {
                         // Memory-mapped IO
@@ -82,7 +84,7 @@ uint8_t mmu_read_byte(mmu_t * mmu, uint16_t addr)
                                 if (addr == 0xFF00)
                                     return mmu->joyflags;
                                 if (addr == 0XFF0F)
-                                    return 0; // This is the flags of the last interruption. TODO later
+                                    return mmu->intflags;
 
                             // GPU
                             case 0x40: case 0x50: case 0x60: case 0x70:
@@ -90,7 +92,7 @@ uint8_t mmu_read_byte(mmu_t * mmu, uint16_t addr)
 
                             case 0x80: case 0x90: case 0xA0: case 0xB0:
                             case 0xC0: case 0xD0: case 0xE0: case 0xF0:
-                                return mmu->zram[addr & 0x7f];
+                                return mmu->zram[addr & 0x7F];
                         }
                     }
             }
@@ -112,4 +114,133 @@ uint8_t mmu_read_addr8(mmu_t* mmu, uint16_t addr)
 uint16_t mmu_read_addr16(mmu_t* mmu, uint16_t addr)
 {
     return *((uint16_t*)(mmu->addr + addr));
+}
+
+
+// Writing routines
+
+/**
+  * Return list:
+  *   0 - did not write
+  *   1 - wrote to vram
+  *   2 - wrote to eram
+  *   3 - wrote to wram
+  *   4 - wrote to wram shadow
+  *   5 - wrote to oam
+  *   6 - wrote to joyflags
+  *   7 - wrote to intflags
+  *   8 - wrote to gpu regs
+  *   9 - wrote to zram
+  *   0xA - wrote to intenable
+  */
+uint8_t mmu_write_byte(mmu_t* mmu, uint16_t addr, uint8_t data)
+{
+    if (mmu->inbios && addr >= 0x00 && addr <= 0xFF)
+        return 0;
+
+    switch ((addr & 0xF000) >> 12)
+    {
+        // ROM BANKS are read only
+        case 0x0: case 0x1: case 0x2: case 0x3:
+        case 0x4: case 0x5: case 0x6: case 0x7:
+            return 0;
+
+        // Video RAM
+        case 0x8:
+        case 0x9:
+            mmu->vram[addr - 0x8000] = data;
+            return 1;
+
+        // External RAM
+        case 0xA:
+        case 0xB:
+            mmu->eram[addr - 0xA000] = data;
+            return 2;
+
+        // Working RAM
+        case 0xC:
+        case 0xD:
+            mmu->wram[addr - 0xC000] = data;
+            return 3;
+
+        // Working RAM Shadow
+        case 0xE:
+            mmu->wram[addr - 0xC000] = data;
+            return 4;
+
+        case 0xF:
+            switch (addr & 0x0F00)
+            {
+                // More Working RAM Shadow
+                case 0x000: case 0x100: case 0x200: case 0x300:
+                case 0x400: case 0x500: case 0x600: case 0x700:
+                case 0x800: case 0x900: case 0xA00: case 0xB00:
+                case 0xC00: case 0xD00:
+                    mmu->wram[addr - 0x1FFF] = data;
+                    return 4;
+
+                // Sprite information
+                case 0xE00:
+                    if (addr < 0xFEA0)
+                    {
+                        mmu->oam[addr & 0xFF] = data;
+                        return 5;
+                    }
+                    else
+                    {
+                        return 0;
+                    }
+
+                case 0xF00:
+                    if (addr == 0xFFFF)
+                    {
+                        mmu->intenable = data;
+                        return 0xA;
+                    }
+                    else
+                    {
+                        // Memory-mapped IO
+                        switch (addr & 0x00F0)
+                        {
+                            case 0x00:
+                                if (addr == 0xFF00)
+                                {
+                                    mmu->joyflags = data;
+                                    return 6;
+                                }
+                                if (addr == 0XFF0F)
+                                {
+                                    return mmu->intflags = data;
+                                    return 7;
+                                }
+
+
+                             // GPU
+                            case 0x40: case 0x50: case 0x60: case 0x70:
+                                return 0; // Write to GPU registers. TODO later
+
+                            case 0x80: case 0x90: case 0xA0: case 0xB0:
+                            case 0xC0: case 0xD0: case 0xE0: case 0xF0:
+                                mmu->zram[addr & 0x7F] = data;
+                                return 9;
+                        }
+                    }
+            }
+    }
+}
+
+uint8_t mmu_write_word(mmu_t* mmu, uint16_t addr, uint16_t data)
+{
+    return mmu_write_byte(mmu, addr, data & 0xFF) & mmu_write_byte(mmu, addr + 1, data >> 8);
+}
+
+void mmu_write_addr8(mmu_t* mmu, uint16_t addr, uint8_t data)
+{
+    return mmu->addr[addr] = data;
+}
+
+void mmu_write_addr16(mmu_t* mmu, uint16_t addr, uint16_t data)
+{
+    uint16_t* pos = ((uint16_t*)(mmu->addr + addr));
+    return *pos = data;
 }
