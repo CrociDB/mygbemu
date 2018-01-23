@@ -22,5 +22,8 @@ int main(int argc, const char* argv[])
     uint8_t a = mmu_read_addr8(mmu, 0x0104);
     uint16_t b = mmu_read_addr16(mmu, 0x0104);
 
+    uint8_t c = mmu_read_byte(mmu, 0x0104);
+    uint16_t d = mmu_read_word(mmu, 0x0104);
+
     return 0;
 }
