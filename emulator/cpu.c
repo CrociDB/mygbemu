@@ -13,12 +13,50 @@ void cpu_reset(cpu_t* cpu)
     memset((void*)(&cpu->reg), 0, sizeof(cpu->reg));
 }
 
+void cpu_tick(cpu_t* cpu, mmu_t* mmu)
+{
+    // Fetch instruction
+    uint8_t op = mmu_read_byte(mmu, cpu->reg.pc.word);
+
+    // Run instruction
+    void(*opfunc)(cpu_t* cpu, mmu_t* mmu) = CPU_OP_TABLE[op];
+    if (!opfunc)
+    {
+        log_error("Op does not exist");
+        cpu->reg.pc.word++;
+        return;
+    }
+
+    (*opfunc)(cpu, mmu);
+}
+
+
+void cpu_init_table()
+{
+    log_message("Initializing CPU OP Table");
+
+    CPU_OP_TABLE[0x00] = &cpu_op_nop;
+    CPU_OP_TABLE[0x31] = &cpu_op_ld_sp_d16;
+}
+
 // OPs implementation
 
-void cpu_op_nop(cpu_t * cpu)
+void cpu_op_nop(cpu_t* cpu, mmu_t* mmu)
 {
+    log_cpu("NOP");
+
     cpu->clock.m = 1;
     cpu->clock.t = 4;
     cpu->reg.pc.word++;
+}
+
+void cpu_op_ld_sp_d16(cpu_t* cpu, mmu_t* mmu)
+{
+    log_cpu("LD S, d16");
+    
+    uint16_t word = mmu_read_word(mmu, cpu->reg.pc.word);
+
+    cpu->reg.sp.word = word;
+    cpu->reg.pc.word += 3;
 }
 

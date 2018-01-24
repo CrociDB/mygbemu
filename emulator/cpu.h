@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 
+#include "mmu.h"
 #include "log.h"
 
 typedef union _reg16_t
@@ -35,12 +36,20 @@ typedef struct _cpu_t
     
 } cpu_t;
 
+static void(*CPU_OP_TABLE[0xFF])(cpu_t* cpu, mmu_t* mmu);
+
+
 cpu_t* cpu_create();
+void cpu_init_table();
 void cpu_reset(cpu_t* cpu);
+void cpu_tick(cpu_t* cpu, mmu_t* mmu);
 
 // OPs
 
 // $0x
-void cpu_op_nop(cpu_t* cpu);
+void cpu_op_nop(cpu_t* cpu, mmu_t* mmu); // $00
+
+// $3x
+void cpu_op_ld_sp_d16(cpu_t cpu, mmu_t* mmu); // $31
 
 #endif

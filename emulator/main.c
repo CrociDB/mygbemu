@@ -4,6 +4,8 @@
 #include "cpu.h"
 #include "cartridge.h"
 
+void emu_run(cpu_t* cpu, mmu_t* mmu);
+
 int main(int argc, const char* argv[]) 
 {
     if (argc < 2)
@@ -13,6 +15,8 @@ int main(int argc, const char* argv[])
     }
 
     log_set_level(LOG_VERBOSE);
+
+    cpu_init_table();
 
     mmu_t* mmu = mmu_create();
     cpu_t* cpu = cpu_create();
@@ -52,5 +56,15 @@ int main(int argc, const char* argv[])
 
     cpu_reset(cpu);
 
+    emu_run(cpu, mmu);
+
     return 0;
+}
+
+void emu_run(cpu_t * cpu, mmu_t * mmu)
+{
+    while (1)
+    {
+        cpu_tick(cpu, mmu);
+    }
 }
