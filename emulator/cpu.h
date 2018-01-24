@@ -15,10 +15,15 @@ typedef union _reg16_t
     uint16_t word;
 } reg16_t;
 
-typedef struct _cpu_t
+typedef union _clock_t
 {
     uint8_t m;
     uint8_t t;
+} clock_t;
+
+typedef struct _cpu_t
+{
+    clock_t clock;
     
     struct
     {
@@ -30,5 +35,10 @@ typedef struct _cpu_t
 
 cpu_t* cpu_create();
 void cpu_reset(cpu_t* cpu);
+
+// OPs
+
+// $0x
+void cpu_op_nop(cpu_t* cpu);
 
 #endif

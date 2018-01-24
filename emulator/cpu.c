@@ -10,3 +10,13 @@ void cpu_reset(cpu_t* cpu)
 {
     memset((void*)(&cpu->reg), 0, sizeof(cpu->reg));
 }
+
+// OPs implementation
+
+void cpu_op_nop(cpu_t * cpu)
+{
+    cpu->clock.m = 1;
+    cpu->clock.t = 4;
+    cpu->reg.pc.word++;
+}
+
