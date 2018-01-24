@@ -1,4 +1,5 @@
 #include "sys.h"
+#include "log.h"
 #include "mmu.h"
 #include "cpu.h"
 #include "cartridge.h"
@@ -10,6 +11,8 @@ int main(int argc, const char* argv[])
         sys_usage();
         exit(-1);
     }
+
+    log_set_level(LOG_VERBOSE);
 
     mmu_t* mmu = mmu_create();
     cpu_t* cpu = cpu_create();

@@ -1,0 +1,36 @@
+#include "log.h"
+
+void log_set_level(uint8_t level)
+{
+    log_current = level;
+}
+
+void log_message(const char* msg)
+{
+    _log_l(LOG_MESSAGE, msg);
+}
+
+void log_error(const char* msg)
+{
+    _log_l(LOG_ERROR, msg);
+}
+
+void log_cpu(const char* msg)
+{
+    _log_m("CPU", msg);
+}
+
+// Currently all logs go to stdout, but this method will also be able to send it
+// somewhere else
+void _log_m(const char* ch, const char * msg)
+{
+    printf(" [%s] %s\n", ch, msg);
+}
+
+void _log_l(uint8_t level, const char * msg)
+{
+    if (log_current > level)
+        return;
+
+    _log_m(LEVELS[level], msg);
+}

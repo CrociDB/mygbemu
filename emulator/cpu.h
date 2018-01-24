@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include <stdint.h>
 
+#include "log.h"
+
 typedef union _reg16_t
 {
     struct

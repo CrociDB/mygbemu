@@ -2,6 +2,8 @@
 
 mmu_t* mmu_create()
 {
+    log_message("Creating MMU");
+
     mmu_t* mmu = (mmu_t*)malloc(sizeof(mmu_t));
     mmu->joyflags = mmu->addr + 0xFF00;
     mmu->intflags = mmu->addr + 0xFF0F;

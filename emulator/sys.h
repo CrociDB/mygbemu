@@ -2,6 +2,7 @@
 #define _SYS_H_
 
 #include <stdio.h>
+#include "log.h"
 
 static const char* SYS_NAME = "MyGBEmu";
 static const char* SYS_VERSION = "v0.1";

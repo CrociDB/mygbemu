@@ -2,6 +2,8 @@
 
 cpu_t* cpu_create()
 {
+    log_message("Creating CPU");
+
     cpu_t* cpu = (cpu_t*)malloc(sizeof(cpu_t));
     return cpu;
 }
