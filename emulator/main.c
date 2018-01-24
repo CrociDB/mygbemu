@@ -47,5 +47,7 @@ int main(int argc, const char* argv[])
     //uint8_t m = mmu_read_byte(mmu, 0xFF00);
     //uint8_t m2 = mmu_read_addr8(mmu, 0xFF00);
 
+    cpu_reset(cpu);
+
     return 0;
 }
