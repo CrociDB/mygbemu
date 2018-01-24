@@ -41,7 +41,7 @@ void cpu_init_table()
 
 // OPs implementation
 
-void cpu_op_nop(cpu_t* cpu, mmu_t* mmu)
+void cpu_op_nop(cpu_t* cpu, mmu_t* mmu) // $00
 {
     log_cpu("NOP");
 
@@ -50,12 +50,14 @@ void cpu_op_nop(cpu_t* cpu, mmu_t* mmu)
     cpu->reg.pc.word++;
 }
 
-void cpu_op_ld_sp_d16(cpu_t* cpu, mmu_t* mmu)
+void cpu_op_ld_sp_d16(cpu_t* cpu, mmu_t* mmu) // $31
 {
     uint16_t word = mmu_read_word(mmu, cpu->reg.pc.word);
     log_cpu("LD S, $%04X", word);
 
     cpu->reg.sp.word = word;
+    cpu->clock.m = 3;
+    cpu->clock.t = 12;
     cpu->reg.pc.word += 3;
 }
 
