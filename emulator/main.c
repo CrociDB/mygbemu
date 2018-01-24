@@ -16,7 +16,7 @@ int main(int argc, const char* argv[])
 
     //cartridge_t* rom = cartridge_load(argv[1]);
 
-    //mmu_insert_rom(mmu, rom);
+    mmu_load_bios(mmu);
     //cartridge_free(rom);
 
     //uint8_t a = mmu_read_addr8(mmu, 0x0104);
@@ -41,11 +41,11 @@ int main(int argc, const char* argv[])
 
     // Testing memory after OAM
 
-    mmu_write_byte(mmu, 0xFF00, 0xA2);
+    //mmu_write_byte(mmu, 0xFF00, 0xA2);
     //mmu_write_addr16(mmu, 0xFE00, 0xFF);
 
-    uint8_t m = mmu_read_byte(mmu, 0xFF00);
-    uint8_t m2 = mmu_read_addr8(mmu, 0xFF00);
+    //uint8_t m = mmu_read_byte(mmu, 0xFF00);
+    //uint8_t m2 = mmu_read_addr8(mmu, 0xFF00);
 
     return 0;
 }

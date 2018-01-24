@@ -23,9 +23,15 @@ mmu_t* mmu_create()
     return mmu;
 }
 
-void mmu_insert_rom(mmu_t* mmu, cartridge_t* cartridge)
+void mmu_load_rom(mmu_t* mmu, cartridge_t* cartridge)
 {
     memcpy((void*)mmu->addr, (const void*)cartridge->rom, cartridge->size);
+}
+
+void mmu_load_bios(mmu_t* mmu)
+{
+    memcpy((void*)mmu->bios, (const void*)BIOS, sizeof(BIOS));
+    mmu->inbios = true;
 }
 
 // Reading routines
@@ -121,6 +127,9 @@ uint16_t mmu_read_word(mmu_t * mmu, uint16_t addr)
 
 uint8_t mmu_read_addr8(mmu_t* mmu, uint16_t addr)
 {
+    if (mmu->inbios && addr >= 0x00 && addr <= 0xFF)
+        return mmu->bios[addr];
+
     return *(mmu->addr + addr);
 }
 
