@@ -20,10 +20,10 @@ void cpu_tick(cpu_t* cpu, mmu_t* mmu)
 
     // Run instruction
     void(*opfunc)(cpu_t* cpu, mmu_t* mmu) = CPU_OP_TABLE[op];
+    cpu->reg.pc.word++;
     if (!opfunc)
     {
         log_error("Op does not exist");
-        cpu->reg.pc.word++;
         return;
     }
 
@@ -52,9 +52,8 @@ void cpu_op_nop(cpu_t* cpu, mmu_t* mmu)
 
 void cpu_op_ld_sp_d16(cpu_t* cpu, mmu_t* mmu)
 {
-    log_cpu("LD S, d16");
-    
     uint16_t word = mmu_read_word(mmu, cpu->reg.pc.word);
+    log_cpu("LD S, $%04X", word);
 
     cpu->reg.sp.word = word;
     cpu->reg.pc.word += 3;
