@@ -21,11 +21,11 @@ typedef union _clock_t
 {
     uint8_t m;
     uint8_t t;
-} clock_t;
+} clck_t;
 
 typedef struct _cpu_t
 {
-    clock_t clock;
+    clck_t clock;
     
     struct
     {
