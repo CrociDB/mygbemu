@@ -19,15 +19,21 @@ void cpu_tick(cpu_t* cpu, mmu_t* mmu)
     uint8_t op = mmu_read_byte(mmu, cpu->reg.pc.word);
 
     // Run instruction
-    void(*opfunc)(cpu_t* cpu, mmu_t* mmu) = CPU_OP_TABLE[op];
+
+    opfunc_t* opfunc = &optable[op];
+    //void(*opfunc)(cpu_t* cpu, mmu_t* mmu) = CPU_OP_TABLE[op];
     cpu->reg.pc.word++;
-    if (!opfunc)
+    if (!opfunc || !opfunc->func)
     {
-        log_error("Op does not exist");
+        log_error("Op '%02X'does not exist", op);
         return;
     }
 
-    (*opfunc)(cpu, mmu);
+    //(*opfunc)(cpu, mmu);
+    (*opfunc->func)(cpu, mmu);
+    cpu->clock.m = opfunc->m;
+    cpu->clock.t = opfunc->t;
+    cpu->reg.pc.word += opfunc->b;
 }
 
 
@@ -35,8 +41,8 @@ void cpu_init_table()
 {
     log_message("Initializing CPU OP Table");
 
-    CPU_OP_TABLE[0x00] = &cpu_op_nop;
-    CPU_OP_TABLE[0x31] = &cpu_op_ld_sp_d16;
+    optable[0x00] = (opfunc_t) { &cpu_op_nop, 1, 4, 0 };
+    optable[0x31] = (opfunc_t) { &cpu_op_ld_sp_d16, 3, 13, 2 };
 }
 
 // OPs implementation
@@ -44,10 +50,6 @@ void cpu_init_table()
 void cpu_op_nop(cpu_t* cpu, mmu_t* mmu) // $00
 {
     log_cpu("NOP");
-
-    cpu->clock.m = 1;
-    cpu->clock.t = 4;
-    cpu->reg.pc.word++;
 }
 
 void cpu_op_ld_sp_d16(cpu_t* cpu, mmu_t* mmu) // $31
@@ -56,8 +58,5 @@ void cpu_op_ld_sp_d16(cpu_t* cpu, mmu_t* mmu) // $31
     log_cpu("LD S, $%04X", word);
 
     cpu->reg.sp.word = word;
-    cpu->clock.m = 3;
-    cpu->clock.t = 12;
-    cpu->reg.pc.word += 3;
 }
 

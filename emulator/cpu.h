@@ -36,7 +36,16 @@ typedef struct _cpu_t
     
 } cpu_t;
 
-static void(*CPU_OP_TABLE[0xFF])(cpu_t* cpu, mmu_t* mmu);
+typedef struct _opfunc_t
+{
+    void(*func)(cpu_t* cpu, mmu_t* mmu);
+    uint8_t m;
+    uint8_t t;
+    uint8_t b;
+
+} opfunc_t;
+
+static opfunc_t optable[0xFF];
 
 
 cpu_t* cpu_create();
