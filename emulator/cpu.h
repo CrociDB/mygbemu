@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 
+#include "util.h"
 #include "mmu.h"
 #include "log.h"
 
@@ -52,19 +53,28 @@ typedef struct _opfunc_t
 } opfunc_t;
 
 static opfunc_t optable[0xFF];
+static opfunc_t optable_cb[0xFF];
 
 
 cpu_t* cpu_create();
 void cpu_init_table();
+static void _cpu_init_table_cb();
 void cpu_reset(cpu_t* cpu);
+
 void cpu_tick(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_cb(cpu_t* cpu, mmu_t* mmu);
 
+inline void cpu_flag_set_bit(cpu_t* cpu, const uint8_t bit);
+inline void cpu_flag_unset_bit(cpu_t* cpu, const uint8_t bit);
 
-inline void cpu_trick_set_bit(uint8_t* byte, uint8_t n);
-inline void cpu_trick_unset_bit(uint8_t* byte, uint8_t n);
+inline void cpu_flag_set_zero(cpu_t* cpu, const bool value);
+inline void cpu_flag_set_sub(cpu_t* cpu, const bool value);
+inline void cpu_flag_set_halfcarry(cpu_t* cpu, const bool value);
+inline void cpu_flag_set_carry(cpu_t* cpu, const bool value);
 
-inline void cpu_flag_set_bit(cpu_t* cpu, uint8_t bit);
-inline void cpu_flag_unset_bit(cpu_t* cpu, uint8_t bit);
+// CPU Instructions
+
+void cpu_ins_bit(cpu_t* cpu, uint8_t bit, uint8_t bytereg);
 
 // OPs
 
@@ -80,5 +90,12 @@ void cpu_op_ld_hlm_a(cpu_t* cpu, mmu_t* mmu); // $32
 
 // $Ax
 void cpu_op_xor_a(cpu_t* cpu, mmu_t* mmu); // $AF
+
+
+// $CBXX
+
+// $ 7x
+void cpu_op_cb_bit_7_h(cpu_t* cpu, mmu_t* mmu); // $CB7C
+
 
 #endif

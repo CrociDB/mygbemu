@@ -22,7 +22,7 @@ void log_message(const char* msg, ...);
 void log_error(const char* msg, ...);
 void log_cpu(const char* msg, ...);
 
-static void _log_l(uint8_t level, const char* msg, ...);
-static void _log_m(const char* ch, const char* msg, ...);
+static void _log_l(uint8_t level, const char* msg);
+static void _log_m(const char* ch, const char* msg);
 
 #endif

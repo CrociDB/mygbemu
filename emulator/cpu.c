@@ -35,6 +35,28 @@ void cpu_tick(cpu_t* cpu, mmu_t* mmu)
     cpu->reg.pc.word += opfunc->b;
 }
 
+// This is the caller for CB op code functions
+void cpu_op_cb(cpu_t* cpu, mmu_t* mmu)
+{
+    // Fetch instruction
+    uint8_t op = mmu_read_byte(mmu, cpu->reg.pc.word);
+
+    // Run instruction
+    opfunc_t* opfunc_cb = &optable_cb[op];
+    cpu->reg.pc.word++;
+    if (!opfunc_cb || !opfunc_cb->func)
+    {
+        log_error("Op 'CB%02X' does not exist", op);
+        return;
+    }
+
+    (*opfunc_cb->func)(cpu, mmu);
+    cpu->clock.m = opfunc_cb->m;
+    cpu->clock.t = opfunc_cb->t;
+    cpu->reg.pc.word += opfunc_cb->b;
+}
+
+
 void cpu_init_table()
 {
     log_message("Initializing CPU OP Table");
@@ -47,33 +69,68 @@ void cpu_init_table()
     optable[0x32] = (opfunc_t) { &cpu_op_ld_hlm_a , 1, 8, 0 };
 
     optable[0xAF] = (opfunc_t) { &cpu_op_xor_a, 1, 4, 0 };
+
+    _cpu_init_table_cb();
+    optable[0xCB] = (opfunc_t) { &cpu_op_cb, 0, 0, 0 };
 }
 
-
-// Some bit tricks
-
-// Set the nth bit of the given byte to one
-inline void cpu_trick_set_bit(uint8_t* byte, uint8_t n)
+void _cpu_init_table_cb()
 {
-    (*byte) = (*byte) | ~(0x01 << n);
+    optable_cb[0x7C] = (opfunc_t) { &cpu_op_cb_bit_7_h, 2, 8, 0 };
 }
 
-// Set the nth bit of the given byte to zero
-inline void cpu_trick_unset_bit(uint8_t* byte, uint8_t n)
-{
-    (*byte) = (*byte) & ~(0x01 << n);
-}
 
 // Set the specified bit of the flag to one
-inline void cpu_flag_set_bit(cpu_t* cpu, uint8_t bit)
+inline void cpu_flag_set_bit(cpu_t* cpu, const uint8_t bit)
 {
     cpu->reg.af.lo |= bit;
 }
 
 // Set the specified bit of the flag to zero
-inline void cpu_flag_unset_bit(cpu_t* cpu, uint8_t bit)
+inline void cpu_flag_unset_bit(cpu_t* cpu, const uint8_t bit)
 {
     cpu->reg.af.lo &= bit;
+}
+
+inline void cpu_flag_set_zero(cpu_t* cpu, const bool value)
+{
+    if (!value)
+        cpu_flag_unset_bit(cpu, CPU_FLAG_ZERO_BIT);
+    else
+        cpu_flag_set_bit(cpu, CPU_FLAG_ZERO_BIT);
+}
+
+inline void cpu_flag_set_sub(cpu_t* cpu, const bool value)
+{
+    if (!value)
+        cpu_flag_unset_bit(cpu, CPU_FLAG_SUB_BIT);
+    else
+        cpu_flag_set_bit(cpu, CPU_FLAG_SUB_BIT);
+}
+
+inline void cpu_flag_set_halfcarry(cpu_t* cpu, const bool value)
+{
+    if (!value)
+        cpu_flag_unset_bit(cpu, CPU_FLAG_HC_BIT);
+    else
+        cpu_flag_set_bit(cpu, CPU_FLAG_HC_BIT);
+}
+
+inline void cpu_flag_set_carry(cpu_t* cpu, const bool value)
+{
+    if (!value)
+        cpu_flag_unset_bit(cpu, CPU_FLAG_CARRY_BIT);
+    else
+        cpu_flag_set_bit(cpu, CPU_FLAG_CARRY_BIT);
+}
+
+// CPU Instructions
+
+void cpu_ins_bit(cpu_t* cpu, uint8_t bit, uint8_t bytereg)
+{
+    cpu_flag_set_zero(cpu, !util_check_bit(bytereg, bit));
+    cpu_flag_set_sub(cpu, false);
+    cpu_flag_set_halfcarry(cpu, true);
 }
 
 
@@ -107,7 +164,7 @@ void cpu_op_ld_hlm_a(cpu_t* cpu, mmu_t* mmu) // $32
     cpu->reg.hl.word--;
 }
 
-void cpu_op_xor_a(cpu_t * cpu, mmu_t * mmu) // $AF
+void cpu_op_xor_a(cpu_t* cpu, mmu_t * mmu) // $AF
 {
     log_cpu("XOR A");
 
@@ -123,3 +180,10 @@ void cpu_op_xor_a(cpu_t * cpu, mmu_t * mmu) // $AF
         cpu_flag_unset_bit(cpu, CPU_FLAG_ZERO_BIT);
 }
 
+// CB OP Codes
+
+void cpu_op_cb_bit_7_h(cpu_t* cpu, mmu_t * mmu) // $CB7C
+{
+    log_cpu("BIT 7, H");
+    cpu_ins_bit(cpu, 7, cpu->reg.hl.hi);
+}

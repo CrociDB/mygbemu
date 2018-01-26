@@ -123,6 +123,7 @@
     <ClCompile Include="..\..\emulator\main.c" />
     <ClCompile Include="..\..\emulator\mmu.c" />
     <ClCompile Include="..\..\emulator\sys.c" />
+    <ClCompile Include="..\..\emulator\util.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\emulator\cartridge.h" />
@@ -130,6 +131,7 @@
     <ClInclude Include="..\..\emulator\log.h" />
     <ClInclude Include="..\..\emulator\mmu.h" />
     <ClInclude Include="..\..\emulator\sys.h" />
+    <ClInclude Include="..\..\emulator\util.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
