@@ -79,23 +79,19 @@ void cpu_ins_bit(cpu_t* cpu, uint8_t bit, uint8_t bytereg);
 // OPs
 
 // $0x
-void cpu_op_nop(cpu_t* cpu, mmu_t* mmu); // $00
+void cpu_op_00(cpu_t* cpu, mmu_t* mmu);
 
-// $2x
-void cpu_op_ld_hl_d16(cpu_t* cpu, mmu_t* mmu); // $21
+void cpu_op_21(cpu_t* cpu, mmu_t* mmu);
 
-// $3x
-void cpu_op_ld_sp_d16(cpu_t* cpu, mmu_t* mmu); // $31
-void cpu_op_ld_hlm_a(cpu_t* cpu, mmu_t* mmu); // $32
+void cpu_op_31(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_32(cpu_t* cpu, mmu_t* mmu);
 
-// $Ax
-void cpu_op_xor_a(cpu_t* cpu, mmu_t* mmu); // $AF
+void cpu_op_af(cpu_t* cpu, mmu_t* mmu);
 
 
-// $CBXX
+// CBs
 
-// $ 7x
-void cpu_op_cb_bit_7_h(cpu_t* cpu, mmu_t* mmu); // $CB7C
+void cpu_op_cb_7c(cpu_t* cpu, mmu_t* mmu);
 
 
 #endif

@@ -61,14 +61,14 @@ void cpu_init_table()
 {
     log_message("Initializing CPU OP Table");
 
-    optable[0x00] = (opfunc_t) { &cpu_op_nop, 1, 4, 0 };
+    optable[0x00] = (opfunc_t) { &cpu_op_00, 1, 4, 0 };
 
-    optable[0x21] = (opfunc_t) { &cpu_op_ld_hl_d16, 3, 12, 2 };
+    optable[0x21] = (opfunc_t) { &cpu_op_21, 3, 12, 2 };
 
-    optable[0x31] = (opfunc_t) { &cpu_op_ld_sp_d16, 3, 13, 2 };
-    optable[0x32] = (opfunc_t) { &cpu_op_ld_hlm_a , 1, 8, 0 };
+    optable[0x31] = (opfunc_t) { &cpu_op_31, 3, 13, 2 };
+    optable[0x32] = (opfunc_t) { &cpu_op_32 , 1, 8, 0 };
 
-    optable[0xAF] = (opfunc_t) { &cpu_op_xor_a, 1, 4, 0 };
+    optable[0xAF] = (opfunc_t) { &cpu_op_af, 1, 4, 0 };
 
     _cpu_init_table_cb();
     optable[0xCB] = (opfunc_t) { &cpu_op_cb, 0, 0, 0 };
@@ -76,7 +76,7 @@ void cpu_init_table()
 
 void _cpu_init_table_cb()
 {
-    optable_cb[0x7C] = (opfunc_t) { &cpu_op_cb_bit_7_h, 2, 8, 0 };
+    optable_cb[0x7C] = (opfunc_t) { &cpu_op_cb_7c, 2, 8, 0 };
 }
 
 
@@ -136,12 +136,12 @@ void cpu_ins_bit(cpu_t* cpu, uint8_t bit, uint8_t bytereg)
 
 // OPs implementation
 
-void cpu_op_nop(cpu_t* cpu, mmu_t* mmu) // $00
+void cpu_op_00(cpu_t* cpu, mmu_t* mmu)
 {
     log_cpu("NOP");
 }
 
-void cpu_op_ld_hl_d16(cpu_t * cpu, mmu_t * mmu) // $21
+void cpu_op_21(cpu_t * cpu, mmu_t * mmu)
 {
     uint16_t word = mmu_read_word(mmu, cpu->reg.pc.word);
     log_cpu("LD HL, $%04X", word);
@@ -149,7 +149,7 @@ void cpu_op_ld_hl_d16(cpu_t * cpu, mmu_t * mmu) // $21
     cpu->reg.hl.word = word;
 }
 
-void cpu_op_ld_sp_d16(cpu_t* cpu, mmu_t* mmu) // $31
+void cpu_op_31(cpu_t* cpu, mmu_t* mmu)
 {
     uint16_t word = mmu_read_word(mmu, cpu->reg.pc.word);
     log_cpu("LD S, $%04X", word);
@@ -157,32 +157,29 @@ void cpu_op_ld_sp_d16(cpu_t* cpu, mmu_t* mmu) // $31
     cpu->reg.sp.word = word;
 }
 
-void cpu_op_ld_hlm_a(cpu_t* cpu, mmu_t* mmu) // $32
+void cpu_op_32(cpu_t* cpu, mmu_t* mmu)
 {
     log_cpu("LD (HL-), A");
     mmu_write_byte(mmu, cpu->reg.hl.word, cpu->reg.af.hi);
     cpu->reg.hl.word--;
 }
 
-void cpu_op_xor_a(cpu_t* cpu, mmu_t * mmu) // $AF
+void cpu_op_af(cpu_t* cpu, mmu_t * mmu)
 {
     log_cpu("XOR A");
 
-    cpu_flag_unset_bit(cpu, CPU_FLAG_CARRY_BIT);
-    cpu_flag_unset_bit(cpu, CPU_FLAG_HC_BIT);
-    cpu_flag_unset_bit(cpu, CPU_FLAG_SUB_BIT);
+    cpu_flag_set_carry(cpu, false);
+    cpu_flag_set_halfcarry(cpu, false);
+    cpu_flag_set_sub(cpu, false);
 
     cpu->reg.af.hi ^= cpu->reg.af.hi;
 
-    if (!cpu->reg.af.hi)
-        cpu_flag_set_bit(cpu, CPU_FLAG_ZERO_BIT);
-    else
-        cpu_flag_unset_bit(cpu, CPU_FLAG_ZERO_BIT);
+    cpu_flag_set_zero(cpu, !cpu->reg.af.hi);
 }
 
 // CB OP Codes
 
-void cpu_op_cb_bit_7_h(cpu_t* cpu, mmu_t * mmu) // $CB7C
+void cpu_op_cb_7c(cpu_t* cpu, mmu_t * mmu)
 {
     log_cpu("BIT 7, H");
     cpu_ins_bit(cpu, 7, cpu->reg.hl.hi);
