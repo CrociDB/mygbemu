@@ -63,6 +63,7 @@ void cpu_init_table()
 
     optable[0x00] = (opfunc_t) { &cpu_op_00, 1, 4, 0 };
 
+    optable[0x20] = (opfunc_t) { &cpu_op_20, 2, 8, 1 };
     optable[0x21] = (opfunc_t) { &cpu_op_21, 3, 12, 2 };
 
     optable[0x31] = (opfunc_t) { &cpu_op_31, 3, 13, 2 };
@@ -124,6 +125,33 @@ inline void cpu_flag_set_carry(cpu_t* cpu, const bool value)
         cpu_flag_set_bit(cpu, CPU_FLAG_CARRY_BIT);
 }
 
+inline bool cpu_flag(cpu_t* cpu, const uint8_t flag)
+{
+    return util_check_bit(cpu->reg.af.lo, flag);
+}
+
+inline bool cpu_check_condition(cpu_t* cpu, condition_e condition)
+{
+    bool c = false;
+    switch (condition)
+    {
+        case CPU_CONDITION_C:
+            c = cpu_flag(cpu, CPU_FLAG_CARRY_BIT);
+            break;
+        case CPU_CONDITION_NC:
+            c = !cpu_flag(cpu, CPU_FLAG_CARRY_BIT);
+            break;
+        case CPU_CONDITION_Z:
+            c = cpu_flag(cpu, CPU_FLAG_ZERO_BIT);
+            break;
+        case CPU_CONDITION_NZ:
+            c = !cpu_flag(cpu, CPU_FLAG_ZERO_BIT);
+            break;
+    }
+
+    return c;
+}
+
 // CPU Instructions
 
 void cpu_ins_bit(cpu_t* cpu, uint8_t bit, uint8_t bytereg)
@@ -133,12 +161,32 @@ void cpu_ins_bit(cpu_t* cpu, uint8_t bit, uint8_t bytereg)
     cpu_flag_set_halfcarry(cpu, true);
 }
 
+int8_t cpu_int_jr(cpu_t* cpu, mmu_t* mmu, condition_e c)
+{
+    int8_t offset = 0;
+
+    if (cpu_check_condition(cpu, c))
+    {
+        offset = (int8_t)mmu_read_byte(mmu, cpu->reg.pc.word);
+        cpu->reg.pc.word += offset;
+        cpu->clock.t += 4;
+    }
+
+    offset = 0;
+}
+
 
 // OPs implementation
 
 void cpu_op_00(cpu_t* cpu, mmu_t* mmu)
 {
     log_cpu("NOP");
+}
+
+void cpu_op_20(cpu_t * cpu, mmu_t * mmu)
+{
+    int8_t offset = cpu_int_jr(cpu, mmu, CPU_CONDITION_NZ);
+    log_cpu("JR NZ, $%02X", offset);
 }
 
 void cpu_op_21(cpu_t * cpu, mmu_t * mmu)

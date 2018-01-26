@@ -15,6 +15,14 @@
 #define CPU_FLAG_HC_BIT      0x20
 #define CPU_FLAG_CARRY_BIT   0x10
 
+typedef enum _condition_e
+{
+    CPU_CONDITION_C,
+    CPU_CONDITION_NC,
+    CPU_CONDITION_Z,
+    CPU_CONDITION_NZ,
+} condition_e;
+
 typedef union _reg16_t
 {
     struct
@@ -72,15 +80,20 @@ inline void cpu_flag_set_sub(cpu_t* cpu, const bool value);
 inline void cpu_flag_set_halfcarry(cpu_t* cpu, const bool value);
 inline void cpu_flag_set_carry(cpu_t* cpu, const bool value);
 
+inline bool cpu_flag(cpu_t* cpu, const uint8_t flag);
+
+inline bool cpu_check_condition(cpu_t* cpu, condition_e condition);
+
 // CPU Instructions
 
 void cpu_ins_bit(cpu_t* cpu, uint8_t bit, uint8_t bytereg);
+int8_t cpu_int_jr(cpu_t* cpu, mmu_t* mmu, condition_e c);
 
 // OPs
 
-// $0x
 void cpu_op_00(cpu_t* cpu, mmu_t* mmu);
 
+void cpu_op_20(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_21(cpu_t* cpu, mmu_t* mmu);
 
 void cpu_op_31(cpu_t* cpu, mmu_t* mmu);
