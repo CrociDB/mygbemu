@@ -2,7 +2,8 @@
 
 debugger_t* debug_get(cpu_t* cpu)
 {
-    for (int i = 0; i < DEBUGGERS_MAX; i++)
+    int i;
+    for (i = 0; i < DEBUGGERS_MAX; i++)
     {
         if (debuggers[i].assigned)
         {
@@ -20,7 +21,7 @@ debugger_t* debug_get(cpu_t* cpu)
     return NULL;
 }
 
-void debug_instruction(cpu_t* cpu, mmu_t* mmu, const char* asm, ...)
+void debug_instruction(cpu_t* cpu, mmu_t* mmu, const char* disasm, ...)
 {
     debugger_t* debugger = debug_get(cpu);
     assert(debugger != NULL);
@@ -29,8 +30,8 @@ void debug_instruction(cpu_t* cpu, mmu_t* mmu, const char* asm, ...)
 
     char buffer[0xFF];
     va_list argptr;
-    va_start(argptr, asm);
-    vsprintf(buffer, asm, argptr);
+    va_start(argptr, disasm);
+    vsprintf(buffer, disasm, argptr);
     log_cpu("0x%04X\t%s", pc_addr, buffer);
     va_end(argptr);
 }

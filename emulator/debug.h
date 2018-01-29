@@ -23,6 +23,6 @@ static debugger_t debuggers[DEBUGGERS_MAX];
 
 debugger_t* debug_get(cpu_t* cpu);
 
-void debug_instruction(cpu_t* cpu, mmu_t* mmu, const char* asm, ...);
+void debug_instruction(cpu_t* cpu, mmu_t* mmu, const char* disasm, ...);
 
 #endif
