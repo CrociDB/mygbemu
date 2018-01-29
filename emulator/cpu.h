@@ -10,10 +10,10 @@
 #include "log.h"
 
 // Flag bits
-#define CPU_FLAG_ZERO_BIT    0x80
-#define CPU_FLAG_SUB_BIT     0x40
-#define CPU_FLAG_HC_BIT      0x20
-#define CPU_FLAG_CARRY_BIT   0x10
+#define CPU_FLAG_ZERO_BIT    7
+#define CPU_FLAG_SUB_BIT     6
+#define CPU_FLAG_HC_BIT      5
+#define CPU_FLAG_CARRY_BIT   4
 
 typedef enum _condition_e
 {
@@ -71,9 +71,6 @@ void cpu_reset(cpu_t* cpu);
 
 void cpu_tick(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_cb(cpu_t* cpu, mmu_t* mmu);
-
-inline void cpu_flag_set_bit(cpu_t* cpu, const uint8_t bit);
-inline void cpu_flag_unset_bit(cpu_t* cpu, const uint8_t bit);
 
 inline void cpu_flag_set_zero(cpu_t* cpu, const bool value);
 inline void cpu_flag_set_sub(cpu_t* cpu, const bool value);

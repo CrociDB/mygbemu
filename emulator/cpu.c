@@ -80,49 +80,36 @@ void _cpu_init_table_cb()
     optable_cb[0x7C] = (opfunc_t) { &cpu_op_cb_7c, 2, 8, 0 };
 }
 
-
-// Set the specified bit of the flag to one
-inline void cpu_flag_set_bit(cpu_t* cpu, const uint8_t bit)
-{
-    cpu->reg.af.lo |= bit;
-}
-
-// Set the specified bit of the flag to zero
-inline void cpu_flag_unset_bit(cpu_t* cpu, const uint8_t bit)
-{
-    cpu->reg.af.lo &= bit;
-}
-
 inline void cpu_flag_set_zero(cpu_t* cpu, const bool value)
 {
-    if (!value)
-        cpu_flag_unset_bit(cpu, CPU_FLAG_ZERO_BIT);
+    if (value)
+        util_set_bit(&cpu->reg.af.lo, CPU_FLAG_ZERO_BIT);
     else
-        cpu_flag_set_bit(cpu, CPU_FLAG_ZERO_BIT);
+        util_unset_bit(&cpu->reg.af.lo, CPU_FLAG_ZERO_BIT);
 }
 
 inline void cpu_flag_set_sub(cpu_t* cpu, const bool value)
 {
-    if (!value)
-        cpu_flag_unset_bit(cpu, CPU_FLAG_SUB_BIT);
+    if (value)
+        util_set_bit(&cpu->reg.af.lo, CPU_FLAG_SUB_BIT);
     else
-        cpu_flag_set_bit(cpu, CPU_FLAG_SUB_BIT);
+        util_unset_bit(&cpu->reg.af.lo, CPU_FLAG_SUB_BIT);
 }
 
 inline void cpu_flag_set_halfcarry(cpu_t* cpu, const bool value)
 {
-    if (!value)
-        cpu_flag_unset_bit(cpu, CPU_FLAG_HC_BIT);
+    if (value)
+        util_set_bit(&cpu->reg.af.lo, CPU_FLAG_HC_BIT);
     else
-        cpu_flag_set_bit(cpu, CPU_FLAG_HC_BIT);
+        util_unset_bit(&cpu->reg.af.lo, CPU_FLAG_HC_BIT);
 }
 
 inline void cpu_flag_set_carry(cpu_t* cpu, const bool value)
 {
-    if (!value)
-        cpu_flag_unset_bit(cpu, CPU_FLAG_CARRY_BIT);
+    if (value)
+        util_set_bit(&cpu->reg.af.lo, CPU_FLAG_CARRY_BIT);
     else
-        cpu_flag_set_bit(cpu, CPU_FLAG_CARRY_BIT);
+        util_unset_bit(&cpu->reg.af.lo, CPU_FLAG_CARRY_BIT);
 }
 
 inline bool cpu_flag(cpu_t* cpu, const uint8_t flag)
