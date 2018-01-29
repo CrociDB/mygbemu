@@ -1,4 +1,5 @@
 #include "cpu.h"
+#include "debug.h"
 
 cpu_t* cpu_create()
 {
@@ -159,7 +160,7 @@ int8_t cpu_int_jr(cpu_t* cpu, mmu_t* mmu, condition_e c)
         cpu->clock.t += 4;
     }
 
-    offset = 0;
+    return offset;
 }
 
 
@@ -167,19 +168,19 @@ int8_t cpu_int_jr(cpu_t* cpu, mmu_t* mmu, condition_e c)
 
 void cpu_op_00(cpu_t* cpu, mmu_t* mmu)
 {
-    log_cpu("NOP");
+    debug_instruction(cpu, mmu, "NOP");
 }
 
 void cpu_op_20(cpu_t * cpu, mmu_t * mmu)
 {
     int8_t offset = cpu_int_jr(cpu, mmu, CPU_CONDITION_NZ);
-    log_cpu("JR NZ, $%02X", offset);
+    debug_instruction(cpu, mmu, "JR NZ, $%2X", (uint8_t)offset);
 }
 
 void cpu_op_21(cpu_t * cpu, mmu_t * mmu)
 {
     uint16_t word = mmu_read_word(mmu, cpu->reg.pc.word);
-    log_cpu("LD HL, $%04X", word);
+    debug_instruction(cpu, mmu, "LD HL, $%04X", word);
 
     cpu->reg.hl.word = word;
 }
@@ -187,21 +188,21 @@ void cpu_op_21(cpu_t * cpu, mmu_t * mmu)
 void cpu_op_31(cpu_t* cpu, mmu_t* mmu)
 {
     uint16_t word = mmu_read_word(mmu, cpu->reg.pc.word);
-    log_cpu("LD S, $%04X", word);
+    debug_instruction(cpu, mmu, "LD S, $%04X", word);
 
     cpu->reg.sp.word = word;
 }
 
 void cpu_op_32(cpu_t* cpu, mmu_t* mmu)
 {
-    log_cpu("LD (HL-), A");
+    debug_instruction(cpu, mmu, "LD (HL-), A");
     mmu_write_byte(mmu, cpu->reg.hl.word, cpu->reg.af.hi);
     cpu->reg.hl.word--;
 }
 
-void cpu_op_af(cpu_t* cpu, mmu_t * mmu)
+void cpu_op_af(cpu_t* cpu, mmu_t* mmu)
 {
-    log_cpu("XOR A");
+    debug_instruction(cpu, mmu, "XOR A");
 
     cpu_flag_set_carry(cpu, false);
     cpu_flag_set_halfcarry(cpu, false);
@@ -214,8 +215,8 @@ void cpu_op_af(cpu_t* cpu, mmu_t * mmu)
 
 // CB OP Codes
 
-void cpu_op_cb_7c(cpu_t* cpu, mmu_t * mmu)
+void cpu_op_cb_7c(cpu_t* cpu, mmu_t* mmu)
 {
-    log_cpu("BIT 7, H");
+    debug_instruction(cpu, mmu, "BIT 7, H");
     cpu_ins_bit(cpu, 7, cpu->reg.hl.hi);
 }

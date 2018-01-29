@@ -36,6 +36,9 @@
     <ClCompile Include="..\..\emulator\util.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\emulator\debug.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\emulator\cartridge.h">
@@ -54,6 +57,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\emulator\util.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\emulator\debug.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
