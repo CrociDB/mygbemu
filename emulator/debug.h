@@ -17,6 +17,7 @@ typedef struct _debugger_t
 {
     bool assigned;
     cpu_t* cpu;
+    bool printall;
 } debugger_t;
 
 static debugger_t debuggers[DEBUGGERS_MAX];

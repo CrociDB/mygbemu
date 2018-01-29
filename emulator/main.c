@@ -2,6 +2,7 @@
 #include "log.h"
 #include "mmu.h"
 #include "cpu.h"
+#include "debug.h"
 #include "cartridge.h"
 
 void emu_run(cpu_t* cpu, mmu_t* mmu);
@@ -21,39 +22,14 @@ int main(int argc, const char* argv[])
     mmu_t* mmu = mmu_create();
     cpu_t* cpu = cpu_create();
 
-    //cartridge_t* rom = cartridge_load(argv[1]);
+    debugger_t* debugger = debug_get(cpu);
+    debugger->printall = false;
 
-    mmu_load_bios(mmu);
+    //cartridge_t* rom = cartridge_load(argv[1]);
+    //mmu_load_rom(mmu, rom);
     //cartridge_free(rom);
 
-    //uint8_t a = mmu_read_addr8(mmu, 0x0104);
-    //uint16_t b = mmu_read_addr16(mmu, 0x0104);
-
-    //uint8_t c = mmu_read_byte(mmu, 0x0104);
-    //uint16_t d = mmu_read_word(mmu, 0x0104);
-
-    //// Writing test
-
-    ////mmu_write_byte(mmu, 0xE56F, 0xF4);
-    //mmu_write_addr8(mmu, 0xE56F, 0xF4);
-
-    //uint8_t test = mmu_read_byte(mmu, 0xE56F);
-    //uint8_t test2 = mmu_read_addr8(mmu, 0xE56F);
-
-    //mmu_write_word(mmu, 0xFE62, 0x114A);
-    //mmu_write_addr16(mmu, 0xFE62, 0x114A);
-
-    //uint16_t test3 = mmu_read_word(mmu, 0xFE62);
-    //uint16_t test4 = mmu_read_addr16(mmu, 0xFE62);
-
-    // Testing memory after OAM
-
-    //mmu_write_byte(mmu, 0xFF00, 0xA2);
-    //mmu_write_addr16(mmu, 0xFE00, 0xFF);
-
-    //uint8_t m = mmu_read_byte(mmu, 0xFF00);
-    //uint8_t m2 = mmu_read_addr8(mmu, 0xFF00);
-
+    mmu_load_bios(mmu);
     cpu_reset(cpu);
 
     emu_run(cpu, mmu);

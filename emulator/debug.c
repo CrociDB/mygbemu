@@ -28,10 +28,13 @@ void debug_instruction(cpu_t* cpu, mmu_t* mmu, const char* disasm, ...)
 
     uint16_t pc_addr = (cpu->reg.pc.word - 1);
 
-    char buffer[0xFF];
-    va_list argptr;
-    va_start(argptr, disasm);
-    vsprintf(buffer, disasm, argptr);
-    log_cpu("0x%04X\t%s", pc_addr, buffer);
-    va_end(argptr);
+    if (debugger->printall)
+    {
+        char buffer[0xFF];
+        va_list argptr;
+        va_start(argptr, disasm);
+        vsprintf(buffer, disasm, argptr);
+        log_cpu("0x%04X\t%s", pc_addr, buffer);
+        va_end(argptr);
+    }
 }

@@ -16,11 +16,12 @@ void cpu_reset(cpu_t* cpu)
 
 void cpu_tick(cpu_t* cpu, mmu_t* mmu)
 {
+    if (cpu->reg.pc.word >= 0x8000) return;
+
     // Fetch instruction
     uint8_t op = mmu_read_byte(mmu, cpu->reg.pc.word);
 
     // Run instruction
-
     opfunc_t* opfunc = &optable[op];
     cpu->reg.pc.word++;
     if (!opfunc || !opfunc->func)
@@ -29,7 +30,6 @@ void cpu_tick(cpu_t* cpu, mmu_t* mmu)
         return;
     }
 
-    //(*opfunc)(cpu, mmu);
     (*opfunc->func)(cpu, mmu);
     cpu->clock.m = opfunc->m;
     cpu->clock.t = opfunc->t;
