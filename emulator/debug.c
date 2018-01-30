@@ -112,7 +112,7 @@ void debug_loop(debugger_t* debugger)
                 debugger->cpu->reg.bc.hi, debugger->cpu->reg.bc.lo, debugger->cpu->reg.bc.word,
                 debugger->cpu->reg.de.hi, debugger->cpu->reg.de.lo, debugger->cpu->reg.de.word,
                 debugger->cpu->reg.hl.hi, debugger->cpu->reg.hl.lo, debugger->cpu->reg.hl.word,
-                debugger->cpu->reg.sp.word, debugger->cpu->reg.pc.word);
+                debugger->cpu->reg.sp.word, (debugger->cpu->reg.pc.word - 0x01));
         }
         else
         {

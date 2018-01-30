@@ -25,8 +25,7 @@ int main(int argc, const char* argv[])
     debugger_t* debugger = debug_get(cpu);
     debugger->printall = false;
 
-    //debug_breakpoint_addr(cpu, 0x000c);
-    debug_breakpoint_asm(cpu, "LD HL, $FF26");
+    debug_breakpoint_addr(cpu, 0x000c);
 
     //cartridge_t* rom = cartridge_load(argv[1]);
     //mmu_load_rom(mmu, rom);
