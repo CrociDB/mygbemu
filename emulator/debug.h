@@ -14,7 +14,8 @@
 #include "mmu.h"
 #include "log.h"
 
-static const char* DEBUGGER_INSTRUCTIONS = "Usage:\n\tc - continue\n\ts - step\n";
+static const char* DEBUGGER_INSTRUCTIONS = "Usage:\n\tc - continue\n\ts - step\n\tr - display cpu registers\n"\
+                                           "\tq - quit\n";
 
 typedef enum _debug_breakpoint_type_e
 {

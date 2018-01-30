@@ -1,4 +1,5 @@
 #include "debug.h"
+#include "sys.h"
 
 debugger_t* debug_get(cpu_t* cpu)
 {
@@ -94,6 +95,25 @@ void debug_loop(debugger_t* debugger)
             debugger->stopnext = true;
             break;
         }
+        else if (!strcmp(cmd, "q"))
+        {
+            sys_error("Quit debugging.");
+            break;
+        }
+        else if (!strcmp(cmd, "r"))
+        {
+            printf("CPU REGISTERS\n"\
+                "\tA: %02x \tF: %02x \tAF: %04x\n"\
+                "\tC: %02x \tC: %02x \tBC: %04x\n"\
+                "\tD: %02x \tE: %02x \tDE: %04x\n"\
+                "\tH: %02x \tL: %02x \tHL: %04x\n"\
+                "\tSP: %04x \tPC: %04x\n",
+                debugger->cpu->reg.af.hi, debugger->cpu->reg.af.lo, debugger->cpu->reg.af.word,
+                debugger->cpu->reg.bc.hi, debugger->cpu->reg.bc.lo, debugger->cpu->reg.bc.word,
+                debugger->cpu->reg.de.hi, debugger->cpu->reg.de.lo, debugger->cpu->reg.de.word,
+                debugger->cpu->reg.hl.hi, debugger->cpu->reg.hl.lo, debugger->cpu->reg.hl.word,
+                debugger->cpu->reg.sp.word, debugger->cpu->reg.pc.word);
+        }
         else
         {
             printf("Unknown command.\n%s", DEBUGGER_INSTRUCTIONS);
@@ -122,7 +142,7 @@ void debug_instruction(cpu_t* cpu, mmu_t* mmu, const char* disasm, ...)
     if (isbreak)
     {
         debugger->stopnext = false;
-        printf("BREAKPOINT AT 0x%04X\n", pc_addr);
+        printf("\nBREAKPOINT AT 0x%04X\n", pc_addr);
         debug_loop(debugger);
     }
     
