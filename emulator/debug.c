@@ -37,7 +37,7 @@ void debug_breakpoint_asm(cpu_t* cpu, const char* disasm)
     debugger_t* debugger = debug_get(cpu);
     debug_breakpoint_t* bp = (debug_breakpoint_t*)malloc(sizeof(debug_breakpoint_t));
     bp->type = DEBUG_BREAKPOINT_ASM;
-    uint8_t size = strlen(disasm);
+    uint8_t size = (uint8_t)strlen(disasm);
     bp->asmline = (char*)malloc(size);
     strcpy(bp->asmline, disasm);
     bp->next = NULL;
@@ -77,6 +77,30 @@ bool _debug_isbreak(debugger_t* debugger, uint16_t addr, char* asmline)
     return false;
 }
 
+void debug_loop(debugger_t* debugger)
+{
+    while (1)
+    {
+        char cmd[50];
+        printf("DBG > ");
+        scanf("%s", cmd);
+
+        if (!strcmp(cmd, "c"))
+        {
+            break;
+        }
+        else if (!strcmp(cmd, "s"))
+        {
+            debugger->stopnext = true;
+            break;
+        }
+        else
+        {
+            printf("Unknown command.\n%s", DEBUGGER_INSTRUCTIONS);
+        }
+    }
+}
+
 void debug_instruction(cpu_t* cpu, mmu_t* mmu, const char* disasm, ...)
 {
     debugger_t* debugger = debug_get(cpu);
@@ -88,7 +112,7 @@ void debug_instruction(cpu_t* cpu, mmu_t* mmu, const char* disasm, ...)
     vsprintf(buffer, disasm, argptr);
 
     uint16_t pc_addr = (cpu->reg.pc.word - 1);
-    bool isbreak = _debug_isbreak(debugger, pc_addr, buffer);
+    bool isbreak = _debug_isbreak(debugger, pc_addr, buffer) || debugger->stopnext;
 
     if (debugger->printall || isbreak)
     {
@@ -97,7 +121,9 @@ void debug_instruction(cpu_t* cpu, mmu_t* mmu, const char* disasm, ...)
 
     if (isbreak)
     {
-        int a = 0; // ADD A FREAKING BREAKPOINT HERE
+        debugger->stopnext = false;
+        printf("BREAKPOINT AT 0x%04X\n", pc_addr);
+        debug_loop(debugger);
     }
     
     va_end(argptr);

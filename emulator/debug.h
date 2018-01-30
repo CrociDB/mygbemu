@@ -14,6 +14,8 @@
 #include "mmu.h"
 #include "log.h"
 
+static const char* DEBUGGER_INSTRUCTIONS = "Usage:\n\tc - continue\n\ts - step\n";
+
 typedef enum _debug_breakpoint_type_e
 {
     DEBUG_BREAKPOINT_ADDR,
@@ -38,6 +40,7 @@ typedef struct _debugger_t
     bool assigned;
     cpu_t* cpu;
     bool printall;
+    bool stopnext;
     debug_breakpoint_t* breakpoints;
 } debugger_t;
 
@@ -51,5 +54,7 @@ static void _debug_breakpoint(debugger_t* debugger, debug_breakpoint_t* breakpoi
 static bool _debug_isbreak(debugger_t* debugger, uint16_t addr, char* asmline);
 
 void debug_instruction(cpu_t* cpu, mmu_t* mmu, const char* disasm, ...);
+
+void debug_loop(debugger_t* debugger);
 
 #endif
