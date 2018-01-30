@@ -79,6 +79,9 @@ void cpu_init_table()
     optable[0x77] = (opfunc_t) { &cpu_op_77, 1, 8, 0 };
 
     optable[0xAF] = (opfunc_t) { &cpu_op_af, 1, 4, 0 };
+    
+    optable[0xCD] = (opfunc_t) { &cpu_op_cd, 3, 24, 0 };
+
     optable[0xE0] = (opfunc_t) { &cpu_op_e0, 2, 12, 1 };
     optable[0xE2] = (opfunc_t) { &cpu_op_e2, 2, 8, 0 };
 
@@ -263,6 +266,16 @@ void cpu_op_af(cpu_t* cpu, mmu_t* mmu)
     cpu->reg.af.hi ^= cpu->reg.af.hi;
 
     cpu_flag_set_zero(cpu, !cpu->reg.af.hi);
+}
+
+void cpu_op_cd(cpu_t* cpu, mmu_t * mmu)
+{
+    uint16_t addr = mmu_read_word(mmu, cpu->reg.pc.word);
+    debug_instruction(cpu, mmu, "CALL $%04x", addr);
+
+    cpu->reg.sp.word -= 2;
+    mmu_write_word(mmu, cpu->reg.sp.word, cpu->reg.pc.word + 2);
+    cpu->reg.pc.word = addr;
 }
 
 void cpu_op_e0(cpu_t* cpu, mmu_t* mmu)
