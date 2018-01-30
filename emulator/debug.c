@@ -104,7 +104,7 @@ void debug_loop(debugger_t* debugger)
         {
             printf("CPU REGISTERS\n"\
                 "\tA: %02x \tF: %02x \tAF: %04x\n"\
-                "\tC: %02x \tC: %02x \tBC: %04x\n"\
+                "\tB: %02x \tC: %02x \tBC: %04x\n"\
                 "\tD: %02x \tE: %02x \tDE: %04x\n"\
                 "\tH: %02x \tL: %02x \tHL: %04x\n"\
                 "\tSP: %04x \tPC: %04x\n",
