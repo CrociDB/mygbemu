@@ -90,6 +90,7 @@ int8_t cpu_int_jr(cpu_t* cpu, mmu_t* mmu, condition_e c);
 
 void cpu_op_00(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_0c(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_06(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_0e(cpu_t* cpu, mmu_t* mmu);
 
 void cpu_op_11(cpu_t* cpu, mmu_t* mmu);
@@ -101,6 +102,8 @@ void cpu_op_21(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_31(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_32(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_3e(cpu_t* cpu, mmu_t* mmu);
+
+void cpu_op_4f(cpu_t* cpu, mmu_t* mmu);
 
 void cpu_op_77(cpu_t* cpu, mmu_t* mmu);
 
