@@ -26,7 +26,7 @@ void cpu_tick(cpu_t* cpu, mmu_t* mmu)
     cpu->reg.pc.word++;
     if (!opfunc || !opfunc->func)
     {
-        log_error("Op '%02X' does not exist", op);
+        log_error("Op '%02X' at 0x%04x does not exist", op, (cpu->reg.pc.word - 1));
         return;
     }
 
@@ -188,7 +188,7 @@ void cpu_op_21(cpu_t * cpu, mmu_t * mmu)
 void cpu_op_31(cpu_t* cpu, mmu_t* mmu)
 {
     uint16_t word = mmu_read_word(mmu, cpu->reg.pc.word);
-    debug_instruction(cpu, mmu, "LD S, $%04X", word);
+    debug_instruction(cpu, mmu, "LD SP, $%04X", word);
 
     cpu->reg.sp.word = word;
 }
