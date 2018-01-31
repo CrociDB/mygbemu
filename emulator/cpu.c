@@ -65,29 +65,41 @@ void cpu_init_table()
     optable[0x00] = (opfunc_t) { &cpu_op_00, 1, 4, 0 };
     optable[0x03] = (opfunc_t) { &cpu_op_03, 1, 8, 0 };
     optable[0x04] = (opfunc_t) { &cpu_op_04, 1, 4, 0 };
+    optable[0x05] = (opfunc_t) { &cpu_op_05, 1, 4, 0 };
+    optable[0x08] = (opfunc_t) { &cpu_op_08, 1, 8, 0 };
     optable[0x0C] = (opfunc_t) { &cpu_op_0c, 1, 4, 0 };
     optable[0x06] = (opfunc_t) { &cpu_op_06, 2, 8, 1 };
+    optable[0x0D] = (opfunc_t) { &cpu_op_0d, 1, 4, 0 };
     optable[0x0E] = (opfunc_t) { &cpu_op_0e, 2, 8, 1 };
 
     optable[0x11] = (opfunc_t) { &cpu_op_11, 3, 12, 2 };
     optable[0x13] = (opfunc_t) { &cpu_op_13, 1, 8, 0 };
     optable[0x14] = (opfunc_t) { &cpu_op_14, 1, 4, 0 };
+    optable[0x15] = (opfunc_t) { &cpu_op_15, 1, 4, 0 };
     optable[0x17] = (opfunc_t) { &cpu_op_17, 1, 4, 0 };
+    optable[0x18] = (opfunc_t) { &cpu_op_18, 1, 8, 0 };
     optable[0x1A] = (opfunc_t) { &cpu_op_1a, 1, 8, 0 };
     optable[0x1C] = (opfunc_t) { &cpu_op_1c, 1, 4, 0 };
+    optable[0x1D] = (opfunc_t) { &cpu_op_1d, 1, 4, 0 };
 
     optable[0x20] = (opfunc_t) { &cpu_op_20, 2, 8, 1 };
     optable[0x21] = (opfunc_t) { &cpu_op_21, 3, 12, 2 };
     optable[0x23] = (opfunc_t) { &cpu_op_23, 1, 8, 0 };
     optable[0x24] = (opfunc_t) { &cpu_op_24, 1, 4, 0 };
+    optable[0x25] = (opfunc_t) { &cpu_op_25, 1, 4, 0 };
+    optable[0x28] = (opfunc_t) { &cpu_op_28, 1, 8, 0 };
     optable[0x2C] = (opfunc_t) { &cpu_op_2c, 1, 4, 0 };
+    optable[0x2D] = (opfunc_t) { &cpu_op_2d, 1, 4, 0 };
 
     optable[0x31] = (opfunc_t) { &cpu_op_31, 3, 13, 2 };
     optable[0x32] = (opfunc_t) { &cpu_op_32 , 1, 8, 0 };
     optable[0x33] = (opfunc_t) { &cpu_op_33, 1, 8, 0 };
     optable[0x34] = (opfunc_t) { &cpu_op_34, 1, 12, 0 };
-    optable[0x3E] = (opfunc_t) { &cpu_op_3e, 2, 8, 1 };
+    optable[0x35] = (opfunc_t) { &cpu_op_35, 1, 12, 0 };
+    optable[0x38] = (opfunc_t) { &cpu_op_38, 1, 8, 0 };
     optable[0x3C] = (opfunc_t) { &cpu_op_3c, 1, 4, 0 };
+    optable[0x3D] = (opfunc_t) { &cpu_op_3d, 1, 4, 0 };
+    optable[0x3E] = (opfunc_t) { &cpu_op_3e, 2, 8, 1 };
 
     optable[0x4F] = (opfunc_t) { &cpu_op_4f, 1, 4, 0 };
 
@@ -243,6 +255,14 @@ void cpu_ins_inc8(cpu_t* cpu, uint8_t* reg)
     cpu_flag_set_zero(cpu, ((*reg) == 0));
 }
 
+void cpu_ins_dec8(cpu_t * cpu, uint8_t * reg)
+{
+    cpu_flag_set_sub(cpu, false);
+    cpu_flag_set_halfcarry(cpu, !(((*reg) & 0xF) == 0xF));
+    (*reg)--;
+    cpu_flag_set_zero(cpu, !((*reg) == 0));
+}
+
 int8_t cpu_int_jr(cpu_t* cpu, mmu_t* mmu, condition_e c)
 {
     int8_t offset = 0;
@@ -277,6 +297,12 @@ void cpu_op_04(cpu_t * cpu, mmu_t * mmu)
     cpu_ins_inc8(cpu, &cpu->reg.bc.hi);
 }
 
+void cpu_op_05(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "DEC B");
+    cpu_ins_dec8(cpu, &cpu->reg.bc.hi);
+}
+
 void cpu_op_0c(cpu_t * cpu, mmu_t * mmu)
 {
     debug_instruction(cpu, mmu, "INC C");
@@ -291,12 +317,24 @@ void cpu_op_06(cpu_t * cpu, mmu_t * mmu)
     cpu->reg.bc.hi = byte;
 }
 
+void cpu_op_08(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "DEC BC");
+    cpu->reg.bc.word--;
+}
+
 void cpu_op_0e(cpu_t * cpu, mmu_t * mmu)
 {
     uint8_t byte = mmu_read_byte(mmu, cpu->reg.pc.word);
     debug_instruction(cpu, mmu, "LD C, $%02X", byte);
 
     cpu->reg.bc.lo = byte;
+}
+
+void cpu_op_0d(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "DEC C");
+    cpu_ins_dec8(cpu, &cpu->reg.bc.lo);
 }
 
 void cpu_op_11(cpu_t* cpu, mmu_t* mmu)
@@ -319,11 +357,23 @@ void cpu_op_14(cpu_t * cpu, mmu_t * mmu)
     cpu_ins_inc8(cpu, &cpu->reg.de.hi);
 }
 
+void cpu_op_15(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "DEC D");
+    cpu_ins_dec8(cpu, &cpu->reg.de.hi);
+}
+
 void cpu_op_17(cpu_t * cpu, mmu_t * mmu)
 {
     debug_instruction(cpu, mmu, "RLA");
     cpu_ins_rl(cpu, &cpu->reg.af.hi);
     cpu_flag_set_zero(cpu, false);
+}
+
+void cpu_op_18(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "DEC DE");
+    cpu->reg.de.word--;
 }
 
 void cpu_op_1a(cpu_t * cpu, mmu_t * mmu)
@@ -336,6 +386,12 @@ void cpu_op_1c(cpu_t * cpu, mmu_t * mmu)
 {
     debug_instruction(cpu, mmu, "INC E");
     cpu_ins_inc8(cpu, &cpu->reg.de.lo);
+}
+
+void cpu_op_1d(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "DEC E");
+    cpu_ins_dec8(cpu, &cpu->reg.de.lo);
 }
 
 void cpu_op_20(cpu_t* cpu, mmu_t* mmu)
@@ -364,10 +420,28 @@ void cpu_op_24(cpu_t * cpu, mmu_t * mmu)
     cpu_ins_inc8(cpu, &cpu->reg.hl.hi);
 }
 
+void cpu_op_25(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "DEC H");
+    cpu_ins_dec8(cpu, &cpu->reg.hl.hi);
+}
+
+void cpu_op_28(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "DEC HL");
+    cpu->reg.hl.word--;
+}
+
 void cpu_op_2c(cpu_t * cpu, mmu_t * mmu)
 {
     debug_instruction(cpu, mmu, "INC L");
     cpu_ins_inc8(cpu, &cpu->reg.hl.lo);
+}
+
+void cpu_op_2d(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "DEC L");
+    cpu_ins_dec8(cpu, &cpu->reg.hl.lo);
 }
 
 void cpu_op_31(cpu_t* cpu, mmu_t* mmu)
@@ -399,6 +473,20 @@ void cpu_op_34(cpu_t * cpu, mmu_t * mmu)
     mmu_write_byte(mmu, cpu->reg.hl.word, v);
 }
 
+void cpu_op_35(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "DEC (HL)");
+    uint8_t v = mmu_read_byte(mmu, cpu->reg.hl.word);
+    cpu_ins_dec8(cpu, &v);
+    mmu_write_byte(mmu, cpu->reg.hl.word, v);
+}
+
+void cpu_op_38(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "DEC SP");
+    cpu->reg.sp.word--;
+}
+
 void cpu_op_3e(cpu_t * cpu, mmu_t * mmu)
 {
     uint8_t byte = mmu_read_byte(mmu, cpu->reg.pc.word);
@@ -411,6 +499,12 @@ void cpu_op_3c(cpu_t * cpu, mmu_t * mmu)
 {
     debug_instruction(cpu, mmu, "INC A");
     cpu_ins_inc8(cpu, &cpu->reg.af.hi);
+}
+
+void cpu_op_3d(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "DEC A");
+    cpu_ins_dec8(cpu, &cpu->reg.af.hi);
 }
 
 void cpu_op_4f(cpu_t * cpu, mmu_t * mmu)
