@@ -83,15 +83,19 @@ void cpu_init_table()
 
     optable[0xAF] = (opfunc_t) { &cpu_op_af, 1, 4, 0 };
     
+    optable[0xC1] = (opfunc_t) { &cpu_op_c1, 1, 12, 0 };
     optable[0xC5] = (opfunc_t) { &cpu_op_c5, 1, 16, 0 };
     optable[0xCD] = (opfunc_t) { &cpu_op_cd, 3, 24, 0 };
 
+    optable[0xD1] = (opfunc_t) { &cpu_op_d1, 1, 12, 0 };
     optable[0xD5] = (opfunc_t) { &cpu_op_d5, 1, 16, 0 };
 
     optable[0xE0] = (opfunc_t) { &cpu_op_e0, 2, 12, 1 };
+    optable[0xE1] = (opfunc_t) { &cpu_op_e1, 1, 12, 0 };
     optable[0xE2] = (opfunc_t) { &cpu_op_e2, 2, 8, 0 };
     optable[0xE5] = (opfunc_t) { &cpu_op_e5, 1, 16, 0 };
 
+    optable[0xF1] = (opfunc_t) { &cpu_op_f1, 1, 12, 0 };
     optable[0xF5] = (opfunc_t) { &cpu_op_f5, 1, 16, 0 };
 
     _cpu_init_table_cb();
@@ -291,10 +295,17 @@ void cpu_op_af(cpu_t* cpu, mmu_t* mmu)
     cpu_flag_set_zero(cpu, !cpu->reg.af.hi);
 }
 
+void cpu_op_c1(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "POP BC");
+    cpu->reg.bc.word = mmu_read_word(mmu, cpu->reg.sp.word);
+    cpu->reg.sp.word += 2;
+}
+
 void cpu_op_c5(cpu_t * cpu, mmu_t * mmu)
 {
     debug_instruction(cpu, mmu, "PUSH BC");
-    cpu->reg.sp.word--;
+    cpu->reg.sp.word -= 2;
     mmu_write_word(mmu, cpu->reg.sp.word, cpu->reg.bc.word);
 }
 
@@ -308,10 +319,17 @@ void cpu_op_cd(cpu_t* cpu, mmu_t * mmu)
     cpu->reg.pc.word = addr;
 }
 
+void cpu_op_d1(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "POP DE");
+    cpu->reg.de.word = mmu_read_word(mmu, cpu->reg.sp.word);
+    cpu->reg.sp.word += 2;
+}
+
 void cpu_op_d5(cpu_t * cpu, mmu_t * mmu)
 {
     debug_instruction(cpu, mmu, "PUSH DE");
-    cpu->reg.sp.word--;
+    cpu->reg.sp.word -= 2;
     mmu_write_word(mmu, cpu->reg.sp.word, cpu->reg.de.word);
 }
 
@@ -324,6 +342,13 @@ void cpu_op_e0(cpu_t* cpu, mmu_t* mmu)
     mmu_write_byte(mmu, addr, cpu->reg.af.hi);
 }
 
+void cpu_op_e1(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "POP HL");
+    cpu->reg.hl.word = mmu_read_word(mmu, cpu->reg.sp.word);
+    cpu->reg.sp.word += 2;
+}
+
 void cpu_op_e2(cpu_t* cpu, mmu_t* mmu)
 {
     debug_instruction(cpu, mmu, "LD ($FF00+C), A");
@@ -334,14 +359,21 @@ void cpu_op_e2(cpu_t* cpu, mmu_t* mmu)
 void cpu_op_e5(cpu_t * cpu, mmu_t * mmu)
 {
     debug_instruction(cpu, mmu, "PUSH HL");
-    cpu->reg.sp.word--;
+    cpu->reg.sp.word -= 2;
     mmu_write_word(mmu, cpu->reg.sp.word, cpu->reg.hl.word);
+}
+
+void cpu_op_f1(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "POP AF");
+    cpu->reg.af.word = mmu_read_word(mmu, cpu->reg.sp.word);
+    cpu->reg.sp.word += 2;
 }
 
 void cpu_op_f5(cpu_t * cpu, mmu_t * mmu)
 {
     debug_instruction(cpu, mmu, "PUSH AF");
-    cpu->reg.sp.word--;
+    cpu->reg.sp.word -= 2;
     mmu_write_word(mmu, cpu->reg.sp.word, cpu->reg.af.word);
 }
 
