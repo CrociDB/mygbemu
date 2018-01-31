@@ -97,6 +97,7 @@ void cpu_op_06(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_0e(cpu_t* cpu, mmu_t* mmu);
 
 void cpu_op_11(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_17(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_1a(cpu_t* cpu, mmu_t* mmu);
 
 void cpu_op_20(cpu_t* cpu, mmu_t* mmu);

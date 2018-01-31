@@ -68,6 +68,7 @@ void cpu_init_table()
     optable[0x0e] = (opfunc_t) { &cpu_op_0e, 2, 8, 1 };
 
     optable[0x11] = (opfunc_t) { &cpu_op_11, 3, 12, 2 };
+    optable[0x17] = (opfunc_t) { &cpu_op_17, 1, 4, 0 };
     optable[0x1a] = (opfunc_t) { &cpu_op_1a, 1, 8, 0 };
 
     optable[0x20] = (opfunc_t) { &cpu_op_20, 2, 8, 1 };
@@ -273,6 +274,13 @@ void cpu_op_11(cpu_t* cpu, mmu_t* mmu)
     debug_instruction(cpu, mmu, "LD DE, $%04x", word);
 
     cpu->reg.de.word = word;
+}
+
+void cpu_op_17(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RLA");
+    cpu_ins_rl(cpu, &cpu->reg.af.hi);
+    cpu_flag_set_zero(cpu, false);
 }
 
 void cpu_op_1a(cpu_t * cpu, mmu_t * mmu)
