@@ -113,6 +113,15 @@ void _cpu_init_table_cb()
     optable_cb[0x16] = (opfunc_t) { &cpu_op_cb_16, 2, 16, 0 };
     optable_cb[0x17] = (opfunc_t) { &cpu_op_cb_17, 2, 8, 0 };
 
+    optable_cb[0x18] = (opfunc_t) { &cpu_op_cb_18, 2, 8, 0 };
+    optable_cb[0x19] = (opfunc_t) { &cpu_op_cb_19, 2, 8, 0 };
+    optable_cb[0x1A] = (opfunc_t) { &cpu_op_cb_1a, 2, 8, 0 };
+    optable_cb[0x1B] = (opfunc_t) { &cpu_op_cb_1b, 2, 8, 0 };
+    optable_cb[0x1C] = (opfunc_t) { &cpu_op_cb_1c, 2, 8, 0 };
+    optable_cb[0x1D] = (opfunc_t) { &cpu_op_cb_1d, 2, 8, 0 };
+    optable_cb[0x1E] = (opfunc_t) { &cpu_op_cb_1e, 2, 16, 0 };
+    optable_cb[0x1F] = (opfunc_t) { &cpu_op_cb_1f, 2, 8, 0 };
+
     optable_cb[0x7C] = (opfunc_t) { &cpu_op_cb_7c, 2, 8, 0 };
 }
 
@@ -191,6 +200,21 @@ void cpu_ins_rl(cpu_t* cpu, uint8_t* reg)
     cpu_flag_set_carry(cpu, util_check_bit((*reg), 7));
 
     uint8_t res = ((*reg) << 1) | carry;
+    cpu_flag_set_zero(cpu, res == 0);
+
+    (*reg) = res;
+
+    cpu_flag_set_sub(cpu, false);
+    cpu_flag_set_halfcarry(cpu, false);
+}
+
+void cpu_ins_rr(cpu_t* cpu, uint8_t* reg)
+{
+    uint8_t carry = cpu_flag(cpu, CPU_FLAG_CARRY_BIT);
+
+    cpu_flag_set_carry(cpu, util_check_bit((*reg), 0));
+
+    uint8_t res = ((*reg) >> 1) | (carry << 7);
     cpu_flag_set_zero(cpu, res == 0);
 
     (*reg) = res;
@@ -451,6 +475,56 @@ void cpu_op_cb_17(cpu_t * cpu, mmu_t * mmu)
 {
     debug_instruction(cpu, mmu, "RL A");
     cpu_ins_rl(cpu, &cpu->reg.af.hi);
+}
+
+void cpu_op_cb_18(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RR B");
+    cpu_ins_rr(cpu, &cpu->reg.bc.hi);
+}
+
+void cpu_op_cb_19(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RR C");
+    cpu_ins_rr(cpu, &cpu->reg.bc.lo);
+}
+
+void cpu_op_cb_1a(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RR D");
+    cpu_ins_rr(cpu, &cpu->reg.de.hi);
+}
+
+void cpu_op_cb_1b(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RR E");
+    cpu_ins_rr(cpu, &cpu->reg.de.lo);
+}
+
+void cpu_op_cb_1c(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RR H");
+    cpu_ins_rr(cpu, &cpu->reg.hl.hi);
+}
+
+void cpu_op_cb_1d(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RR L");
+    cpu_ins_rr(cpu, &cpu->reg.hl.lo);
+}
+
+void cpu_op_cb_1e(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RR (HL)");
+    uint8_t v = mmu_read_byte(mmu, cpu->reg.hl.word);
+    cpu_ins_rr(cpu, &v);
+    mmu_write_byte(mmu, cpu->reg.hl.word, v);
+}
+
+void cpu_op_cb_1f(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RR A");
+    cpu_ins_rr(cpu, &cpu->reg.af.hi);
 }
 
 void cpu_op_cb_7c(cpu_t* cpu, mmu_t* mmu)

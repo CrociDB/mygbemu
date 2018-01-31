@@ -85,6 +85,8 @@ inline bool cpu_check_condition(cpu_t* cpu, condition_e condition);
 
 void cpu_ins_bit(cpu_t* cpu, uint8_t bit, uint8_t bytereg);
 void cpu_ins_rl(cpu_t* cpu, uint8_t* reg);
+void cpu_ins_rr(cpu_t* cpu, uint8_t* reg);
+
 int8_t cpu_int_jr(cpu_t* cpu, mmu_t* mmu, condition_e c);
 
 // OPs
@@ -135,6 +137,15 @@ void cpu_op_cb_14(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_cb_15(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_cb_16(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_cb_17(cpu_t* cpu, mmu_t* mmu);
+
+void cpu_op_cb_18(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_cb_19(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_cb_1a(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_cb_1b(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_cb_1c(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_cb_1d(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_cb_1e(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_cb_1f(cpu_t* cpu, mmu_t* mmu);
 
 void cpu_op_cb_7c(cpu_t* cpu, mmu_t* mmu);
 
