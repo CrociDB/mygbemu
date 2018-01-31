@@ -112,6 +112,7 @@ void cpu_init_table()
     
     optable[0xC1] = (opfunc_t) { &cpu_op_c1, 1, 12, 0 };
     optable[0xC5] = (opfunc_t) { &cpu_op_c5, 1, 16, 0 };
+    optable[0xC9] = (opfunc_t) { &cpu_op_c9, 1, 16, 0 };
     optable[0xCD] = (opfunc_t) { &cpu_op_cd, 3, 24, 0 };
 
     optable[0xD1] = (opfunc_t) { &cpu_op_d1, 1, 12, 0 };
@@ -264,6 +265,20 @@ void cpu_ins_dec8(cpu_t * cpu, uint8_t * reg)
     cpu_flag_set_halfcarry(cpu, !(((*reg) & 0xF) == 0xF));
     (*reg)--;
     cpu_flag_set_zero(cpu, ((*reg) == 0));
+}
+
+void cpu_ins_call(cpu_t * cpu, mmu_t * mmu, uint16_t addr)
+{
+    cpu->reg.sp.word -= 2;
+    mmu_write_word(mmu, cpu->reg.sp.word, cpu->reg.pc.word + 2);
+    cpu->reg.pc.word = addr;
+}
+
+void cpu_ins_ret(cpu_t * cpu, mmu_t * mmu)
+{
+    uint16_t addr = mmu_read_word(mmu, cpu->reg.sp.word);
+    cpu->reg.sp.word += 2;
+    cpu->reg.pc.word = addr;
 }
 
 void cpu_int_jr(cpu_t* cpu, int8_t offset, condition_e c)
@@ -564,14 +579,18 @@ void cpu_op_c5(cpu_t * cpu, mmu_t * mmu)
     mmu_write_word(mmu, cpu->reg.sp.word, cpu->reg.bc.word);
 }
 
+void cpu_op_c9(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RET");
+    cpu_ins_ret(cpu, mmu);
+}
+
 void cpu_op_cd(cpu_t* cpu, mmu_t * mmu)
 {
     uint16_t addr = mmu_read_word(mmu, cpu->reg.pc.word);
     debug_instruction(cpu, mmu, "CALL $%04x", addr);
 
-    cpu->reg.sp.word -= 2;
-    mmu_write_word(mmu, cpu->reg.sp.word, cpu->reg.pc.word + 2);
-    cpu->reg.pc.word = addr;
+    cpu_ins_call(cpu, mmu, addr);
 }
 
 void cpu_op_d1(cpu_t * cpu, mmu_t * mmu)
