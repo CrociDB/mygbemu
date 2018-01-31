@@ -83,10 +83,16 @@ void cpu_init_table()
 
     optable[0xAF] = (opfunc_t) { &cpu_op_af, 1, 4, 0 };
     
+    optable[0xC5] = (opfunc_t) { &cpu_op_c5, 1, 16, 0 };
     optable[0xCD] = (opfunc_t) { &cpu_op_cd, 3, 24, 0 };
+
+    optable[0xD5] = (opfunc_t) { &cpu_op_d5, 1, 16, 0 };
 
     optable[0xE0] = (opfunc_t) { &cpu_op_e0, 2, 12, 1 };
     optable[0xE2] = (opfunc_t) { &cpu_op_e2, 2, 8, 0 };
+    optable[0xE5] = (opfunc_t) { &cpu_op_e5, 1, 16, 0 };
+
+    optable[0xF5] = (opfunc_t) { &cpu_op_f5, 1, 16, 0 };
 
     _cpu_init_table_cb();
     optable[0xCB] = (opfunc_t) { &cpu_op_cb, 0, 0, 0 };
@@ -285,6 +291,13 @@ void cpu_op_af(cpu_t* cpu, mmu_t* mmu)
     cpu_flag_set_zero(cpu, !cpu->reg.af.hi);
 }
 
+void cpu_op_c5(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "PUSH BC");
+    cpu->reg.sp.word--;
+    mmu_write_word(mmu, cpu->reg.sp.word, cpu->reg.bc.word);
+}
+
 void cpu_op_cd(cpu_t* cpu, mmu_t * mmu)
 {
     uint16_t addr = mmu_read_word(mmu, cpu->reg.pc.word);
@@ -293,6 +306,13 @@ void cpu_op_cd(cpu_t* cpu, mmu_t * mmu)
     cpu->reg.sp.word -= 2;
     mmu_write_word(mmu, cpu->reg.sp.word, cpu->reg.pc.word + 2);
     cpu->reg.pc.word = addr;
+}
+
+void cpu_op_d5(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "PUSH DE");
+    cpu->reg.sp.word--;
+    mmu_write_word(mmu, cpu->reg.sp.word, cpu->reg.de.word);
 }
 
 void cpu_op_e0(cpu_t* cpu, mmu_t* mmu)
@@ -309,6 +329,20 @@ void cpu_op_e2(cpu_t* cpu, mmu_t* mmu)
     debug_instruction(cpu, mmu, "LD ($FF00+C), A");
     uint16_t addr = 0xFF00 + cpu->reg.bc.lo;
     mmu_write_byte(mmu, addr, cpu->reg.af.hi);
+}
+
+void cpu_op_e5(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "PUSH HL");
+    cpu->reg.sp.word--;
+    mmu_write_word(mmu, cpu->reg.sp.word, cpu->reg.hl.word);
+}
+
+void cpu_op_f5(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "PUSH AF");
+    cpu->reg.sp.word--;
+    mmu_write_word(mmu, cpu->reg.sp.word, cpu->reg.af.word);
 }
 
 // CB OP Codes
