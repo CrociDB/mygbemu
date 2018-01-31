@@ -63,6 +63,7 @@ void cpu_init_table()
     log_message("Initializing CPU OP Table");
 
     optable[0x00] = (opfunc_t) { &cpu_op_00, 1, 4, 0 };
+    optable[0x02] = (opfunc_t) { &cpu_op_02, 1, 8, 0 };
     optable[0x03] = (opfunc_t) { &cpu_op_03, 1, 8, 0 };
     optable[0x04] = (opfunc_t) { &cpu_op_04, 1, 4, 0 };
     optable[0x05] = (opfunc_t) { &cpu_op_05, 1, 4, 0 };
@@ -73,6 +74,7 @@ void cpu_init_table()
     optable[0x0E] = (opfunc_t) { &cpu_op_0e, 2, 8, 1 };
 
     optable[0x11] = (opfunc_t) { &cpu_op_11, 3, 12, 2 };
+    optable[0x12] = (opfunc_t) { &cpu_op_12, 1, 8, 0 };
     optable[0x13] = (opfunc_t) { &cpu_op_13, 1, 8, 0 };
     optable[0x14] = (opfunc_t) { &cpu_op_14, 1, 4, 0 };
     optable[0x15] = (opfunc_t) { &cpu_op_15, 1, 4, 0 };
@@ -84,6 +86,7 @@ void cpu_init_table()
 
     optable[0x20] = (opfunc_t) { &cpu_op_20, 2, 8, 1 };
     optable[0x21] = (opfunc_t) { &cpu_op_21, 3, 12, 2 };
+    optable[0x22] = (opfunc_t) { &cpu_op_22, 1, 8, 0 };
     optable[0x23] = (opfunc_t) { &cpu_op_23, 1, 8, 0 };
     optable[0x24] = (opfunc_t) { &cpu_op_24, 1, 4, 0 };
     optable[0x25] = (opfunc_t) { &cpu_op_25, 1, 4, 0 };
@@ -280,6 +283,12 @@ void cpu_op_00(cpu_t* cpu, mmu_t* mmu)
     debug_instruction(cpu, mmu, "NOP");
 }
 
+void cpu_op_02(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD (BC), A");
+    mmu_write_byte(mmu, cpu->reg.bc.word, cpu->reg.af.hi);
+}
+
 void cpu_op_03(cpu_t * cpu, mmu_t * mmu)
 {
     debug_instruction(cpu, mmu, "INC BC");
@@ -338,6 +347,12 @@ void cpu_op_11(cpu_t* cpu, mmu_t* mmu)
     debug_instruction(cpu, mmu, "LD DE, $%04x", word);
 
     cpu->reg.de.word = word;
+}
+
+void cpu_op_12(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD (DE), A");
+    mmu_write_byte(mmu, cpu->reg.de.word, cpu->reg.af.hi);
 }
 
 void cpu_op_13(cpu_t * cpu, mmu_t * mmu)
@@ -402,6 +417,13 @@ void cpu_op_21(cpu_t* cpu, mmu_t* mmu)
     debug_instruction(cpu, mmu, "LD HL, $%04X", word);
 
     cpu->reg.hl.word = word;
+}
+
+void cpu_op_22(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD (HL+), A");
+    mmu_write_byte(mmu, cpu->reg.hl.word, cpu->reg.af.hi);
+    cpu->reg.hl.word++;
 }
 
 void cpu_op_23(cpu_t * cpu, mmu_t * mmu)

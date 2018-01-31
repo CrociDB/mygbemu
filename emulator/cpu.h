@@ -94,6 +94,7 @@ void cpu_int_jr(cpu_t* cpu, int8_t offset, condition_e c);
 // OPs
 
 void cpu_op_00(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_02(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_03(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_04(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_05(cpu_t* cpu, mmu_t* mmu);
@@ -104,6 +105,7 @@ void cpu_op_0e(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_0d(cpu_t* cpu, mmu_t* mmu);
 
 void cpu_op_11(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_12(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_13(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_14(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_15(cpu_t* cpu, mmu_t* mmu);
@@ -115,6 +117,7 @@ void cpu_op_1d(cpu_t* cpu, mmu_t* mmu);
 
 void cpu_op_20(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_21(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_22(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_23(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_24(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_25(cpu_t* cpu, mmu_t* mmu);
