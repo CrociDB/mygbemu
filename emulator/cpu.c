@@ -260,21 +260,16 @@ void cpu_ins_dec8(cpu_t * cpu, uint8_t * reg)
     cpu_flag_set_sub(cpu, false);
     cpu_flag_set_halfcarry(cpu, !(((*reg) & 0xF) == 0xF));
     (*reg)--;
-    cpu_flag_set_zero(cpu, !((*reg) == 0));
+    cpu_flag_set_zero(cpu, ((*reg) == 0));
 }
 
-int8_t cpu_int_jr(cpu_t* cpu, mmu_t* mmu, condition_e c)
+void cpu_int_jr(cpu_t* cpu, int8_t offset, condition_e c)
 {
-    int8_t offset = 0;
-
     if (cpu_check_condition(cpu, c))
     {
-        offset = (int8_t)mmu_read_byte(mmu, cpu->reg.pc.word);
         cpu->reg.pc.word += offset;
         cpu->clock.t += 4;
     }
-
-    return offset;
 }
 
 
@@ -396,8 +391,9 @@ void cpu_op_1d(cpu_t * cpu, mmu_t * mmu)
 
 void cpu_op_20(cpu_t* cpu, mmu_t* mmu)
 {
-    int8_t offset = cpu_int_jr(cpu, mmu, CPU_CONDITION_NZ);
+    int8_t offset = (int8_t)mmu_read_byte(mmu, cpu->reg.pc.word);
     debug_instruction(cpu, mmu, "JR NZ, $%2X", (uint8_t)offset);
+    cpu_int_jr(cpu, offset, CPU_CONDITION_NZ);
 }
 
 void cpu_op_21(cpu_t* cpu, mmu_t* mmu)

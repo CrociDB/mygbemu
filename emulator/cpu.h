@@ -89,7 +89,7 @@ void cpu_ins_rr(cpu_t* cpu, uint8_t* reg);
 void cpu_ins_inc8(cpu_t* cpu, uint8_t* reg);
 void cpu_ins_dec8(cpu_t* cpu, uint8_t* reg);
 
-int8_t cpu_int_jr(cpu_t* cpu, mmu_t* mmu, condition_e c);
+void cpu_int_jr(cpu_t* cpu, int8_t offset, condition_e c);
 
 // OPs
 
