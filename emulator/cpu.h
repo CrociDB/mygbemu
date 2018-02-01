@@ -244,9 +244,11 @@ void cpu_op_e0(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_e1(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_e2(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_e5(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_ea(cpu_t* cpu, mmu_t* mmu);
 
 void cpu_op_f1(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_f5(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_fa(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_fe(cpu_t* cpu, mmu_t* mmu);
 
 // CBs

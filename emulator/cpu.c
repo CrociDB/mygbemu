@@ -209,9 +209,11 @@ void cpu_init_table()
     optable[0xE1] = (opfunc_t) { &cpu_op_e1, 1, 12, 0 };
     optable[0xE2] = (opfunc_t) { &cpu_op_e2, 2, 8, 0 };
     optable[0xE5] = (opfunc_t) { &cpu_op_e5, 1, 16, 0 };
+    optable[0xEA] = (opfunc_t) { &cpu_op_ea, 3, 16, 2 };
 
     optable[0xF1] = (opfunc_t) { &cpu_op_f1, 1, 12, 0 };
     optable[0xF5] = (opfunc_t) { &cpu_op_f5, 1, 16, 0 };
+    optable[0xFA] = (opfunc_t) { &cpu_op_fa, 3, 16, 2 };
     optable[0xFE] = (opfunc_t) { &cpu_op_fe, 2, 8, 1 };
 
     _cpu_init_table_cb();
@@ -1240,6 +1242,13 @@ void cpu_op_e5(cpu_t * cpu, mmu_t * mmu)
     mmu_write_word(mmu, cpu->reg.sp.word, cpu->reg.hl.word);
 }
 
+void cpu_op_ea(cpu_t * cpu, mmu_t * mmu)
+{
+    uint16_t addr = mmu_read_word(mmu, cpu->reg.pc.word);
+    debug_instruction(cpu, mmu, "LD ($%04x), A", addr);
+    mmu_write_byte(mmu, addr, cpu->reg.af.hi);
+}
+
 void cpu_op_f1(cpu_t * cpu, mmu_t * mmu)
 {
     debug_instruction(cpu, mmu, "POP AF");
@@ -1252,6 +1261,13 @@ void cpu_op_f5(cpu_t * cpu, mmu_t * mmu)
     debug_instruction(cpu, mmu, "PUSH AF");
     cpu->reg.sp.word -= 2;
     mmu_write_word(mmu, cpu->reg.sp.word, cpu->reg.af.word);
+}
+
+void cpu_op_fa(cpu_t * cpu, mmu_t * mmu)
+{
+    uint16_t addr = mmu_read_word(mmu, cpu->reg.pc.word);
+    debug_instruction(cpu, mmu, "LD A, ($%04x)", addr);
+    cpu->reg.af.hi = mmu_read_byte(mmu, addr);
 }
 
 void cpu_op_fe(cpu_t * cpu, mmu_t * mmu)
