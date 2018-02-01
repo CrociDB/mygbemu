@@ -25,6 +25,7 @@ canvas_t* canvas_init()
     }
 
     canvas->surface = SDL_GetWindowSurface(canvas->window);
+    canvas->running = true;
 
     return canvas;
 }
@@ -40,4 +41,15 @@ void canvas_destroy(canvas_t* canvas)
 
     free(canvas);
     canvas = NULL;
+}
+
+void canvas_event_loop(canvas_t* canvas)
+{
+    while (SDL_PollEvent(&canvas->event_handler) != 0)
+    {
+        if (canvas->event_handler.type == SDL_QUIT)
+        {
+            canvas->running = false;
+        }
+    }
 }

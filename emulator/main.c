@@ -7,7 +7,7 @@
 
 #include "canvas.h"
 
-void emu_run(cpu_t* cpu, mmu_t* mmu);
+void emu_run(cpu_t * cpu, mmu_t * mmu, canvas_t* canvas);
 
 int main(int argc, const char* argv[]) 
 {
@@ -38,7 +38,7 @@ int main(int argc, const char* argv[])
     mmu_load_bios(mmu);
     cpu_reset(cpu);
 
-    emu_run(cpu, mmu);
+    emu_run(cpu, mmu, canvas);
 
     // Destroy everything
     canvas_destroy(canvas);
@@ -48,10 +48,12 @@ int main(int argc, const char* argv[])
     return 0;
 }
 
-void emu_run(cpu_t * cpu, mmu_t * mmu)
+void emu_run(cpu_t * cpu, mmu_t * mmu, canvas_t* canvas)
 {
-    while (1)
+    while (canvas->running)
     {
+        canvas_event_loop(canvas);
+
         cpu_tick(cpu, mmu);
     }
 }
