@@ -86,7 +86,13 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir)/sdl/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(ProjectDir)/sdl/lib/x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -117,6 +123,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\emulator\canvas.c" />
     <ClCompile Include="..\..\emulator\cartridge.c" />
     <ClCompile Include="..\..\emulator\cpu.c" />
     <ClCompile Include="..\..\emulator\debug.c" />
@@ -127,6 +134,7 @@
     <ClCompile Include="..\..\emulator\util.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\emulator\canvas.h" />
     <ClInclude Include="..\..\emulator\cartridge.h" />
     <ClInclude Include="..\..\emulator\cpu.h" />
     <ClInclude Include="..\..\emulator\debug.h" />

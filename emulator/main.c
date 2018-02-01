@@ -5,6 +5,8 @@
 #include "debug.h"
 #include "cartridge.h"
 
+#include "canvas.h"
+
 void emu_run(cpu_t* cpu, mmu_t* mmu);
 
 int main(int argc, const char* argv[]) 
@@ -17,6 +19,8 @@ int main(int argc, const char* argv[])
 
     log_set_level(LOG_VERBOSE);
 
+    canvas_t* canvas = canvas_init();
+
     cpu_init_table();
 
     mmu_t* mmu = mmu_create();
@@ -25,7 +29,7 @@ int main(int argc, const char* argv[])
     debugger_t* debugger = debug_get(cpu);
     debugger->printall = false;
 
-    debug_breakpoint_addr(cpu, 0x0080);
+    debug_breakpoint_addr(cpu, 0x0070);
 
     //cartridge_t* rom = cartridge_load(argv[1]);
     //mmu_load_rom(mmu, rom);
