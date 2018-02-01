@@ -25,6 +25,12 @@ mmu_t* mmu_create()
     return mmu;
 }
 
+void mmu_destroy(mmu_t* mmu)
+{
+    free(mmu);
+    mmu = NULL;
+}
+
 void mmu_load_rom(mmu_t* mmu, cartridge_t* cartridge)
 {
     memcpy((void*)mmu->addr, (const void*)cartridge->rom, cartridge->size);

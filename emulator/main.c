@@ -40,7 +40,10 @@ int main(int argc, const char* argv[])
 
     emu_run(cpu, mmu);
 
+    // Destroy everything
     canvas_destroy(canvas);
+    cpu_destroy(cpu);
+    mmu_destroy(mmu);
 
     return 0;
 }

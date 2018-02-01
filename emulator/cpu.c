@@ -9,6 +9,12 @@ cpu_t* cpu_create()
     return cpu;
 }
 
+void cpu_destroy(cpu_t* cpu)
+{
+    free(cpu);
+    cpu = NULL;
+}
+
 void cpu_reset(cpu_t* cpu)
 {
     memset((void*)(&cpu->reg), 0, sizeof(cpu->reg));

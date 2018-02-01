@@ -67,6 +67,7 @@ static opfunc_t optable_cb[0xFF];
 
 
 cpu_t* cpu_create();
+void cpu_destroy(cpu_t* cpu);
 void cpu_init_table();
 static void _cpu_init_table_cb();
 void cpu_reset(cpu_t* cpu);

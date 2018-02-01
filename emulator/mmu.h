@@ -60,6 +60,8 @@ typedef struct _mmu_t
 } mmu_t;
 
 mmu_t* mmu_create();
+void mmu_destroy(mmu_t* mmu);
+
 void mmu_load_bios(mmu_t* mmu);
 void mmu_load_rom(mmu_t* mmu, cartridge_t* cartridge);
 
