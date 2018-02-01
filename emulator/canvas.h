@@ -13,5 +13,6 @@ typedef struct _canvas_t
 } canvas_t;
 
 canvas_t* canvas_init();
+void canvas_destroy(canvas_t* canvas);
 
 #endif

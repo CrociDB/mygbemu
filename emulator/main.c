@@ -40,6 +40,8 @@ int main(int argc, const char* argv[])
 
     emu_run(cpu, mmu);
 
+    canvas_destroy(canvas);
+
     return 0;
 }
 
