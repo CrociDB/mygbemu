@@ -69,8 +69,8 @@ void cpu_init_table()
     optable[0x04] = (opfunc_t) { &cpu_op_04, 1, 4, 0 };
     optable[0x05] = (opfunc_t) { &cpu_op_05, 1, 4, 0 };
     optable[0x06] = (opfunc_t) { &cpu_op_06, 2, 8, 1 };
-    optable[0x08] = (opfunc_t) { &cpu_op_08, 1, 8, 0 };
     optable[0x0A] = (opfunc_t) { &cpu_op_0a, 1, 8, 0 };
+    optable[0x0B] = (opfunc_t) { &cpu_op_0b, 1, 8, 0 };
     optable[0x0C] = (opfunc_t) { &cpu_op_0c, 1, 4, 0 };
     optable[0x0D] = (opfunc_t) { &cpu_op_0d, 1, 4, 0 };
     optable[0x0E] = (opfunc_t) { &cpu_op_0e, 2, 8, 1 };
@@ -353,7 +353,7 @@ void cpu_op_06(cpu_t * cpu, mmu_t * mmu)
     cpu->reg.bc.hi = byte;
 }
 
-void cpu_op_08(cpu_t * cpu, mmu_t * mmu)
+void cpu_op_0b(cpu_t * cpu, mmu_t * mmu)
 {
     debug_instruction(cpu, mmu, "DEC BC");
     cpu->reg.bc.word--;
