@@ -112,8 +112,8 @@ void cpu_op_13(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_14(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_15(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_17(cpu_t* cpu, mmu_t* mmu);
-void cpu_op_18(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_1a(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_1b(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_1c(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_1d(cpu_t* cpu, mmu_t* mmu);
 

@@ -79,8 +79,8 @@ void cpu_init_table()
     optable[0x14] = (opfunc_t) { &cpu_op_14, 1, 4, 0 };
     optable[0x15] = (opfunc_t) { &cpu_op_15, 1, 4, 0 };
     optable[0x17] = (opfunc_t) { &cpu_op_17, 1, 4, 0 };
-    optable[0x18] = (opfunc_t) { &cpu_op_18, 1, 8, 0 };
     optable[0x1A] = (opfunc_t) { &cpu_op_1a, 1, 8, 0 };
+    optable[0x1B] = (opfunc_t) { &cpu_op_1b, 1, 8, 0 };
     optable[0x1C] = (opfunc_t) { &cpu_op_1c, 1, 4, 0 };
     optable[0x1D] = (opfunc_t) { &cpu_op_1d, 1, 4, 0 };
 
@@ -395,16 +395,16 @@ void cpu_op_17(cpu_t * cpu, mmu_t * mmu)
     cpu_flag_set_zero(cpu, false);
 }
 
-void cpu_op_18(cpu_t * cpu, mmu_t * mmu)
-{
-    debug_instruction(cpu, mmu, "DEC DE");
-    cpu->reg.de.word--;
-}
-
 void cpu_op_1a(cpu_t * cpu, mmu_t * mmu)
 {
     debug_instruction(cpu, mmu, "LD A, (DE)");
     cpu->reg.af.hi = mmu_read_byte(mmu, cpu->reg.de.word);
+}
+
+void cpu_op_1b(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "DEC DE");
+    cpu->reg.de.word--;
 }
 
 void cpu_op_1c(cpu_t * cpu, mmu_t * mmu)
