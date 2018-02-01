@@ -136,7 +136,7 @@ void debug_instruction(cpu_t* cpu, mmu_t* mmu, const char* disasm, ...)
 
     if (debugger->printall || isbreak)
     {
-        log_cpu("0x%04X\t%s", pc_addr, buffer);
+        log_cpu("0x%04X\t%02X\t%s", pc_addr, cpu->currop, buffer);
     }
 
     if (isbreak)

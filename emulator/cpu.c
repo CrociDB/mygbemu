@@ -20,6 +20,7 @@ void cpu_tick(cpu_t* cpu, mmu_t* mmu)
 
     // Fetch instruction
     uint8_t op = mmu_read_byte(mmu, cpu->reg.pc.word);
+    cpu->currop = op;
 
     // Run instruction
     opfunc_t* opfunc = &optable[op];
@@ -115,7 +116,73 @@ void cpu_init_table()
     optable[0x3D] = (opfunc_t) { &cpu_op_3d, 1, 4, 0 };
     optable[0x3E] = (opfunc_t) { &cpu_op_3e, 2, 8, 1 };
 
+    optable[0x40] = (opfunc_t) { &cpu_op_40, 1, 4, 0 };
+    optable[0x41] = (opfunc_t) { &cpu_op_41, 1, 4, 0 };
+    optable[0x42] = (opfunc_t) { &cpu_op_42, 1, 4, 0 };
+    optable[0x43] = (opfunc_t) { &cpu_op_43, 1, 4, 0 };
+    optable[0x44] = (opfunc_t) { &cpu_op_44, 1, 4, 0 };
+    optable[0x45] = (opfunc_t) { &cpu_op_45, 1, 4, 0 };
+    optable[0x46] = (opfunc_t) { &cpu_op_46, 1, 8, 0 };
+    optable[0x47] = (opfunc_t) { &cpu_op_47, 1, 4, 0 };
+    optable[0x48] = (opfunc_t) { &cpu_op_48, 1, 4, 0 };
+    optable[0x49] = (opfunc_t) { &cpu_op_49, 1, 4, 0 };
+    optable[0x4A] = (opfunc_t) { &cpu_op_4a, 1, 4, 0 };
+    optable[0x4B] = (opfunc_t) { &cpu_op_4b, 1, 4, 0 };
+    optable[0x4C] = (opfunc_t) { &cpu_op_4c, 1, 4, 0 };
+    optable[0x4D] = (opfunc_t) { &cpu_op_4d, 1, 4, 0 };
+    optable[0x4E] = (opfunc_t) { &cpu_op_4e, 1, 8, 0 };
     optable[0x4F] = (opfunc_t) { &cpu_op_4f, 1, 4, 0 };
+
+    optable[0x50] = (opfunc_t) { &cpu_op_50, 1, 4, 0 };
+    optable[0x51] = (opfunc_t) { &cpu_op_51, 1, 4, 0 };
+    optable[0x52] = (opfunc_t) { &cpu_op_52, 1, 4, 0 };
+    optable[0x53] = (opfunc_t) { &cpu_op_53, 1, 4, 0 };
+    optable[0x54] = (opfunc_t) { &cpu_op_54, 1, 4, 0 };
+    optable[0x55] = (opfunc_t) { &cpu_op_55, 1, 4, 0 };
+    optable[0x56] = (opfunc_t) { &cpu_op_56, 1, 8, 0 };
+    optable[0x57] = (opfunc_t) { &cpu_op_57, 1, 4, 0 };
+    optable[0x58] = (opfunc_t) { &cpu_op_58, 1, 4, 0 };
+    optable[0x59] = (opfunc_t) { &cpu_op_59, 1, 4, 0 };
+    optable[0x5A] = (opfunc_t) { &cpu_op_5a, 1, 4, 0 };
+    optable[0x5B] = (opfunc_t) { &cpu_op_5b, 1, 4, 0 };
+    optable[0x5C] = (opfunc_t) { &cpu_op_5c, 1, 4, 0 };
+    optable[0x5D] = (opfunc_t) { &cpu_op_5d, 1, 4, 0 };
+    optable[0x5E] = (opfunc_t) { &cpu_op_5e, 1, 8, 0 };
+    optable[0x5F] = (opfunc_t) { &cpu_op_5f, 1, 4, 0 };
+
+    optable[0x60] = (opfunc_t) { &cpu_op_60, 1, 4, 0 };
+    optable[0x61] = (opfunc_t) { &cpu_op_61, 1, 4, 0 };
+    optable[0x62] = (opfunc_t) { &cpu_op_62, 1, 4, 0 };
+    optable[0x63] = (opfunc_t) { &cpu_op_63, 1, 4, 0 };
+    optable[0x64] = (opfunc_t) { &cpu_op_64, 1, 4, 0 };
+    optable[0x65] = (opfunc_t) { &cpu_op_65, 1, 4, 0 };
+    optable[0x66] = (opfunc_t) { &cpu_op_66, 1, 8, 0 };
+    optable[0x67] = (opfunc_t) { &cpu_op_67, 1, 4, 0 };
+    optable[0x68] = (opfunc_t) { &cpu_op_68, 1, 4, 0 };
+    optable[0x69] = (opfunc_t) { &cpu_op_69, 1, 4, 0 };
+    optable[0x6A] = (opfunc_t) { &cpu_op_6a, 1, 4, 0 };
+    optable[0x6B] = (opfunc_t) { &cpu_op_6b, 1, 4, 0 };
+    optable[0x6C] = (opfunc_t) { &cpu_op_6c, 1, 4, 0 };
+    optable[0x6D] = (opfunc_t) { &cpu_op_6d, 1, 4, 0 };
+    optable[0x6E] = (opfunc_t) { &cpu_op_6e, 1, 8, 0 };
+    optable[0x6F] = (opfunc_t) { &cpu_op_6f, 1, 4, 0 };
+
+    optable[0x70] = (opfunc_t) { &cpu_op_70, 1, 8, 0 };
+    optable[0x71] = (opfunc_t) { &cpu_op_71, 1, 8, 0 };
+    optable[0x72] = (opfunc_t) { &cpu_op_72, 1, 8, 0 };
+    optable[0x73] = (opfunc_t) { &cpu_op_73, 1, 8, 0 };
+    optable[0x74] = (opfunc_t) { &cpu_op_74, 1, 8, 0 };
+    optable[0x75] = (opfunc_t) { &cpu_op_75, 1, 8, 0 };
+    //optable[0x76] = (opfunc_t) { &cpu_op_76, 1, 4, 0 };
+    optable[0x77] = (opfunc_t) { &cpu_op_77, 1, 8, 0 };
+    optable[0x78] = (opfunc_t) { &cpu_op_78, 1, 4, 0 };
+    optable[0x79] = (opfunc_t) { &cpu_op_79, 1, 4, 0 };
+    optable[0x7A] = (opfunc_t) { &cpu_op_7a, 1, 4, 0 };
+    optable[0x7B] = (opfunc_t) { &cpu_op_7b, 1, 4, 0 };
+    optable[0x7C] = (opfunc_t) { &cpu_op_7c, 1, 4, 0 };
+    optable[0x7D] = (opfunc_t) { &cpu_op_7d, 1, 4, 0 };
+    optable[0x7E] = (opfunc_t) { &cpu_op_7e, 1, 8, 0 };
+    optable[0x7F] = (opfunc_t) { &cpu_op_7f, 1, 4, 0 };
 
     optable[0x77] = (opfunc_t) { &cpu_op_77, 1, 8, 0 };
 
@@ -624,10 +691,343 @@ void cpu_op_3e(cpu_t * cpu, mmu_t * mmu)
     cpu->reg.af.hi = byte;
 }
 
+
+
+
+void cpu_op_40(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD B, B");
+    cpu->reg.bc.hi = cpu->reg.bc.hi;
+}
+
+void cpu_op_41(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD B, C");
+    cpu->reg.bc.hi = cpu->reg.bc.lo;
+}
+
+void cpu_op_42(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD B, D");
+    cpu->reg.bc.hi = cpu->reg.de.hi;
+}
+
+void cpu_op_43(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD B, E");
+    cpu->reg.bc.hi = cpu->reg.de.lo;
+}
+
+void cpu_op_44(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD B, H");
+    cpu->reg.bc.hi = cpu->reg.hl.hi;
+}
+
+void cpu_op_45(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD B, L");
+    cpu->reg.bc.hi = cpu->reg.hl.lo;
+}
+
+void cpu_op_46(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD B, (HL)");
+    uint8_t byte = mmu_read_byte(mmu, cpu->reg.hl.word);
+    cpu->reg.bc.hi = byte;
+}
+
+void cpu_op_47(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD B, A");
+    cpu->reg.bc.hi = cpu->reg.af.hi;
+}
+
+void cpu_op_48(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD C, B");
+    cpu->reg.bc.lo = cpu->reg.bc.hi;
+}
+
+void cpu_op_49(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD C, C");
+    cpu->reg.bc.lo = cpu->reg.bc.lo;
+}
+
+void cpu_op_4a(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD C, D");
+    cpu->reg.bc.lo = cpu->reg.de.hi;
+}
+
+void cpu_op_4b(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD C, E");
+    cpu->reg.bc.lo = cpu->reg.de.lo;
+}
+
+void cpu_op_4c(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD C, H");
+    cpu->reg.bc.lo = cpu->reg.hl.hi;
+}
+
+void cpu_op_4d(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD C, L");
+    cpu->reg.bc.lo = cpu->reg.hl.lo;
+}
+
+void cpu_op_4e(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD C, (HL)");
+    uint8_t byte = mmu_read_byte(mmu, cpu->reg.hl.word);
+    cpu->reg.bc.lo = byte;
+}
+
 void cpu_op_4f(cpu_t * cpu, mmu_t * mmu)
 {
     debug_instruction(cpu, mmu, "LD C, A");
     cpu->reg.bc.lo = cpu->reg.af.hi;
+}
+
+
+
+void cpu_op_50(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD D, B");
+    cpu->reg.de.hi = cpu->reg.bc.hi;
+}
+
+void cpu_op_51(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD D, C");
+    cpu->reg.de.hi = cpu->reg.bc.lo;
+}
+
+void cpu_op_52(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD D, D");
+    cpu->reg.de.hi = cpu->reg.de.hi;
+}
+
+void cpu_op_53(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD D, E");
+    cpu->reg.de.hi = cpu->reg.de.lo;
+}
+
+void cpu_op_54(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD D, H");
+    cpu->reg.de.hi = cpu->reg.hl.hi;
+}
+
+void cpu_op_55(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD D, L");
+    cpu->reg.de.hi = cpu->reg.hl.lo;
+}
+
+void cpu_op_56(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD D, (HL)");
+    uint8_t byte = mmu_read_byte(mmu, cpu->reg.hl.word);
+    cpu->reg.de.hi = byte;
+}
+
+void cpu_op_57(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD D, A");
+    cpu->reg.de.hi = cpu->reg.af.hi;
+}
+
+void cpu_op_58(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD E, B");
+    cpu->reg.de.lo = cpu->reg.bc.hi;
+}
+
+void cpu_op_59(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD E, C");
+    cpu->reg.de.lo = cpu->reg.bc.lo;
+}
+
+void cpu_op_5a(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD E, D");
+    cpu->reg.de.lo = cpu->reg.de.hi;
+}
+
+void cpu_op_5b(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD E, E");
+    cpu->reg.de.lo = cpu->reg.de.lo;
+}
+
+void cpu_op_5c(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD E, H");
+    cpu->reg.de.lo = cpu->reg.hl.hi;
+}
+
+void cpu_op_5d(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD E, L");
+    cpu->reg.de.lo = cpu->reg.hl.lo;
+}
+
+void cpu_op_5e(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD E, (HL)");
+    uint8_t byte = mmu_read_byte(mmu, cpu->reg.hl.word);
+    cpu->reg.de.lo = byte;
+}
+
+void cpu_op_5f(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD E, A");
+    cpu->reg.de.lo = cpu->reg.af.hi;
+}
+
+
+
+void cpu_op_60(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD H, B");
+    cpu->reg.hl.hi = cpu->reg.bc.hi;
+}
+
+void cpu_op_61(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD H, C");
+    cpu->reg.hl.hi = cpu->reg.bc.lo;
+}
+
+void cpu_op_62(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD H, D");
+    cpu->reg.hl.hi = cpu->reg.de.hi;
+}
+
+void cpu_op_63(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD H, E");
+    cpu->reg.hl.hi = cpu->reg.de.lo;
+}
+
+void cpu_op_64(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD H, H");
+    cpu->reg.hl.hi = cpu->reg.hl.hi;
+}
+
+void cpu_op_65(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD H, L");
+    cpu->reg.hl.hi = cpu->reg.hl.lo;
+}
+
+void cpu_op_66(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD H, (HL)");
+    uint8_t byte = mmu_read_byte(mmu, cpu->reg.hl.word);
+    cpu->reg.hl.hi = byte;
+}
+
+void cpu_op_67(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD H, A");
+    cpu->reg.hl.hi = cpu->reg.af.hi;
+}
+
+void cpu_op_68(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD L, B");
+    cpu->reg.hl.lo = cpu->reg.bc.hi;
+}
+
+void cpu_op_69(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD L, C");
+    cpu->reg.hl.lo = cpu->reg.bc.lo;
+}
+
+void cpu_op_6a(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD L, D");
+    cpu->reg.hl.lo = cpu->reg.de.hi;
+}
+
+void cpu_op_6b(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD L, E");
+    cpu->reg.hl.lo = cpu->reg.de.lo;
+}
+
+void cpu_op_6c(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD L, H");
+    cpu->reg.hl.lo = cpu->reg.hl.hi;
+}
+
+void cpu_op_6d(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD L, L");
+    cpu->reg.hl.lo = cpu->reg.hl.lo;
+}
+
+void cpu_op_6e(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD L, (HL)");
+    uint8_t byte = mmu_read_byte(mmu, cpu->reg.hl.word);
+    cpu->reg.hl.lo = byte;
+}
+
+void cpu_op_6f(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD L, A");
+    cpu->reg.hl.lo = cpu->reg.af.hi;
+}
+
+
+
+void cpu_op_70(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD (HL), B");
+    mmu_write_byte(mmu, cpu->reg.hl.word, cpu->reg.bc.hi);
+}
+
+void cpu_op_71(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD (HL), C");
+    mmu_write_byte(mmu, cpu->reg.hl.word, cpu->reg.bc.lo);
+}
+
+void cpu_op_72(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD (HL), D");
+    mmu_write_byte(mmu, cpu->reg.hl.word, cpu->reg.de.hi);
+}
+
+void cpu_op_73(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD (HL), E");
+    mmu_write_byte(mmu, cpu->reg.hl.word, cpu->reg.de.lo);
+}
+
+void cpu_op_74(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD (HL), H");
+    mmu_write_byte(mmu, cpu->reg.hl.word, cpu->reg.hl.hi);
+}
+
+void cpu_op_75(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD (HL), L");
+    mmu_write_byte(mmu, cpu->reg.hl.word, cpu->reg.hl.lo);
 }
 
 void cpu_op_77(cpu_t * cpu, mmu_t * mmu)
@@ -635,6 +1035,57 @@ void cpu_op_77(cpu_t * cpu, mmu_t * mmu)
     debug_instruction(cpu, mmu, "LD (HL), A");
     mmu_write_byte(mmu, cpu->reg.hl.word, cpu->reg.af.hi);
 }
+
+void cpu_op_78(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD A, B");
+    cpu->reg.af.hi = cpu->reg.bc.hi;
+}
+
+void cpu_op_79(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD A, C");
+    cpu->reg.af.hi = cpu->reg.bc.lo;
+}
+
+void cpu_op_7a(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD A, D");
+    cpu->reg.af.hi = cpu->reg.de.hi;
+}
+
+void cpu_op_7b(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD A, E");
+    cpu->reg.af.hi = cpu->reg.de.lo;
+}
+
+void cpu_op_7c(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD A, H");
+    cpu->reg.af.hi = cpu->reg.hl.hi;
+}
+
+void cpu_op_7d(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD A, L");
+    cpu->reg.af.hi = cpu->reg.hl.lo;
+}
+
+void cpu_op_7e(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD A, (HL)");
+    uint8_t byte = mmu_read_byte(mmu, cpu->reg.hl.word);
+    cpu->reg.af.hi = byte;
+}
+
+void cpu_op_7f(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "LD A, A");
+    cpu->reg.af.hi = cpu->reg.af.hi;
+}
+
+
 
 void cpu_op_af(cpu_t* cpu, mmu_t* mmu)
 {

@@ -48,6 +48,8 @@ typedef struct _cpu_t
         reg16_t af, bc, de, hl;
         reg16_t sp, pc;
     } reg;
+
+    uint8_t currop;
     
 } cpu_t;
 
@@ -148,7 +150,73 @@ void cpu_op_3e(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_3c(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_3d(cpu_t* cpu, mmu_t* mmu);
 
+void cpu_op_40(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_41(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_42(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_43(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_44(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_45(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_46(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_47(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_48(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_49(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_4a(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_4b(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_4c(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_4d(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_4e(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_4f(cpu_t* cpu, mmu_t* mmu);
+
+void cpu_op_50(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_51(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_52(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_53(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_54(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_55(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_56(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_57(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_58(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_59(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_5a(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_5b(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_5c(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_5d(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_5e(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_5f(cpu_t* cpu, mmu_t* mmu);
+
+void cpu_op_60(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_61(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_62(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_63(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_64(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_65(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_66(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_67(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_68(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_69(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_6a(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_6b(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_6c(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_6d(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_6e(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_6f(cpu_t* cpu, mmu_t* mmu);
+
+void cpu_op_70(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_71(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_72(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_73(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_74(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_75(cpu_t* cpu, mmu_t* mmu);
+//void cpu_op_76(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_77(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_78(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_79(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_7a(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_7b(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_7c(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_7d(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_7e(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_7f(cpu_t* cpu, mmu_t* mmu);
 
 void cpu_op_77(cpu_t* cpu, mmu_t* mmu);
 
