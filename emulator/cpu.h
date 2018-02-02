@@ -35,13 +35,14 @@ typedef union _reg16_t
 
 typedef union _clock_t
 {
-    uint8_t m;
-    uint8_t t;
+    uint16_t m;
+    uint16_t t;
 } clck_t;
 
 typedef struct _cpu_t
 {
-    clck_t clock;
+    clck_t currclock;
+    clck_t totalclock;
     
     struct
     {

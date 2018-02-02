@@ -38,8 +38,8 @@ void cpu_tick(cpu_t* cpu, mmu_t* mmu)
     }
 
     (*opfunc->func)(cpu, mmu);
-    cpu->clock.m = opfunc->m;
-    cpu->clock.t = opfunc->t;
+    cpu->currclock.m = opfunc->m;
+    cpu->currclock.t = opfunc->t;
     cpu->reg.pc.word += opfunc->b;
 }
 
@@ -59,9 +59,12 @@ void cpu_op_cb(cpu_t* cpu, mmu_t* mmu)
     }
 
     (*opfunc_cb->func)(cpu, mmu);
-    cpu->clock.m = opfunc_cb->m;
-    cpu->clock.t = opfunc_cb->t;
+    cpu->currclock.m = opfunc_cb->m;
+    cpu->currclock.t = opfunc_cb->t;
     cpu->reg.pc.word += opfunc_cb->b;
+
+    cpu->totalclock.m += cpu->currclock.m;
+    cpu->totalclock.t += cpu->currclock.t;
 }
 
 
@@ -395,7 +398,7 @@ void cpu_int_jr(cpu_t* cpu, int8_t offset, condition_e c)
     if (cpu_check_condition(cpu, c))
     {
         cpu->reg.pc.word += offset;
-        cpu->clock.t += 4;
+        cpu->currclock.t += 4;
     }
 }
 

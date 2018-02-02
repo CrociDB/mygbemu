@@ -58,7 +58,7 @@ void emu_run(cpu_t* cpu, mmu_t* mmu, ppu_t* ppu, canvas_t* canvas)
         canvas_event_loop(canvas);
 
         cpu_tick(cpu, mmu);
-        ppu_step(ppu, cpu, mmu);
+        ppu_tick(ppu, cpu, mmu);
 
         canvas_update(canvas, ppu);
     }
