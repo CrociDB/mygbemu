@@ -113,9 +113,9 @@ uint8_t mmu_read_byte(mmu_t * mmu, uint16_t addr)
                             case 0x00:
                                 return mmu->io[addr & 0xFF];
 
-                            // GPU
+                            // PPU
                             case 0x40: case 0x50: case 0x60: case 0x70:
-                                return 0; // Read GPU registers. TODO later
+                                return mmu->ppu[addr - 0xFF40];
 
                             case 0x80: case 0x90: case 0xA0: case 0xB0:
                             case 0xC0: case 0xD0: case 0xE0: case 0xF0:
@@ -158,7 +158,7 @@ uint16_t mmu_read_addr16(mmu_t* mmu, uint16_t addr)
   *   4 - wrote to wram shadow
   *   5 - wrote to oam
   *   6 - wrote to io
-  *   7 - wrote to gpu regs
+  *   7 - wrote to ppu regs
   *   8 - wrote to zram
   *   0xA - wrote to intenable
   */
@@ -235,10 +235,10 @@ uint8_t mmu_write_byte(mmu_t* mmu, uint16_t addr, uint8_t data)
                                 mmu->io[addr & 0xFF] = data;
                                 return 6;
 
-
-                             // GPU
+                             // PPU
                             case 0x40: case 0x50: case 0x60: case 0x70:
-                                return 0; // Write to GPU registers. TODO later
+                                mmu->ppu[addr - 0xFF40] = data;
+                                return 7;
 
                             case 0x80: case 0x90: case 0xA0: case 0xB0:
                             case 0xC0: case 0xD0: case 0xE0: case 0xF0:

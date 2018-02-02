@@ -46,7 +46,8 @@ typedef struct _mmu_t
                 uint8_t wrams[0x1E00];
                 uint8_t oam[0xA0];
                 uint8_t empty[0x60];
-                uint8_t io[0x80];
+                uint8_t io[0x40];
+                uint8_t ppu[0x40];
                 uint8_t zram[0x80];
                 uint8_t intenable;
             };
