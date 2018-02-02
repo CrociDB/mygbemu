@@ -1242,7 +1242,7 @@ void cpu_op_e0(cpu_t* cpu, mmu_t* mmu)
 {
     uint8_t byte = mmu_read_byte(mmu, cpu->reg.pc.word);
     debug_instruction(cpu, mmu, "LD ($FF00+$%02x), A", byte);
-    uint8_t addr = 0xFF00 + byte;
+    uint16_t addr = 0xFF00 + byte;
     mmu_write_byte(mmu, addr, cpu->reg.af.hi);
 }
 
@@ -1278,7 +1278,7 @@ void cpu_op_f0(cpu_t * cpu, mmu_t * mmu)
 {
     uint8_t byte = mmu_read_byte(mmu, cpu->reg.pc.word);
     debug_instruction(cpu, mmu, "LD A, ($FF00+$%02x)", byte);
-    uint8_t addr = 0xFF00 + byte;
+    uint16_t addr = 0xFF00 + byte;
     cpu->reg.af.hi = mmu_read_byte(mmu, addr);
 }
 
