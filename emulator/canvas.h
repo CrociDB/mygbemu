@@ -7,6 +7,8 @@
 
 #include <SDL.h>
 
+#include "ppu.h"
+
 #define CANVAS_BUFFER_WIDTH    160
 #define CANVAS_BUFFER_HEIGHT   144
 
@@ -23,5 +25,6 @@ canvas_t* canvas_init();
 void canvas_destroy(canvas_t* canvas);
 
 void canvas_event_loop(canvas_t* canvas);
+void canvas_update(canvas_t* canvas, ppu_t* ppu);
 
 #endif

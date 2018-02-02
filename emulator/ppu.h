@@ -6,6 +6,7 @@
 #include <stdbool.h>
 
 #include "mmu.h"
+#include "cpu.h"
 
 typedef struct _ppu_t
 {
@@ -15,5 +16,7 @@ typedef struct _ppu_t
 
 ppu_t* ppu_create(mmu_t* mmu);
 void ppu_destroy(ppu_t* ppu);
+
+void ppu_step(ppu_t* ppu, cpu_t* cpu, mmu_t* mmu);
 
 #endif

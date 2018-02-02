@@ -55,3 +55,8 @@ void canvas_event_loop(canvas_t* canvas)
         }
     }
 }
+
+void canvas_update(canvas_t* canvas, ppu_t* ppu)
+{
+
+}

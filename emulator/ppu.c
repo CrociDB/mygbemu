@@ -17,3 +17,8 @@ void ppu_destroy(ppu_t* ppu)
     free(ppu);
     ppu = NULL;
 }
+
+void ppu_step(ppu_t* ppu, cpu_t* cpu, mmu_t* mmu)
+{
+
+}
