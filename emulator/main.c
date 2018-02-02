@@ -2,6 +2,7 @@
 #include "log.h"
 #include "mmu.h"
 #include "cpu.h"
+#include "ppu.h"
 #include "debug.h"
 #include "cartridge.h"
 
@@ -21,10 +22,11 @@ int main(int argc, const char* argv[])
 
     canvas_t* canvas = canvas_init();
 
-    cpu_init_table();
-
     mmu_t* mmu = mmu_create();
     cpu_t* cpu = cpu_create();
+    ppu_t* ppu = ppu_create(mmu);
+
+    cpu_init_table();
 
     debugger_t* debugger = debug_get(cpu);
     debugger->printall = false;
@@ -42,6 +44,7 @@ int main(int argc, const char* argv[])
 
     // Destroy everything
     canvas_destroy(canvas);
+    ppu_destroy(ppu);
     cpu_destroy(cpu);
     mmu_destroy(mmu);
 

@@ -3,6 +3,8 @@
 
 canvas_t* canvas_init()
 {
+    log_message("Creating Canvas Module");
+
     canvas_t* canvas = (canvas_t*)malloc(sizeof(canvas_t));
 
     // Init video
