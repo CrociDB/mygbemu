@@ -167,6 +167,9 @@ uint8_t mmu_write_byte(mmu_t* mmu, uint16_t addr, uint8_t data)
     if (mmu->inbios && addr >= 0x00 && addr <= 0xFF)
         return 0;
 
+    mmu->last_written.addr = addr;
+    mmu->last_written.d8 = data;
+
     switch ((addr & 0xF000) >> 12)
     {
         // ROM BANKS are read only
@@ -252,16 +255,23 @@ uint8_t mmu_write_byte(mmu_t* mmu, uint16_t addr, uint8_t data)
 
 uint8_t mmu_write_word(mmu_t* mmu, uint16_t addr, uint16_t data)
 {
-    return mmu_write_byte(mmu, addr, data & 0xFF) & mmu_write_byte(mmu, addr + 1, data >> 8);
+    uint8_t r = mmu_write_byte(mmu, addr, data & 0xFF) & mmu_write_byte(mmu, addr + 1, data >> 8);
+    mmu->last_written.addr = addr;
+    mmu->last_written.d16 = data;
+    return r;
 }
 
 void mmu_write_addr8(mmu_t* mmu, uint16_t addr, uint8_t data)
 {
+    mmu->last_written.addr = addr;
+    mmu->last_written.d8 = data;
     return mmu->addr[addr] = data;
 }
 
 void mmu_write_addr16(mmu_t* mmu, uint16_t addr, uint16_t data)
 {
+    mmu->last_written.addr = addr;
+    mmu->last_written.d16 = data;
     uint16_t* pos = ((uint16_t*)(mmu->addr + addr));
     return *pos = data;
 }

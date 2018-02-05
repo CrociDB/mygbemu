@@ -58,6 +58,8 @@ typedef struct _ppu_t
 ppu_t* ppu_create(mmu_t* mmu);
 void ppu_destroy(ppu_t* ppu);
 
+void ppu_update_memory(ppu_t* ppu, mmu_t* mmu);
 void ppu_tick(ppu_t* ppu, cpu_t* cpu, mmu_t* mmu);
+void ppu_render_line(ppu_t* ppu, mmu_t* mmu);
 
 #endif

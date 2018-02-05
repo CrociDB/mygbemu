@@ -57,6 +57,16 @@ typedef struct _mmu_t
     uint8_t* joyflags;
     uint8_t* intflags;
 
+    struct
+    {
+        uint16_t addr;
+        union
+        {
+            uint16_t d16;
+            uint8_t d8;
+        };
+    } last_written;
+
     bool inbios;
 } mmu_t;
 

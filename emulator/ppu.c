@@ -29,8 +29,14 @@ void ppu_destroy(ppu_t* ppu)
     ppu = NULL;
 }
 
+void ppu_update_memory(ppu_t * ppu, mmu_t * mmu)
+{
+    // Will update the state o ppu if any change in memory
+}
+
 void ppu_tick(ppu_t* ppu, cpu_t* cpu, mmu_t* mmu)
 {
+    ppu_update_memory(ppu, mmu);
     ppu->clockcount += cpu->currclock.t;
 
     switch (ppu->mode)
@@ -48,7 +54,7 @@ void ppu_tick(ppu_t* ppu, cpu_t* cpu, mmu_t* mmu)
                 ppu->clockcount = 0;
                 ppu->mode = PPU_MODE_HBLANK;
 
-                // Now render a scanline
+                ppu_render_line(ppu, mmu);
             }
             break;
         case PPU_MODE_HBLANK:
@@ -84,4 +90,9 @@ void ppu_tick(ppu_t* ppu, cpu_t* cpu, mmu_t* mmu)
             }
             break;
     }
+}
+
+void ppu_render_line(ppu_t * ppu, mmu_t * mmu)
+{
+
 }
