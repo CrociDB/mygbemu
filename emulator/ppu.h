@@ -51,6 +51,9 @@ typedef struct _ppu_t
     _ppu_reg_t* window_y;
     _ppu_reg_t* window_x;
 
+    uint8_t palette[4];
+    uint8_t tileset[0x200][8][8];
+
     uint8_t* vram;
     uint8_t* oam;
 } ppu_t;
@@ -59,6 +62,7 @@ ppu_t* ppu_create(mmu_t* mmu);
 void ppu_destroy(ppu_t* ppu);
 
 void ppu_update_memory(ppu_t* ppu, mmu_t* mmu);
+void ppu_update_tile(ppu_t* ppu, uint16_t addr, uint8_t data);
 void ppu_tick(ppu_t* ppu, cpu_t* cpu, mmu_t* mmu);
 void ppu_render_line(ppu_t* ppu, mmu_t* mmu);
 

@@ -59,6 +59,7 @@ typedef struct _mmu_t
 
     struct
     {
+        bool empty:1;
         uint16_t addr;
         union
         {

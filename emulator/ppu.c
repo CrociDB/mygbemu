@@ -29,9 +29,43 @@ void ppu_destroy(ppu_t* ppu)
     ppu = NULL;
 }
 
-void ppu_update_memory(ppu_t * ppu, mmu_t * mmu)
+void ppu_update_memory(ppu_t* ppu, mmu_t* mmu)
 {
-    // Will update the state o ppu if any change in memory
+    if (mmu->last_written.empty) return;
+
+    if (mmu->last_written.addr == 0xFF47)
+    {
+        // Update palette
+        ppu->palette[3] = (mmu->last_written.d8 & 0xc0) >> 6;
+        ppu->palette[2] = (mmu->last_written.d8 & 0x30) >> 4;
+        ppu->palette[1] = (mmu->last_written.d8 & 0x0c) >> 2;
+        ppu->palette[0] = (mmu->last_written.d8 & 0x03);
+        mmu->last_written.empty = true;
+    }
+    else if (mmu->last_written.addr >= 0x8000 && mmu->last_written.addr < 0xA000)
+    {
+        // Update tileset
+        ppu_update_tile(ppu, mmu->last_written.addr, mmu->last_written.d8);
+        mmu->last_written.empty = true;
+    }
+}
+
+void ppu_update_tile(ppu_t* ppu, uint16_t addr, uint8_t data)
+{
+    uint16_t vaddr = addr & 0x1FFE;
+    uint16_t index = (vaddr >> 4);
+    uint8_t y = (vaddr >> 1) & 7;
+
+    uint8_t v = ppu->vram[vaddr];
+    uint8_t v1 = ppu->vram[vaddr + 1];
+
+    uint8_t sx, x;
+
+    for (x = 0; x < 8; x++)
+    {
+        sx = 1 << (7 - x);
+        ppu->tileset[index][y][x] = (v & sx ? 1 : 0) + (v1 & sx ? 2 : 0);
+    }
 }
 
 void ppu_tick(ppu_t* ppu, cpu_t* cpu, mmu_t* mmu)
