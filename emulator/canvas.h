@@ -9,13 +9,11 @@
 
 #include "ppu.h"
 
-#define CANVAS_BUFFER_WIDTH    160
-#define CANVAS_BUFFER_HEIGHT   144
-
 typedef struct _canvas_t
 {
     SDL_Window* window;
     SDL_Surface* surface;
+    SDL_Renderer* renderer;
     SDL_Event event_handler;
 
     bool running;

@@ -13,6 +13,9 @@
 #define PPU_MODE_HBLANK     0
 #define PPU_MODE_VBLANK     1
 
+#define PPU_BUFFER_WIDTH    160
+#define PPU_BUFFER_HEIGHT   144
+
 #define PPU_HLINES          144
 #define PPU_VLINES          154
 
@@ -53,6 +56,9 @@ typedef struct _ppu_t
 
     uint8_t palette[4];
     uint8_t tileset[0x200][8][8];
+
+    bool canrender;
+    uint32_t framebuffer[PPU_BUFFER_WIDTH * PPU_BUFFER_HEIGHT];
 
     uint8_t* vram;
     uint8_t* oam;

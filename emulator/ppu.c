@@ -1,6 +1,8 @@
 #include "ppu.h"
 #include "log.h"
 
+#include <memory.h>
+
 ppu_t* ppu_create(mmu_t* mmu)
 {
     log_message("Creating PPU");
@@ -19,6 +21,10 @@ ppu_t* ppu_create(mmu_t* mmu)
     ppu->line = mmu->ppu + 0x04;
     ppu->window_y = mmu->ppu + 0x0a;
     ppu->window_x = mmu->ppu + 0x0b;
+
+    // Init framebuffer
+    ppu->canrender = true;
+    memset(ppu->framebuffer, 0, PPU_BUFFER_WIDTH * PPU_BUFFER_HEIGHT * sizeof(uint32_t));
 
     return ppu;
 }

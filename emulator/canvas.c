@@ -17,8 +17,8 @@ canvas_t* canvas_init()
         "MyGBEmu",
         SDL_WINDOWPOS_CENTERED,
         SDL_WINDOWPOS_CENTERED,
-        CANVAS_BUFFER_WIDTH,
-        CANVAS_BUFFER_HEIGHT,
+        PPU_BUFFER_WIDTH,
+        PPU_BUFFER_HEIGHT,
         SDL_WINDOW_SHOWN);
 
     if (canvas->window == NULL)
@@ -27,6 +27,7 @@ canvas_t* canvas_init()
     }
 
     canvas->surface = SDL_GetWindowSurface(canvas->window);
+    canvas->renderer = SDL_CreateRenderer(canvas->window, -1, SDL_RENDERER_ACCELERATED);
     canvas->running = true;
 
     return canvas;
@@ -36,6 +37,8 @@ void canvas_destroy(canvas_t* canvas)
 {
     SDL_FreeSurface(canvas->surface);
     canvas->surface = NULL;
+    SDL_DestroyRenderer(canvas->renderer);
+    canvas->renderer = NULL;
     SDL_DestroyWindow(canvas->window);
     canvas->window = NULL;
 
@@ -58,5 +61,23 @@ void canvas_event_loop(canvas_t* canvas)
 
 void canvas_update(canvas_t* canvas, ppu_t* ppu)
 {
+    if (ppu->canrender)
+    {
+        int size = PPU_BUFFER_WIDTH * PPU_BUFFER_HEIGHT;
+        int i;
+        for (i = 0; i < size; i++)
+        {
+            int x = i / PPU_BUFFER_HEIGHT;
+            int y = i % PPU_BUFFER_HEIGHT;
 
+            int col = ppu->framebuffer[i];
+            
+            SDL_SetRenderDrawColor(canvas->renderer, col >> 16, col >> 8, col, 0xff);
+            SDL_RenderDrawPoint(canvas->renderer, x, y);
+        }
+
+        ppu->canrender = false;
+    }
+
+    SDL_RenderPresent(canvas->renderer);
 }

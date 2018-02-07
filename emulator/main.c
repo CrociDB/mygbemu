@@ -48,7 +48,6 @@ int main(int argc, const char* argv[])
     cpu_destroy(cpu);
     mmu_destroy(mmu);
 
-
     return 0;
 }
 
