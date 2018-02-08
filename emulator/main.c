@@ -33,9 +33,9 @@ int main(int argc, const char* argv[])
 
     debug_breakpoint_addr(cpu, 0x0070);
 
-    //cartridge_t* rom = cartridge_load(argv[1]);
-    //mmu_load_rom(mmu, rom);
-    //cartridge_free(rom);
+    cartridge_t* rom = cartridge_load(argv[1]);
+    mmu_load_rom(mmu, rom);
+    cartridge_free(rom);
 
     mmu_load_bios(mmu);
     cpu_reset(cpu);

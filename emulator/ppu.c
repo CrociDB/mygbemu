@@ -69,7 +69,7 @@ void ppu_update_tile(ppu_t* ppu, uint16_t addr, uint8_t data)
     uint16_t index = (vaddr >> 4);
     uint8_t y = (vaddr >> 1) & 7;
 
-    uint8_t v = ppu->vram[vaddr];
+    uint8_t v = data;
     uint8_t v1 = ppu->vram[vaddr + 1];
 
     uint8_t sx, x;
