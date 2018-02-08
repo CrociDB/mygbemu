@@ -19,6 +19,8 @@
 #define PPU_HLINES          144
 #define PPU_VLINES          154
 
+static const uint16_t PPU_TIMES[4] = {80, 172, 204, 456};
+
 typedef struct __ppu_reg_t
 {
     uint8_t value;

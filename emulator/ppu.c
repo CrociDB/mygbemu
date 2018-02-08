@@ -89,25 +89,25 @@ void ppu_tick(ppu_t* ppu, cpu_t* cpu, mmu_t* mmu)
     switch (ppu->mode)
     {
         case PPU_MODE_OAM:
-            if (ppu->clockcount >= 80)
+            if (ppu->clockcount >= PPU_TIMES[0])
             {
-                ppu->clockcount = 0;
+                ppu->clockcount %= PPU_TIMES[0];
                 ppu->mode = PPU_MODE_VRAM;
             }
             break;
         case PPU_MODE_VRAM:
-            if (ppu->clockcount >= 172)
+            if (ppu->clockcount >= PPU_TIMES[1])
             {
-                ppu->clockcount = 0;
+                ppu->clockcount %= PPU_TIMES[1];
                 ppu->mode = PPU_MODE_HBLANK;
 
                 ppu_render_line(ppu, mmu);
             }
             break;
         case PPU_MODE_HBLANK:
-            if (ppu->clockcount >= 204)
+            if (ppu->clockcount >= PPU_TIMES[2])
             {
-                ppu->clockcount = 0;
+                ppu->clockcount %= PPU_TIMES[2];
                 ppu->line->value++;
 
                 if (ppu->line->value >= PPU_HLINES - 1)
@@ -124,9 +124,9 @@ void ppu_tick(ppu_t* ppu, cpu_t* cpu, mmu_t* mmu)
             }
             break;
         case PPU_MODE_VBLANK:
-            if (ppu->clockcount += 456)
+            if (ppu->clockcount >= PPU_TIMES[3])
             {
-                ppu->clockcount = 0;
+                ppu->clockcount %= PPU_TIMES[3];
                 ppu->line->value++;
 
                 if (ppu->line->value >= PPU_VLINES)
