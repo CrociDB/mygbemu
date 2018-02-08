@@ -8,7 +8,7 @@ cartridge_t* cartridge_load(const char* filename)
     cartridge_t* c = NULL;
     FILE *file = NULL;
 
-    file = fopen(filename, "rb");
+    fopen_s(&file, filename, "rb");
     if (file)
     {
         fseek(file, 0, SEEK_END);

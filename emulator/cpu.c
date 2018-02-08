@@ -319,7 +319,7 @@ inline bool cpu_check_condition(cpu_t* cpu, condition_e condition)
 
 void cpu_ins_bit(cpu_t* cpu, uint8_t bit, uint8_t bytereg)
 {
-    cpu_flag_set_zero(cpu, !util_check_bit(bytereg, bit));
+    cpu_flag_set_zero(cpu, util_check_bit(bytereg, bit) == 0);
     cpu_flag_set_sub(cpu, false);
     cpu_flag_set_halfcarry(cpu, true);
 }

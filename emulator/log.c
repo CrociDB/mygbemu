@@ -10,7 +10,7 @@ void log_message(const char* msg, ...)
    char buffer[0xFF];
    va_list argptr;
    va_start(argptr, msg);
-   vsprintf(buffer, msg, argptr);
+   vsprintf_s(buffer, 0xFF, msg, argptr);
    _log_l(LOG_MESSAGE, buffer);
    va_end(argptr);
 }
@@ -20,7 +20,7 @@ void log_error(const char* msg, ...)
     char buffer[0xFF];
     va_list argptr;
     va_start(argptr, msg);
-    vsprintf(buffer, msg, argptr);
+    vsprintf_s(buffer, 0xFF, msg, argptr);
     _log_l(LOG_ERROR, buffer);
     va_end(argptr);
 }
@@ -30,7 +30,7 @@ void log_cpu(const char* msg, ...)
     char buffer[0xFF];
     va_list argptr;
     va_start(argptr, msg);
-    vsprintf(buffer, msg, argptr);
+    vsprintf_s(buffer, 0xFF, msg, argptr);
     _log_m("CPU", buffer);
     va_end(argptr);
 }
