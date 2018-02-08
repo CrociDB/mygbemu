@@ -22,6 +22,11 @@ ppu_t* ppu_create(mmu_t* mmu)
     ppu->window_y = mmu->ppu + 0x0a;
     ppu->window_x = mmu->ppu + 0x0b;
 
+    ppu->colors[0] = 0x00FFFFFF;
+    ppu->colors[1] = 0x00C0C0C0;
+    ppu->colors[2] = 0x00606060;
+    ppu->colors[3] = 0x00000000;
+
     // Init framebuffer
     ppu->canrender = true;
     memset(ppu->framebuffer, 0, PPU_BUFFER_WIDTH * PPU_BUFFER_HEIGHT * sizeof(uint32_t));
@@ -108,7 +113,7 @@ void ppu_tick(ppu_t* ppu, cpu_t* cpu, mmu_t* mmu)
                     ppu->line->value = 0;
                     ppu->mode = PPU_MODE_VBLANK;
                     
-                    // Draw to screen
+                    ppu->canrender = true;
                 }
                 else
                 {
@@ -134,5 +139,34 @@ void ppu_tick(ppu_t* ppu, cpu_t* cpu, mmu_t* mmu)
 
 void ppu_render_line(ppu_t * ppu, mmu_t * mmu)
 {
+    uint16_t mapoffset = ppu->control->bg_tile_select ? 0x1C00 : 0x1800;
+    mapoffset += ((ppu->line->value + ppu->scroll_y->value) & 0xFE >> 3);
 
+    uint16_t lineoffset = (ppu->scroll_x->value >> 3);
+
+    uint8_t y = (ppu->line->value + ppu->scroll_y->value) & 7;
+    uint8_t x = ppu->scroll_x->value & 7;
+
+    uint32_t canvasoffset = ppu->line->value * PPU_BUFFER_WIDTH;
+    uint8_t tile = ppu->vram[mapoffset + lineoffset];
+
+    if (ppu->control->bg_tile_select == 1 && tile < 128) tile += 0xFF;
+
+    uint32_t color;
+
+    int i;
+    for (i = 0; i < PPU_BUFFER_WIDTH; i++)
+    {
+        color = ppu->colors[ppu->tileset[tile][y][x]];
+        ppu->framebuffer[canvasoffset + i] = color;
+
+        x++;
+        if (x == 8)
+        {
+            x = 0;
+            lineoffset = (lineoffset + 1) & 31;
+            tile = ppu->vram[mapoffset + lineoffset];
+            if (ppu->control->bg_tile_select == 1 && tile < 128) tile += 0xFF;
+        }
+    }
 }
