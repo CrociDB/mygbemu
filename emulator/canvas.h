@@ -9,12 +9,22 @@
 
 #include "ppu.h"
 
+#define CANVAS_DEBUG_WINDOW_W   400
+#define CANVAS_DEBUG_WINDOW_H   300
+
+#define CANVAS_DEBUG_TILE_PAD   10
+
 typedef struct _canvas_t
 {
     SDL_Window* window;
     SDL_Surface* surface;
     SDL_Renderer* renderer;
     SDL_Event event_handler;
+
+    // Debug
+    SDL_Window* dbg_window;
+    SDL_Renderer* dbg_renderer;
+    bool dbg_draw;
 
     bool running;
 } canvas_t;
@@ -24,5 +34,6 @@ void canvas_destroy(canvas_t* canvas);
 
 void canvas_event_loop(canvas_t* canvas);
 void canvas_update(canvas_t* canvas, ppu_t* ppu);
+void canvas_update_debug(canvas_t* canvas, ppu_t* ppu);
 
 #endif

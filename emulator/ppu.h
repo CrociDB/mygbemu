@@ -54,7 +54,7 @@ typedef struct _ppu_t
     _ppu_reg_t* window_y;
     _ppu_reg_t* window_x;
 
-    uint8_t colors[4];
+    uint32_t colors[4];
     uint8_t palette[4];
     uint8_t tileset[0x200][8][8];
 

@@ -26,8 +26,23 @@ canvas_t* canvas_init()
         sys_error("Couldn't create window. SDL Error: %s", SDL_GetError());
     }
 
+    canvas->dbg_window = SDL_CreateWindow(
+        "Debug",
+        SDL_WINDOWPOS_UNDEFINED,
+        SDL_WINDOWPOS_UNDEFINED,
+        CANVAS_DEBUG_WINDOW_W,
+        CANVAS_DEBUG_WINDOW_H,
+        SDL_WINDOW_SHOWN);
+
+    if (canvas->dbg_window == NULL)
+    {
+        sys_error("Couldn't create debug window. SDL Error: %s", SDL_GetError());
+    }
+
     canvas->surface = SDL_GetWindowSurface(canvas->window);
     canvas->renderer = SDL_CreateRenderer(canvas->window, -1, SDL_RENDERER_ACCELERATED);
+    canvas->dbg_renderer = SDL_CreateRenderer(canvas->dbg_window, -1, SDL_RENDERER_ACCELERATED);
+    canvas->dbg_draw = false;
     canvas->running = true;
 
     return canvas;
@@ -50,17 +65,26 @@ void canvas_destroy(canvas_t* canvas)
 
 void canvas_event_loop(canvas_t* canvas)
 {
-    if (SDL_PollEvent(&canvas->event_handler) != 0)
+    while (SDL_PollEvent(&canvas->event_handler) != 0)
     {
         if (canvas->event_handler.type == SDL_QUIT)
         {
             canvas->running = false;
+        }
+        else if (canvas->event_handler.type == SDL_KEYDOWN)
+        {
+            if (canvas->event_handler.key.keysym.sym == SDLK_SPACE)
+            {
+                canvas->dbg_draw = true;
+            }
         }
     }
 }
 
 void canvas_update(canvas_t* canvas, ppu_t* ppu)
 {
+    canvas_update_debug(canvas, ppu);
+
     if (ppu->canrender)
     {
         int size = PPU_BUFFER_WIDTH * PPU_BUFFER_HEIGHT;
@@ -79,4 +103,37 @@ void canvas_update(canvas_t* canvas, ppu_t* ppu)
         ppu->canrender = false;
         SDL_RenderPresent(canvas->renderer);
     }
+}
+
+void canvas_update_debug(canvas_t* canvas, ppu_t* ppu)
+{
+    if (!canvas->dbg_draw) return;
+
+    canvas->dbg_draw = false;
+
+    SDL_Rect rect = { 0, 0, CANVAS_DEBUG_WINDOW_W, CANVAS_DEBUG_WINDOW_H };
+    SDL_SetRenderDrawColor(canvas->dbg_renderer, 33, 88, 22, 0xff);
+    SDL_RenderFillRect(canvas->dbg_renderer, &rect);
+
+    int y, x;
+
+    int i;
+    for (i = 0; i < 0x200; i++)
+    {
+        for (y = 0; y < 8; y++)
+        {
+            for (x = 0; x < 8; x++)
+            {
+                int col = ppu->colors[ppu->palette[ppu->tileset[i][y][x]]];
+
+                uint16_t wx = ((i % (CANVAS_DEBUG_WINDOW_W / CANVAS_DEBUG_TILE_PAD))) * CANVAS_DEBUG_TILE_PAD;
+                uint16_t wy = ((i / (CANVAS_DEBUG_WINDOW_W / CANVAS_DEBUG_TILE_PAD))) * CANVAS_DEBUG_TILE_PAD;
+                
+                SDL_SetRenderDrawColor(canvas->dbg_renderer, col >> 16, col >> 8, col & 0xff, 0xff);
+                SDL_RenderDrawPoint(canvas->dbg_renderer, x + wx, y + wy);
+            }
+        }
+    }
+    
+    SDL_RenderPresent(canvas->dbg_renderer);
 }

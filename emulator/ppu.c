@@ -31,6 +31,8 @@ ppu_t* ppu_create(mmu_t* mmu)
     ppu->canrender = true;
     memset(ppu->framebuffer, 0, PPU_BUFFER_WIDTH * PPU_BUFFER_HEIGHT * sizeof(uint32_t));
 
+    memset(ppu->tileset, 0, sizeof(ppu->tileset));
+
     return ppu;
 }
 
