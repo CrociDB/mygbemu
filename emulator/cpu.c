@@ -197,6 +197,23 @@ void cpu_init_table()
 
     optable[0x77] = (opfunc_t) { &cpu_op_77, 1, 8, 0 };
 
+    optable[0x90] = (opfunc_t) { &cpu_op_90, 1, 4, 0 };
+    optable[0x91] = (opfunc_t) { &cpu_op_91, 1, 4, 0 };
+    optable[0x92] = (opfunc_t) { &cpu_op_92, 1, 4, 0 };
+    optable[0x93] = (opfunc_t) { &cpu_op_93, 1, 4, 0 };
+    optable[0x94] = (opfunc_t) { &cpu_op_94, 1, 4, 0 };
+    optable[0x95] = (opfunc_t) { &cpu_op_95, 1, 4, 0 };
+    optable[0x96] = (opfunc_t) { &cpu_op_96, 1, 8, 0 };
+    optable[0x97] = (opfunc_t) { &cpu_op_97, 1, 4, 0 };
+    optable[0x98] = (opfunc_t) { &cpu_op_98, 1, 4, 0 };
+    optable[0x99] = (opfunc_t) { &cpu_op_99, 1, 4, 0 };
+    optable[0x9A] = (opfunc_t) { &cpu_op_9a, 1, 4, 0 };
+    optable[0x9B] = (opfunc_t) { &cpu_op_9b, 1, 4, 0 };
+    optable[0x9C] = (opfunc_t) { &cpu_op_9c, 1, 4, 0 };
+    optable[0x9D] = (opfunc_t) { &cpu_op_9d, 1, 4, 0 };
+    optable[0x9E] = (opfunc_t) { &cpu_op_9e, 1, 8, 0 };
+    optable[0x9F] = (opfunc_t) { &cpu_op_9f, 1, 4, 0 };
+
     optable[0xAF] = (opfunc_t) { &cpu_op_af, 1, 4, 0 };
 
     optable[0xB8] = (opfunc_t) { &cpu_op_b8, 1, 4, 0 };
@@ -368,6 +385,20 @@ void cpu_ins_dec8(cpu_t * cpu, uint8_t * reg)
     cpu_flag_set_halfcarry(cpu, !(((*reg) & 0xF) == 0xF));
     (*reg)--;
     cpu_flag_set_zero(cpu, ((*reg) == 0));
+}
+
+void cpu_ins_sub8(cpu_t* cpu, uint8_t value)
+{
+    cpu_flag_set_sub(cpu, true);
+
+    int8_t sa = (int8_t)(cpu->reg.af.hi - value);
+    uint8_t a = (uint8_t)sa;
+
+    cpu_flag_set_carry(cpu, sa < 0);
+    cpu_flag_set_halfcarry(cpu, (a & 0xF) > (cpu->reg.af.hi & 0xF));
+    cpu_flag_set_zero(cpu, a == 0);
+
+    cpu->reg.af.hi = a;
 }
 
 void cpu_ins_call(cpu_t * cpu, mmu_t * mmu, uint16_t addr)
@@ -1130,6 +1161,104 @@ void cpu_op_7f(cpu_t * cpu, mmu_t * mmu)
 {
     debug_instruction(cpu, mmu, "LD A, A");
     cpu->reg.af.hi = cpu->reg.af.hi;
+}
+
+void cpu_op_90(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "SUB B");
+    cpu_ins_sub8(cpu, cpu->reg.bc.hi);
+}
+
+void cpu_op_91(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "SUB C");
+    cpu_ins_sub8(cpu, cpu->reg.bc.lo);
+}
+
+void cpu_op_92(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "SUB D");
+    cpu_ins_sub8(cpu, cpu->reg.de.hi);
+}
+
+void cpu_op_93(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "SUB E");
+    cpu_ins_sub8(cpu, cpu->reg.de.lo);
+}
+
+void cpu_op_94(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "SUB H");
+    cpu_ins_sub8(cpu, cpu->reg.hl.hi);
+}
+
+void cpu_op_95(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "SUB L");
+    cpu_ins_sub8(cpu, cpu->reg.hl.lo);
+}
+
+void cpu_op_96(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "SUB (HL)");
+    uint8_t value = mmu_read_byte(mmu, cpu->reg.hl.word);
+    cpu_ins_sub8(cpu, value);
+}
+
+void cpu_op_97(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "SUB A");
+    cpu_ins_sub8(cpu, cpu->reg.af.hi);
+}
+
+void cpu_op_98(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "SBC A, B");
+    cpu_ins_sub8(cpu, cpu->reg.bc.hi + cpu_flag(cpu, CPU_FLAG_CARRY_BIT));
+}
+
+void cpu_op_99(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "SBC A, C");
+    cpu_ins_sub8(cpu, cpu->reg.bc.lo + cpu_flag(cpu, CPU_FLAG_CARRY_BIT));
+}
+
+void cpu_op_9a(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "SBC A, D");
+    cpu_ins_sub8(cpu, cpu->reg.de.hi + cpu_flag(cpu, CPU_FLAG_CARRY_BIT));
+}
+
+void cpu_op_9b(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "SBC A, E");
+    cpu_ins_sub8(cpu, cpu->reg.de.lo + cpu_flag(cpu, CPU_FLAG_CARRY_BIT));
+}
+
+void cpu_op_9c(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "SBC A, H");
+    cpu_ins_sub8(cpu, cpu->reg.hl.hi + cpu_flag(cpu, CPU_FLAG_CARRY_BIT));
+}
+
+void cpu_op_9d(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "SBC A, L");
+    cpu_ins_sub8(cpu, cpu->reg.hl.lo + cpu_flag(cpu, CPU_FLAG_CARRY_BIT));
+}
+
+void cpu_op_9e(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "SBC A, (HL)");
+    uint8_t value = mmu_read_byte(mmu, cpu->reg.hl.word);
+    cpu_ins_sub8(cpu, value + cpu_flag(cpu, CPU_FLAG_CARRY_BIT));
+}
+
+void cpu_op_9f(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "SBC A, A");
+    cpu_ins_sub8(cpu, cpu->reg.af.hi + cpu_flag(cpu, CPU_FLAG_CARRY_BIT));
 }
 
 
