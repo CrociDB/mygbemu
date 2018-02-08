@@ -28,8 +28,8 @@ canvas_t* canvas_init()
 
     canvas->dbg_window = SDL_CreateWindow(
         "Debug",
-        SDL_WINDOWPOS_UNDEFINED,
-        SDL_WINDOWPOS_UNDEFINED,
+        300,
+        SDL_WINDOWPOS_CENTERED,
         CANVAS_DEBUG_WINDOW_W,
         CANVAS_DEBUG_WINDOW_H,
         SDL_WINDOW_SHOWN);
@@ -44,6 +44,8 @@ canvas_t* canvas_init()
     canvas->dbg_renderer = SDL_CreateRenderer(canvas->dbg_window, -1, SDL_RENDERER_ACCELERATED);
     canvas->dbg_draw = false;
     canvas->running = true;
+
+    SDL_RenderSetScale(canvas->dbg_renderer, CANVAS_DEBUG_SCALE, CANVAS_DEBUG_SCALE);
 
     return canvas;
 }
@@ -126,8 +128,8 @@ void canvas_update_debug(canvas_t* canvas, ppu_t* ppu)
             {
                 int col = ppu->colors[ppu->palette[ppu->tileset[i][y][x]]];
 
-                uint16_t wx = ((i % (CANVAS_DEBUG_WINDOW_W / CANVAS_DEBUG_TILE_PAD))) * CANVAS_DEBUG_TILE_PAD;
-                uint16_t wy = ((i / (CANVAS_DEBUG_WINDOW_W / CANVAS_DEBUG_TILE_PAD))) * CANVAS_DEBUG_TILE_PAD;
+                uint16_t wx = ((i % (CANVAS_DEBUG_WINDOW_W / (CANVAS_DEBUG_TILE_PAD * CANVAS_DEBUG_SCALE)))) * CANVAS_DEBUG_TILE_PAD + (CANVAS_DEBUG_TILE_PAD / CANVAS_DEBUG_SCALE / 2);
+                uint16_t wy = ((i / (CANVAS_DEBUG_WINDOW_W / (CANVAS_DEBUG_TILE_PAD * CANVAS_DEBUG_SCALE)))) * CANVAS_DEBUG_TILE_PAD + (CANVAS_DEBUG_TILE_PAD / CANVAS_DEBUG_SCALE / 2);
                 
                 SDL_SetRenderDrawColor(canvas->dbg_renderer, col >> 16, col >> 8, col & 0xff, 0xff);
                 SDL_RenderDrawPoint(canvas->dbg_renderer, x + wx, y + wy);

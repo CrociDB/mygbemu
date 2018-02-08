@@ -9,10 +9,11 @@
 
 #include "ppu.h"
 
-#define CANVAS_DEBUG_WINDOW_W   400
-#define CANVAS_DEBUG_WINDOW_H   300
+#define CANVAS_DEBUG_WINDOW_W   810
+#define CANVAS_DEBUG_WINDOW_H   600
 
 #define CANVAS_DEBUG_TILE_PAD   10
+#define CANVAS_DEBUG_SCALE      3
 
 typedef struct _canvas_t
 {
