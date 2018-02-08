@@ -50,7 +50,7 @@ void canvas_destroy(canvas_t* canvas)
 
 void canvas_event_loop(canvas_t* canvas)
 {
-    while (SDL_PollEvent(&canvas->event_handler) != 0)
+    if (SDL_PollEvent(&canvas->event_handler) != 0)
     {
         if (canvas->event_handler.type == SDL_QUIT)
         {
@@ -77,7 +77,6 @@ void canvas_update(canvas_t* canvas, ppu_t* ppu)
         }
 
         ppu->canrender = false;
+        SDL_RenderPresent(canvas->renderer);
     }
-
-    SDL_RenderPresent(canvas->renderer);
 }

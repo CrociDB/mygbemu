@@ -84,7 +84,7 @@ void debug_loop(debugger_t* debugger)
     {
         char cmd[50];
         printf("DBG > ");
-        scanf_s("%s", cmd);
+        scanf_s("%s", cmd, 50);
 
         if (!strcmp(cmd, "c"))
         {
