@@ -91,8 +91,8 @@ void canvas_update(canvas_t* canvas, ppu_t* ppu)
 
     if (ppu->canrender)
     {
-        static c = 0;
-        log_message("[CANVAS] Printing to screen: %d", c++);
+        /*static c = 0;
+        log_message("[CANVAS] Printing to screen: %d", c++);*/
 
         int x, y;
         for (y = 0; y < PPU_BUFFER_HEIGHT; y++)

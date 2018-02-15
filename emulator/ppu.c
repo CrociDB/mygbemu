@@ -86,9 +86,9 @@ void ppu_update_tile(ppu_t* ppu, uint16_t addr, uint8_t data)
 void ppu_tick(ppu_t* ppu, cpu_t* cpu, mmu_t* mmu)
 {
     ppu_update_memory(ppu, mmu);
-    ppu->clockcount += cpu->currclock.t;
-
     if (!ppu->control->lcd_display) return;
+
+    ppu->clockcount += cpu->currclock.t;
 
     switch (ppu->mode)
     {
@@ -114,12 +114,11 @@ void ppu_tick(ppu_t* ppu, cpu_t* cpu, mmu_t* mmu)
                 ppu->clockcount %= (uint16_t)(PPU_TIMES[2] * PPU_SCALE);
                 ppu->line->value++;
 
-                if (ppu->line->value >= PPU_HLINES - 1)
+                if (ppu->line->value == PPU_HLINES)
                 {
-                    ppu->line->value = 0;
                     ppu->mode = PPU_MODE_VBLANK;
-                    
                     ppu->canrender = true;
+                    (*mmu->intflags) |= 1;
                 }
                 else
                 {
@@ -132,9 +131,11 @@ void ppu_tick(ppu_t* ppu, cpu_t* cpu, mmu_t* mmu)
             {
                 ppu->clockcount %= (uint16_t)(PPU_TIMES[3] * PPU_SCALE);
                 ppu->line->value++;
+                
 
                 if (ppu->line->value >= PPU_VLINES)
                 {
+                    log_message("[PPU] Leaving VBLANK");
                     ppu->mode = PPU_MODE_OAM;
                     ppu->line->value = 0;
                 }

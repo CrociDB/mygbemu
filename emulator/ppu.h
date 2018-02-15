@@ -16,8 +16,8 @@
 #define PPU_BUFFER_WIDTH    160
 #define PPU_BUFFER_HEIGHT   144
 
-#define PPU_HLINES          144
-#define PPU_VLINES          154
+#define PPU_HLINES          143
+#define PPU_VLINES          153
 
 static const uint16_t PPU_TIMES[4] = { 200, 430, 510, 1140 };
 static const float PPU_SCALE = 1.0f;
