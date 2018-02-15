@@ -22,14 +22,16 @@ ppu_t* ppu_create(mmu_t* mmu)
     ppu->window_y = mmu->ppu + 0x0a;
     ppu->window_x = mmu->ppu + 0x0b;
 
-    ppu->colors[0] = 0x00FFFFFF;
-    ppu->colors[1] = 0x00C0C0C0;
-    ppu->colors[2] = 0x00606060;
-    ppu->colors[3] = 0x00000000;
+    ppu->scroll_x->value = ppu->scroll_y->value = ppu->line->value = 0;
+
+    ppu->colors[0] = 0xFFFFFFFF;
+    ppu->colors[1] = 0xFFC0C0C0;
+    ppu->colors[2] = 0xFF606060;
+    ppu->colors[3] = 0xFF000000;
 
     // Init framebuffer
     ppu->canrender = true;
-    memset(ppu->framebuffer, 0, PPU_BUFFER_WIDTH * PPU_BUFFER_HEIGHT * sizeof(uint32_t));
+    ppu_reset_framebuffer(ppu);
 
     memset(ppu->tileset, 0, sizeof(ppu->tileset));
 
@@ -86,28 +88,30 @@ void ppu_tick(ppu_t* ppu, cpu_t* cpu, mmu_t* mmu)
     ppu_update_memory(ppu, mmu);
     ppu->clockcount += cpu->currclock.t;
 
+    if (!ppu->control->lcd_display) return;
+
     switch (ppu->mode)
     {
         case PPU_MODE_OAM:
-            if (ppu->clockcount >= PPU_TIMES[0])
+            if (ppu->clockcount >= (uint16_t)(PPU_TIMES[0] * PPU_SCALE))
             {
-                ppu->clockcount %= PPU_TIMES[0];
+                ppu->clockcount %= (uint16_t)(PPU_TIMES[0] * PPU_SCALE);
                 ppu->mode = PPU_MODE_VRAM;
             }
             break;
         case PPU_MODE_VRAM:
-            if (ppu->clockcount >= PPU_TIMES[1])
+            if (ppu->clockcount >= (uint16_t)(PPU_TIMES[1] * PPU_SCALE))
             {
-                ppu->clockcount %= PPU_TIMES[1];
+                ppu->clockcount %= (uint16_t)(PPU_TIMES[1] * PPU_SCALE);
                 ppu->mode = PPU_MODE_HBLANK;
 
                 ppu_render_line(ppu, mmu);
             }
             break;
         case PPU_MODE_HBLANK:
-            if (ppu->clockcount >= PPU_TIMES[2])
+            if (ppu->clockcount >= (uint16_t)(PPU_TIMES[2] * PPU_SCALE))
             {
-                ppu->clockcount %= PPU_TIMES[2];
+                ppu->clockcount %= (uint16_t)(PPU_TIMES[2] * PPU_SCALE);
                 ppu->line->value++;
 
                 if (ppu->line->value >= PPU_HLINES - 1)
@@ -124,9 +128,9 @@ void ppu_tick(ppu_t* ppu, cpu_t* cpu, mmu_t* mmu)
             }
             break;
         case PPU_MODE_VBLANK:
-            if (ppu->clockcount >= PPU_TIMES[3])
+            if (ppu->clockcount >= (uint16_t)(PPU_TIMES[3] * PPU_SCALE))
             {
-                ppu->clockcount %= PPU_TIMES[3];
+                ppu->clockcount %= (uint16_t)(PPU_TIMES[3] * PPU_SCALE);
                 ppu->line->value++;
 
                 if (ppu->line->value >= PPU_VLINES)
@@ -141,26 +145,26 @@ void ppu_tick(ppu_t* ppu, cpu_t* cpu, mmu_t* mmu)
 
 void ppu_render_line(ppu_t * ppu, mmu_t * mmu)
 {
-    uint16_t mapoffset = ppu->control->bg_tile_select ? 0x1C00 : 0x1800;
-    mapoffset += ((ppu->line->value + ppu->scroll_y->value) & 0xFE >> 3);
+    uint16_t mapoffset = ppu->control->bg_win_tiledata_select ? 0x1C00 : 0x1800;
+    mapoffset += (((ppu->line->value + ppu->scroll_y->value) & 255) >> 3) << 5;
 
-    uint16_t lineoffset = (ppu->scroll_x->value >> 3);
+    uint8_t lineoffset = (ppu->scroll_x->value >> 3);
 
     uint8_t y = (ppu->line->value + ppu->scroll_y->value) & 7;
     uint8_t x = ppu->scroll_x->value & 7;
 
     uint32_t canvasoffset = ppu->line->value * PPU_BUFFER_WIDTH;
-    uint8_t tile = ppu->vram[mapoffset + lineoffset];
+    uint8_t tile = ppu->vram[mapoffset + lineoffset] + 1;
 
-    if (ppu->control->bg_tile_select == 1 && tile < 128) tile += 0xFF;
+    if (ppu->control->bg_tilemap_select && tile < 128) tile += 0xFF;
 
     uint32_t color;
 
     int i;
     for (i = 0; i < PPU_BUFFER_WIDTH; i++)
     {
-        color = ppu->colors[ppu->tileset[tile][y][x]];
-        ppu->framebuffer[canvasoffset + i] = color;
+        color = ppu->colors[ppu->palette[ppu->tileset[tile][y][x]]];
+        ppu->framebuffer[ppu->line->value][i] = color;
 
         x++;
         if (x == 8)
@@ -168,7 +172,12 @@ void ppu_render_line(ppu_t * ppu, mmu_t * mmu)
             x = 0;
             lineoffset = (lineoffset + 1) & 31;
             tile = ppu->vram[mapoffset + lineoffset];
-            if (ppu->control->bg_tile_select == 1 && tile < 128) tile += 0xFF;
+            if (ppu->control->bg_tilemap_select && tile < 128) tile += 0xFF;
         }
     }
+}
+
+void ppu_reset_framebuffer(ppu_t* ppu)
+{
+    memset(ppu->framebuffer, 0, PPU_BUFFER_HEIGHT * PPU_BUFFER_WIDTH * sizeof(uint32_t));
 }

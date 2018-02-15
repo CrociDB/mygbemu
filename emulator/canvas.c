@@ -13,12 +13,13 @@ canvas_t* canvas_init()
         sys_error("Couldn't init video. SDL Error: %s", SDL_GetError());
     }
     
+    canvas->scale = 2;
     canvas->window = SDL_CreateWindow(
         "MyGBEmu",
         SDL_WINDOWPOS_CENTERED,
         SDL_WINDOWPOS_CENTERED,
-        PPU_BUFFER_WIDTH,
-        PPU_BUFFER_HEIGHT,
+        PPU_BUFFER_WIDTH * canvas->scale,
+        PPU_BUFFER_HEIGHT * canvas->scale,
         SDL_WINDOW_SHOWN);
 
     if (canvas->window == NULL)
@@ -45,6 +46,7 @@ canvas_t* canvas_init()
     canvas->dbg_draw = false;
     canvas->running = true;
 
+    SDL_RenderSetScale(canvas->renderer, canvas->scale, canvas->scale);
     SDL_RenderSetScale(canvas->dbg_renderer, CANVAS_DEBUG_SCALE, CANVAS_DEBUG_SCALE);
 
     return canvas;
@@ -89,20 +91,23 @@ void canvas_update(canvas_t* canvas, ppu_t* ppu)
 
     if (ppu->canrender)
     {
-        int size = PPU_BUFFER_WIDTH * PPU_BUFFER_HEIGHT;
-        int i;
-        for (i = 0; i < size; i++)
-        {
-            int x = i / PPU_BUFFER_HEIGHT;
-            int y = i % PPU_BUFFER_HEIGHT;
+        static c = 0;
+        log_message("[CANVAS] Printing to screen: %d", c++);
 
-            int col = ppu->framebuffer[i];
-            
-            SDL_SetRenderDrawColor(canvas->renderer, col >> 16, col >> 8, col, 0xff);
-            SDL_RenderDrawPoint(canvas->renderer, x, y);
+        int x, y;
+        for (y = 0; y < PPU_BUFFER_HEIGHT; y++)
+        {
+            for (x = 0; x < PPU_BUFFER_WIDTH; x++)
+            {
+                int col = ppu->framebuffer[y][x];
+
+                SDL_SetRenderDrawColor(canvas->renderer, col >> 16, col >> 8, col, 0xff);
+                SDL_RenderDrawPoint(canvas->renderer, x, y);
+            }
         }
 
         ppu->canrender = false;
+        ppu_reset_framebuffer(ppu);
         SDL_RenderPresent(canvas->renderer);
     }
 }

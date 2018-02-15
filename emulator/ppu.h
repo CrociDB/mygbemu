@@ -19,7 +19,8 @@
 #define PPU_HLINES          144
 #define PPU_VLINES          154
 
-static const uint16_t PPU_TIMES[4] = {80, 172, 204, 456};
+static const uint16_t PPU_TIMES[4] = { 200, 430, 510, 1140 };
+static const float PPU_SCALE = 1.0f;
 
 typedef struct __ppu_reg_t
 {
@@ -39,10 +40,10 @@ typedef struct _ppu_t
             struct
             {
                 bool lcd_display:1;
-                bool window_tile_select:1;
+                bool window_tilemap_select:1;
                 bool window_display:1;
-                bool bg_win_select:1;
-                bool bg_tile_select:1;
+                bool bg_win_tiledata_select:1;
+                bool bg_tilemap_select:1;
                 bool sprite_size:1;
                 bool sprite_display:1;
                 bool bg_win_priority:1;
@@ -61,7 +62,7 @@ typedef struct _ppu_t
     uint8_t tileset[0x200][8][8];
 
     bool canrender;
-    uint32_t framebuffer[PPU_BUFFER_WIDTH * PPU_BUFFER_HEIGHT];
+    uint32_t framebuffer[PPU_BUFFER_HEIGHT][PPU_BUFFER_WIDTH];
 
     uint8_t* vram;
     uint8_t* oam;
@@ -74,5 +75,6 @@ void ppu_update_memory(ppu_t* ppu, mmu_t* mmu);
 void ppu_update_tile(ppu_t* ppu, uint16_t addr, uint8_t data);
 void ppu_tick(ppu_t* ppu, cpu_t* cpu, mmu_t* mmu);
 void ppu_render_line(ppu_t* ppu, mmu_t* mmu);
+void ppu_reset_framebuffer(ppu_t* ppu);
 
 #endif

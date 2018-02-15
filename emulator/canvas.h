@@ -21,6 +21,7 @@ typedef struct _canvas_t
     SDL_Surface* surface;
     SDL_Renderer* renderer;
     SDL_Event event_handler;
+    uint8_t scale;
 
     // Debug
     SDL_Window* dbg_window;
