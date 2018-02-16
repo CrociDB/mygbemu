@@ -144,7 +144,7 @@ void ppu_tick(ppu_t* ppu, cpu_t* cpu, mmu_t* mmu)
     }
 }
 
-void ppu_render_line(ppu_t * ppu, mmu_t * mmu)
+void ppu_render_line(ppu_t* ppu, mmu_t* mmu)
 {
     uint16_t mapoffset = ppu->control->bg_win_tiledata_select ? 0x1C00 : 0x1800;
     mapoffset += (((ppu->line->value + ppu->scroll_y->value) & 255) >> 3) << 5;
@@ -152,29 +152,18 @@ void ppu_render_line(ppu_t * ppu, mmu_t * mmu)
     uint8_t lineoffset = (ppu->scroll_x->value >> 3);
 
     uint8_t y = (ppu->line->value + ppu->scroll_y->value) & 7;
-    uint8_t x = ppu->scroll_x->value & 7;
-
-    uint32_t canvasoffset = ppu->line->value * PPU_BUFFER_WIDTH;
-    uint8_t tile = ppu->vram[mapoffset + lineoffset];
-
-    if (ppu->control->bg_tilemap_select && tile < 128) tile += 0xFF;
-
+    
+    uint8_t x;
+    int8_t tile;
     uint32_t color;
 
-    int i;
-    for (i = 0; i < PPU_BUFFER_WIDTH; i++)
+    for (x = 0; x < PPU_BUFFER_WIDTH; x++)
     {
-        color = ppu->colors[ppu->palette[ppu->tileset[tile + 1][y][x]]];
-        ppu->framebuffer[ppu->line->value][i] = color;
+        tile = (int8_t)ppu->vram[mapoffset + lineoffset + (x / 8)];
+        if (ppu->control->bg_tilemap_select && tile < 128) tile += 0x100;
 
-        x++;
-        if (x == 8)
-        {
-            x = 0;
-            lineoffset = (lineoffset + 1) & 31;
-            tile = ppu->vram[mapoffset + lineoffset];
-            if (ppu->control->bg_tilemap_select && tile < 128) tile += 0xFF;
-        }
+        color = ppu->colors[ppu->palette[ppu->tileset[tile][y][x % 8]]];
+        ppu->framebuffer[ppu->line->value][x] = color;
     }
 }
 
