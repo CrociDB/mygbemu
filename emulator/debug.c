@@ -23,6 +23,22 @@ debugger_t* debug_get(cpu_t* cpu)
     return NULL;
 }
 
+void debugger_init_loop(debugger_t* debugger, mmu_t* mmu, ppu_t* ppu)
+{
+    debugger->mmu = mmu;
+    debugger->ppu = ppu;
+    debugger->running = true;
+
+    debugger->thread = SDL_CreateThread(debug_thread_loop, "debugger_thread", (void*)debugger);
+}
+
+void debugger_end_loop(debugger_t* debugger)
+{
+    debugger->running = false;
+    int status;
+    SDL_WaitThread(debugger->thread, &status);
+}
+
 void debug_breakpoint_addr(cpu_t* cpu, uint16_t addr)
 {
     debugger_t* debugger = debug_get(cpu);
@@ -78,6 +94,22 @@ bool _debug_isbreak(debugger_t* debugger, uint16_t addr, char* asmline)
     return false;
 }
 
+int debug_thread_loop(void* data)
+{
+    debugger_t* debugger = (debugger_t*)data;
+
+    while (debugger->running)
+    {
+        if (debugger->debug)
+        {
+            debug_loop(debugger);
+            debugger->debug = false;
+        }
+    }
+
+    return 0;
+}
+
 void debug_loop(debugger_t* debugger)
 {
     while (1)
@@ -114,6 +146,10 @@ void debug_loop(debugger_t* debugger)
                 debugger->cpu->reg.hl.hi, debugger->cpu->reg.hl.lo, debugger->cpu->reg.hl.word,
                 debugger->cpu->reg.sp.word, (debugger->cpu->reg.pc.word - 0x01));
         }
+        else if (!strcmp(cmd, "h"))
+        {
+            printf("%s", DEBUGGER_INSTRUCTIONS);
+        }
         else
         {
             printf("Unknown command.\n%s", DEBUGGER_INSTRUCTIONS);
@@ -143,7 +179,8 @@ void debug_instruction(cpu_t* cpu, mmu_t* mmu, const char* disasm, ...)
     {
         debugger->stopnext = false;
         printf("\nBREAKPOINT AT 0x%04X\n", pc_addr);
-        debug_loop(debugger);
+        //debug_loop(debugger);
+        debugger->debug = true;
     }
     
     va_end(argptr);

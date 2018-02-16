@@ -40,7 +40,9 @@ int main(int argc, const char* argv[])
     mmu_load_bios(mmu);
     cpu_reset(cpu);
 
+    debugger_init_loop(debugger, mmu, ppu);
     emu_run(cpu, mmu, ppu, canvas);
+    debugger_end_loop(debugger);
 
     // Destroy everything
     canvas_destroy(canvas);
@@ -53,12 +55,17 @@ int main(int argc, const char* argv[])
 
 void emu_run(cpu_t* cpu, mmu_t* mmu, ppu_t* ppu, canvas_t* canvas)
 {
+    debugger_t* debugger = debug_get(cpu);
+
     while (canvas->running)
     {
         canvas_event_loop(canvas);
 
-        cpu_tick(cpu, mmu);
-        ppu_tick(ppu, cpu, mmu);
+        if (!debugger->debug)
+        {
+            cpu_tick(cpu, mmu);
+            ppu_tick(ppu, cpu, mmu);
+        }
 
         canvas_update(canvas, ppu);
     }

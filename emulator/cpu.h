@@ -51,7 +51,6 @@ typedef struct _cpu_t
     } reg;
 
     uint8_t currop;
-    
 } cpu_t;
 
 typedef struct _opfunc_t
