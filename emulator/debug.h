@@ -17,8 +17,8 @@
 #include "ppu.h"
 #include "log.h"
 
-static const char* DEBUGGER_INSTRUCTIONS = "Usage:\n\tc - continue\n\ts - step\n\tr - display cpu registers\n"\
-                                           "\th - help\n\tq - quit\n";
+static const char* DEBUGGER_INSTRUCTIONS = "Usage:\n\tc - continue\n\ts - step\n\n\tr - display cpu registers"\
+                                           "\n\ti - info\n\n\th - help\n\tq - quit\n";
 
 typedef enum _debug_breakpoint_type_e
 {
@@ -51,6 +51,9 @@ typedef struct _debugger_t
     bool running;
     bool debug;
     SDL_Thread* thread;
+
+    uint16_t current_addr;
+    char current_disasm[256];
 
     debug_breakpoint_t* breakpoints;
 } debugger_t;

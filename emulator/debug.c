@@ -112,6 +112,9 @@ int debug_thread_loop(void* data)
 
 void debug_loop(debugger_t* debugger)
 {
+    uint16_t pc_addr = (debugger->cpu->reg.pc.word - 1);
+    printf("\n> 0x%04X\t%02X\t%s\n\n", pc_addr, debugger->cpu->currop, debugger->current_disasm);
+
     while (1)
     {
         char cmd[50];
@@ -146,6 +149,10 @@ void debug_loop(debugger_t* debugger)
                 debugger->cpu->reg.hl.hi, debugger->cpu->reg.hl.lo, debugger->cpu->reg.hl.word,
                 debugger->cpu->reg.sp.word, (debugger->cpu->reg.pc.word - 0x01));
         }
+        else if (!strcmp(cmd, "i"))
+        {
+            printf("\n> 0x%04X\t%02X\t%s\n\n", pc_addr, debugger->cpu->currop, debugger->current_disasm);
+        }
         else if (!strcmp(cmd, "h"))
         {
             printf("%s", DEBUGGER_INSTRUCTIONS);
@@ -170,17 +177,18 @@ void debug_instruction(cpu_t* cpu, mmu_t* mmu, const char* disasm, ...)
     uint16_t pc_addr = (cpu->reg.pc.word - 1);
     bool isbreak = _debug_isbreak(debugger, pc_addr, buffer) || debugger->stopnext;
 
-    if (debugger->printall || isbreak)
+    if (debugger->printall)
     {
         log_cpu("0x%04X\t%02X\t%s", pc_addr, cpu->currop, buffer);
     }
 
     if (isbreak)
     {
+        debugger->current_addr = pc_addr;
+        strcpy_s(debugger->current_disasm, sizeof(debugger->current_disasm), buffer);
         debugger->stopnext = false;
-        printf("\nBREAKPOINT AT 0x%04X\n", pc_addr);
-        //debug_loop(debugger);
         debugger->debug = true;
+        //debug_loop(debugger);
     }
     
     va_end(argptr);
