@@ -71,6 +71,13 @@ void canvas_event_loop(canvas_t* canvas)
 {
     while (SDL_PollEvent(&canvas->event_handler) != 0)
     {
+        if (canvas->event_handler.type == SDL_WINDOWEVENT)
+        {
+            if (canvas->event_handler.window.event == SDL_WINDOWEVENT_CLOSE)
+            {
+                canvas->running = false;
+            }
+        }
         if (canvas->event_handler.type == SDL_QUIT)
         {
             canvas->running = false;
