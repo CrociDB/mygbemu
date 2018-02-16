@@ -590,7 +590,7 @@ void cpu_op_1e(cpu_t * cpu, mmu_t * mmu)
 {
     uint8_t byte = mmu_read_byte(mmu, cpu->reg.pc.word);
     debug_instruction(cpu, mmu, "LD E, $%02X", byte);
-    cpu->reg.de.hi = byte;
+    cpu->reg.de.lo = byte;
 }
 
 void cpu_op_20(cpu_t* cpu, mmu_t* mmu)

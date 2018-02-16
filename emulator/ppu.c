@@ -135,7 +135,7 @@ void ppu_tick(ppu_t* ppu, cpu_t* cpu, mmu_t* mmu)
 
                 if (ppu->line->value >= PPU_VLINES)
                 {
-                    log_message("[PPU] Leaving VBLANK");
+                    //log_message("[PPU] Leaving VBLANK");
                     ppu->mode = PPU_MODE_OAM;
                     ppu->line->value = 0;
                 }
@@ -155,7 +155,7 @@ void ppu_render_line(ppu_t * ppu, mmu_t * mmu)
     uint8_t x = ppu->scroll_x->value & 7;
 
     uint32_t canvasoffset = ppu->line->value * PPU_BUFFER_WIDTH;
-    uint8_t tile = ppu->vram[mapoffset + lineoffset] + 1;
+    uint8_t tile = ppu->vram[mapoffset + lineoffset];
 
     if (ppu->control->bg_tilemap_select && tile < 128) tile += 0xFF;
 

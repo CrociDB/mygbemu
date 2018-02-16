@@ -35,8 +35,8 @@ typedef union _reg16_t
 
 typedef union _clock_t
 {
-    uint16_t m;
-    uint16_t t;
+    uint32_t m;
+    uint32_t t;
 } clck_t;
 
 typedef struct _cpu_t

@@ -19,7 +19,7 @@
 #define PPU_HLINES          143
 #define PPU_VLINES          153
 
-static const uint16_t PPU_TIMES[4] = { 200, 430, 510, 1140 };
+static const uint16_t PPU_TIMES[4] = { 80, 172, 204, 456};
 static const float PPU_SCALE = 1.0f;
 
 typedef struct __ppu_reg_t
@@ -30,7 +30,7 @@ typedef struct __ppu_reg_t
 typedef struct _ppu_t
 {
     uint8_t mode:2;
-    uint16_t clockcount;
+    uint32_t clockcount;
 
     struct
     {
