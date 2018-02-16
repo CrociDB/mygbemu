@@ -17,8 +17,13 @@
 #include "ppu.h"
 #include "log.h"
 
-static const char* DEBUGGER_INSTRUCTIONS = "Usage:\n\tc - continue\n\ts - step\n\n\tr - display cpu registers"\
-                                           "\n\ti - info\n\n\th - help\n\tq - quit\n";
+static const char* DEBUGGER_INSTRUCTIONS = "Usage:\n\t- c \t\t\t continue\n\t- s \t\t\t step\n\n\t- r \t\t\t display cpu registers"\
+                                           "\n\t- i \t\t\t info\n"\
+                                           "\n\t- mem8 [addr] \t\t display 8bit value in specified addr in memory"\
+                                           "\n\t- mem16 [addr] \t\t display 16bit value in specified addr in memory"\
+                                           "\n\t- set8 [addr] [value] \t set 8bit value in specified addr in memory"\
+                                           "\n\t- set16 [addr] [value] \t set 16bit value in specified addr in memory"\
+                                           "\n\n\t- h \t\t\t help\n\t- q \t\t\t quit\n";
 
 typedef enum _debug_breakpoint_type_e
 {
