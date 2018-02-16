@@ -164,7 +164,7 @@ void ppu_render_line(ppu_t * ppu, mmu_t * mmu)
     int i;
     for (i = 0; i < PPU_BUFFER_WIDTH; i++)
     {
-        color = ppu->colors[ppu->palette[ppu->tileset[tile][y][x]]];
+        color = ppu->colors[ppu->palette[ppu->tileset[tile + 1][y][x]]];
         ppu->framebuffer[ppu->line->value][i] = color;
 
         x++;
