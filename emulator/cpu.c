@@ -604,7 +604,6 @@ void cpu_op_21(cpu_t* cpu, mmu_t* mmu)
 {
     uint16_t word = mmu_read_word(mmu, cpu->reg.pc.word);
     debug_instruction(cpu, mmu, "LD HL, $%04X", word);
-
     cpu->reg.hl.word = word;
 }
 
@@ -676,7 +675,7 @@ void cpu_op_2e(cpu_t * cpu, mmu_t * mmu)
 {
     uint8_t byte = mmu_read_byte(mmu, cpu->reg.pc.word);
     debug_instruction(cpu, mmu, "LD L, $%02X", byte);
-    cpu->reg.hl.hi = byte;
+    cpu->reg.hl.lo = byte;
 }
 
 void cpu_op_30(cpu_t * cpu, mmu_t * mmu)

@@ -162,6 +162,11 @@ void ppu_render_line(ppu_t* ppu, mmu_t* mmu)
         tile = (int8_t)ppu->vram[mapoffset + lineoffset + (x / 8)];
         if (ppu->control->bg_tilemap_select && tile < 128) tile += 0x100;
 
+        if (tile != 0)
+        {
+            int a = 0;
+        }
+
         color = ppu->colors[ppu->palette[ppu->tileset[tile][y][x % 8]]];
         ppu->framebuffer[ppu->line->value][x] = color;
     }

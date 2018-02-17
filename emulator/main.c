@@ -31,7 +31,7 @@ int main(int argc, const char* argv[])
     debugger_t* debugger = debug_get(cpu);
     debugger->printall = false;
 
-    debug_breakpoint_addr(cpu, 0x0080);
+    debug_breakpoint_addr(cpu, 0x0000);
 
     cartridge_t* rom = cartridge_load(argv[1]);
     mmu_load_rom(mmu, rom);
