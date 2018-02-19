@@ -20,6 +20,11 @@ void cpu_reset(cpu_t* cpu)
     memset((void*)(&cpu->reg), 0, sizeof(cpu->reg));
 }
 
+void cpu_run_cartridge(cpu_t * cpu)
+{
+    cpu->reg.pc.word = 0x0100;
+}
+
 void cpu_tick(cpu_t* cpu, mmu_t* mmu)
 {
     if (cpu->reg.pc.word >= 0x8000) return;

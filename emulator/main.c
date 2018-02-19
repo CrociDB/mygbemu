@@ -31,14 +31,15 @@ int main(int argc, const char* argv[])
     debugger_t* debugger = debug_get(cpu);
     debugger->printall = false;
 
-    debug_breakpoint_addr(cpu, 0x00fc);
+    debug_breakpoint_addr(cpu, 0x02b2);
 
     cartridge_t* rom = cartridge_load(argv[1]);
     mmu_load_rom(mmu, rom);
     cartridge_free(rom);
 
-    mmu_load_bios(mmu);
+    //mmu_load_bios(mmu);
     cpu_reset(cpu);
+    cpu_run_cartridge(cpu);
 
     debugger_init_loop(debugger, mmu, ppu);
     emu_run(cpu, mmu, ppu, canvas);

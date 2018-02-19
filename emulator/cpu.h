@@ -72,6 +72,7 @@ void cpu_destroy(cpu_t* cpu);
 void cpu_init_table();
 static void _cpu_init_table_cb();
 void cpu_reset(cpu_t* cpu);
+void cpu_run_cartridge(cpu_t* cpu);
 
 void cpu_tick(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_cb(cpu_t* cpu, mmu_t* mmu);
