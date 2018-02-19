@@ -79,6 +79,7 @@ void cpu_init_table()
     optable[0x04] = (opfunc_t) { &cpu_op_04, 1, 4, 0 };
     optable[0x05] = (opfunc_t) { &cpu_op_05, 1, 4, 0 };
     optable[0x06] = (opfunc_t) { &cpu_op_06, 2, 8, 1 };
+    optable[0x09] = (opfunc_t) { &cpu_op_09, 2, 8, 0 };
     optable[0x0A] = (opfunc_t) { &cpu_op_0a, 1, 8, 0 };
     optable[0x0B] = (opfunc_t) { &cpu_op_0b, 1, 8, 0 };
     optable[0x0C] = (opfunc_t) { &cpu_op_0c, 1, 4, 0 };
@@ -92,6 +93,7 @@ void cpu_init_table()
     optable[0x15] = (opfunc_t) { &cpu_op_15, 1, 4, 0 };
     optable[0x16] = (opfunc_t) { &cpu_op_16, 2, 8, 1 };
     optable[0x17] = (opfunc_t) { &cpu_op_17, 1, 4, 0 };
+    optable[0x19] = (opfunc_t) { &cpu_op_19, 2, 8, 0 };
     optable[0x18] = (opfunc_t) { &cpu_op_18, 2, 12, 1 };
     optable[0x1A] = (opfunc_t) { &cpu_op_1a, 1, 8, 0 };
     optable[0x1B] = (opfunc_t) { &cpu_op_1b, 1, 8, 0 };
@@ -107,6 +109,7 @@ void cpu_init_table()
     optable[0x25] = (opfunc_t) { &cpu_op_25, 1, 4, 0 };
     optable[0x26] = (opfunc_t) { &cpu_op_26, 2, 8, 1 };
     optable[0x28] = (opfunc_t) { &cpu_op_28, 2, 8, 1 };
+    optable[0x29] = (opfunc_t) { &cpu_op_29, 2, 8, 0 };
     optable[0x2A] = (opfunc_t) { &cpu_op_2a, 1, 8, 0 };
     optable[0x2B] = (opfunc_t) { &cpu_op_2b, 1, 8, 0 };
     optable[0x2C] = (opfunc_t) { &cpu_op_2c, 1, 4, 0 };
@@ -121,6 +124,7 @@ void cpu_init_table()
     optable[0x35] = (opfunc_t) { &cpu_op_35, 1, 12, 0 };
     optable[0x36] = (opfunc_t) { &cpu_op_36, 2, 12, 1 };
     optable[0x38] = (opfunc_t) { &cpu_op_38, 2, 8, 1 };
+    optable[0x39] = (opfunc_t) { &cpu_op_39, 2, 8, 0 };
     optable[0x3A] = (opfunc_t) { &cpu_op_3a, 1, 8, 0 };
     optable[0x3B] = (opfunc_t) { &cpu_op_3b, 1, 8, 0 };
     optable[0x3C] = (opfunc_t) { &cpu_op_3c, 1, 4, 0 };
@@ -195,7 +199,14 @@ void cpu_init_table()
     optable[0x7E] = (opfunc_t) { &cpu_op_7e, 1, 8, 0 };
     optable[0x7F] = (opfunc_t) { &cpu_op_7f, 1, 4, 0 };
 
-    optable[0x77] = (opfunc_t) { &cpu_op_77, 1, 8, 0 };
+    optable[0x80] = (opfunc_t) { &cpu_op_80, 1, 4, 0 };
+    optable[0x81] = (opfunc_t) { &cpu_op_81, 1, 4, 0 };
+    optable[0x82] = (opfunc_t) { &cpu_op_82, 1, 4, 0 };
+    optable[0x83] = (opfunc_t) { &cpu_op_83, 1, 4, 0 };
+    optable[0x84] = (opfunc_t) { &cpu_op_84, 1, 4, 0 };
+    optable[0x85] = (opfunc_t) { &cpu_op_85, 1, 4, 0 };
+    optable[0x86] = (opfunc_t) { &cpu_op_86, 1, 8, 0 };
+    optable[0x87] = (opfunc_t) { &cpu_op_87, 1, 4, 0 };
 
     optable[0x90] = (opfunc_t) { &cpu_op_90, 1, 4, 0 };
     optable[0x91] = (opfunc_t) { &cpu_op_91, 1, 4, 0 };
@@ -227,6 +238,7 @@ void cpu_init_table()
     
     optable[0xC1] = (opfunc_t) { &cpu_op_c1, 1, 12, 0 };
     optable[0xC5] = (opfunc_t) { &cpu_op_c5, 1, 16, 0 };
+    optable[0xC6] = (opfunc_t) { &cpu_op_c6, 2, 8, 1 };
     optable[0xC9] = (opfunc_t) { &cpu_op_c9, 1, 16, 0 };
     optable[0xCD] = (opfunc_t) { &cpu_op_cd, 3, 24, 0 };
 
@@ -237,6 +249,7 @@ void cpu_init_table()
     optable[0xE1] = (opfunc_t) { &cpu_op_e1, 1, 12, 0 };
     optable[0xE2] = (opfunc_t) { &cpu_op_e2, 2, 8, 0 };
     optable[0xE5] = (opfunc_t) { &cpu_op_e5, 1, 16, 0 };
+    optable[0xE8] = (opfunc_t) { &cpu_op_e8, 2, 16, 1 };
     optable[0xEA] = (opfunc_t) { &cpu_op_ea, 3, 16, 2 };
 
     optable[0xF0] = (opfunc_t) { &cpu_op_f0, 2, 12, 1 };
@@ -379,6 +392,32 @@ void cpu_ins_inc8(cpu_t* cpu, uint8_t* reg)
     cpu_flag_set_zero(cpu, ((*reg) == 0));
 }
 
+void cpu_ins_add8(cpu_t* cpu, uint8_t* reg, const uint8_t value)
+{
+    cpu_flag_set_sub(cpu, false);
+
+    uint8_t res = (*reg) + value;
+
+    cpu_flag_set_zero(cpu, res == 0);
+    cpu_flag_set_carry(cpu, (res & 0x100) != 0);
+    cpu_flag_set_halfcarry(cpu, (((*reg) & 0xF) + (value & 0xF)) > 0xF);
+
+    (*reg) = res;
+}
+
+void cpu_ins_add16(cpu_t* cpu, uint16_t* reg, const uint16_t value, bool zero)
+{
+    cpu_flag_set_sub(cpu, false);
+
+    uint16_t res = (*reg) + value;
+
+    if (zero) cpu_flag_set_zero(cpu, res == 0);
+    cpu_flag_set_carry(cpu, ((*reg) + value) > 0xFFFF);
+    cpu_flag_set_halfcarry(cpu, (((*reg) & 0x0FFF) + (value & 0x0FFF)) > 0x0FFF);
+
+    (*reg) = res;
+}
+
 void cpu_ins_dec8(cpu_t * cpu, uint8_t * reg)
 {
     cpu_flag_set_sub(cpu, false);
@@ -485,6 +524,12 @@ void cpu_op_06(cpu_t * cpu, mmu_t * mmu)
     cpu->reg.bc.hi = byte;
 }
 
+void cpu_op_09(cpu_t* cpu, mmu_t* mmu)
+{
+    debug_instruction(cpu, mmu, "ADD HL, BC");
+    cpu_ins_add16(cpu, &cpu->reg.hl.word, cpu->reg.bc.word, false);
+}
+
 void cpu_op_0b(cpu_t * cpu, mmu_t * mmu)
 {
     debug_instruction(cpu, mmu, "DEC BC");
@@ -560,6 +605,12 @@ void cpu_op_18(cpu_t * cpu, mmu_t * mmu)
     int8_t offset = (int8_t)mmu_read_byte(mmu, cpu->reg.pc.word);
     debug_instruction(cpu, mmu, "JR $%02x", (uint8_t)offset);
     cpu->reg.pc.word += offset;
+}
+
+void cpu_op_19(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "ADD HL, DE");
+    cpu_ins_add16(cpu, &cpu->reg.hl.word, cpu->reg.de.word, false);
 }
 
 void cpu_op_1a(cpu_t * cpu, mmu_t * mmu)
@@ -644,6 +695,12 @@ void cpu_op_28(cpu_t * cpu, mmu_t * mmu)
     int8_t offset = (int8_t)mmu_read_byte(mmu, cpu->reg.pc.word);
     debug_instruction(cpu, mmu, "JR Z, $%2X", (uint8_t)offset);
     cpu_int_jr(cpu, offset, CPU_CONDITION_Z);
+}
+
+void cpu_op_29(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "ADD HL, HL");
+    cpu_ins_add16(cpu, &cpu->reg.hl.word, cpu->reg.hl.word, false);
 }
 
 void cpu_op_2a(cpu_t * cpu, mmu_t * mmu)
@@ -734,6 +791,12 @@ void cpu_op_38(cpu_t * cpu, mmu_t * mmu)
     int8_t offset = (int8_t)mmu_read_byte(mmu, cpu->reg.pc.word);
     debug_instruction(cpu, mmu, "JR C, $%2X", (uint8_t)offset);
     cpu_int_jr(cpu, offset, CPU_CONDITION_C);
+}
+
+void cpu_op_39(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "ADD HL, SP");
+    cpu_ins_add16(cpu, &cpu->reg.hl.word, cpu->reg.sp.word, false);
 }
 
 void cpu_op_3a(cpu_t * cpu, mmu_t * mmu)
@@ -1162,6 +1225,55 @@ void cpu_op_7f(cpu_t * cpu, mmu_t * mmu)
     cpu->reg.af.hi = cpu->reg.af.hi;
 }
 
+void cpu_op_80(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "ADD A, B");
+    cpu_ins_add8(cpu, &cpu->reg.af.hi, cpu->reg.bc.hi);
+}
+
+void cpu_op_81(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "ADD A, C");
+    cpu_ins_add8(cpu, &cpu->reg.af.hi, cpu->reg.bc.lo);
+}
+
+void cpu_op_82(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "ADD A, D");
+    cpu_ins_add8(cpu, &cpu->reg.af.hi, cpu->reg.de.hi);
+}
+
+void cpu_op_83(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "ADD A, E");
+    cpu_ins_add8(cpu, &cpu->reg.af.hi, cpu->reg.de.lo);
+}
+
+void cpu_op_84(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "ADD A, H");
+    cpu_ins_add8(cpu, &cpu->reg.af.hi, cpu->reg.hl.hi);
+}
+
+void cpu_op_85(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "ADD A, L");
+    cpu_ins_add8(cpu, &cpu->reg.af.hi, cpu->reg.hl.lo);
+}
+
+void cpu_op_86(cpu_t * cpu, mmu_t * mmu)
+{
+    uint8_t value = mmu_read_byte(mmu, cpu->reg.hl.word);
+    debug_instruction(cpu, mmu, "ADD A, (HL)");
+    cpu_ins_add8(cpu, &cpu->reg.af.hi, value);
+}
+
+void cpu_op_87(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "ADD A, A");
+    cpu_ins_add8(cpu, &cpu->reg.af.hi, cpu->reg.af.hi);
+}
+
 void cpu_op_90(cpu_t * cpu, mmu_t * mmu)
 {
     debug_instruction(cpu, mmu, "SUB B");
@@ -1338,6 +1450,13 @@ void cpu_op_c5(cpu_t * cpu, mmu_t * mmu)
     mmu_write_word(mmu, cpu->reg.sp.word, cpu->reg.bc.word);
 }
 
+void cpu_op_c6(cpu_t * cpu, mmu_t * mmu)
+{
+    uint8_t value = mmu_read_byte(mmu, cpu->reg.pc.word);
+    debug_instruction(cpu, mmu, "ADD A, $%02x", value);
+    cpu_ins_add8(cpu, &cpu->reg.af.hi, value);
+}
+
 void cpu_op_c9(cpu_t * cpu, mmu_t * mmu)
 {
     debug_instruction(cpu, mmu, "RET");
@@ -1393,6 +1512,20 @@ void cpu_op_e5(cpu_t * cpu, mmu_t * mmu)
     debug_instruction(cpu, mmu, "PUSH HL");
     cpu->reg.sp.word -= 2;
     mmu_write_word(mmu, cpu->reg.sp.word, cpu->reg.hl.word);
+}
+
+void cpu_op_e8(cpu_t * cpu, mmu_t * mmu)
+{
+    int8_t value = (int8_t)mmu_read_byte(mmu, cpu->reg.pc.word);
+    debug_instruction(cpu, mmu, "ADD SP, $%02x", value);
+    
+    cpu_flag_set_sub(cpu, false);
+    cpu_flag_set_zero(cpu, false);
+
+    cpu_flag_set_carry(cpu, ((cpu->reg.sp.word) + value) > 0xFFFF);
+    cpu_flag_set_halfcarry(cpu, ((cpu->reg.sp.word & 0x0FFF) + (value & 0x0FFF)) > 0x0FFF);
+
+    cpu->reg.sp.word += value;
 }
 
 void cpu_op_ea(cpu_t * cpu, mmu_t * mmu)
