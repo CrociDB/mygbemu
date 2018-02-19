@@ -3,7 +3,7 @@ DIR=emulator
 SDL = -lSDL2main -lSDL2
 
 CC=gcc
-CFLAGS=-I/usr/include/SDL2 -I$(DIR)
+CFLAGS=-I/usr/include/SDL2 -I$(DIR) -ggdb
 
 
 DEPS = log.h sys.h cartridge.h mmu.h cpu.h util.h debug.h ppu.h canvas.h
