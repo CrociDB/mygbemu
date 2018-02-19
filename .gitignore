@@ -3,3 +3,5 @@
 *.gb
 *.stackdump
 *~
+.cproject
+.project
