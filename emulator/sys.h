@@ -9,6 +9,6 @@ static const char* SYS_VERSION = "v0.1";
 static const char* SYS_USAGE = "\t $ mygbemu rom.gb\n";
 
 void sys_usage();
-void sys_error(const char* msg);
+void sys_error(const char* msg, ...);
 
 #endif
