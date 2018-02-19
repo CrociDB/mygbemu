@@ -297,7 +297,7 @@ void _cpu_init_table_cb()
     optable_cb[0x7C] = (opfunc_t) { &cpu_op_cb_7c, 2, 8, 0 };
 }
 
-inline void cpu_flag_set_zero(cpu_t* cpu, const bool value)
+void cpu_flag_set_zero(cpu_t* cpu, const bool value)
 {
     if (value)
         util_set_bit(&cpu->reg.af.lo, CPU_FLAG_ZERO_BIT);
@@ -305,7 +305,7 @@ inline void cpu_flag_set_zero(cpu_t* cpu, const bool value)
         util_unset_bit(&cpu->reg.af.lo, CPU_FLAG_ZERO_BIT);
 }
 
-inline void cpu_flag_set_sub(cpu_t* cpu, const bool value)
+void cpu_flag_set_sub(cpu_t* cpu, const bool value)
 {
     if (value)
         util_set_bit(&cpu->reg.af.lo, CPU_FLAG_SUB_BIT);
@@ -313,7 +313,7 @@ inline void cpu_flag_set_sub(cpu_t* cpu, const bool value)
         util_unset_bit(&cpu->reg.af.lo, CPU_FLAG_SUB_BIT);
 }
 
-inline void cpu_flag_set_halfcarry(cpu_t* cpu, const bool value)
+void cpu_flag_set_halfcarry(cpu_t* cpu, const bool value)
 {
     if (value)
         util_set_bit(&cpu->reg.af.lo, CPU_FLAG_HC_BIT);
@@ -321,7 +321,7 @@ inline void cpu_flag_set_halfcarry(cpu_t* cpu, const bool value)
         util_unset_bit(&cpu->reg.af.lo, CPU_FLAG_HC_BIT);
 }
 
-inline void cpu_flag_set_carry(cpu_t* cpu, const bool value)
+void cpu_flag_set_carry(cpu_t* cpu, const bool value)
 {
     if (value)
         util_set_bit(&cpu->reg.af.lo, CPU_FLAG_CARRY_BIT);
@@ -329,12 +329,12 @@ inline void cpu_flag_set_carry(cpu_t* cpu, const bool value)
         util_unset_bit(&cpu->reg.af.lo, CPU_FLAG_CARRY_BIT);
 }
 
-inline bool cpu_flag(cpu_t* cpu, const uint8_t flag)
+bool cpu_flag(cpu_t* cpu, const uint8_t flag)
 {
     return util_check_bit(cpu->reg.af.lo, flag);
 }
 
-inline bool cpu_check_condition(cpu_t* cpu, condition_e condition)
+bool cpu_check_condition(cpu_t* cpu, condition_e condition)
 {
     bool c = false;
     switch (condition)
