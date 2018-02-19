@@ -40,9 +40,8 @@ canvas_t* canvas_init()
         sys_error("Couldn't create debug window. SDL Error: %s", SDL_GetError());
     }
 
-    canvas->surface = SDL_GetWindowSurface(canvas->window);
     canvas->renderer = SDL_CreateRenderer(canvas->window, -1, SDL_RENDERER_ACCELERATED);
-    canvas->dbg_renderer = SDL_CreateRenderer(canvas->dbg_window, -1, SDL_RENDERER_ACCELERATED);
+    canvas->dbg_renderer = SDL_CreateRenderer(canvas->dbg_window, -1, SDL_RENDERER_SOFTWARE);
     canvas->dbg_draw = false;
     canvas->running = true;
 
