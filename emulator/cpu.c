@@ -237,19 +237,25 @@ void cpu_init_table()
     optable[0xBF] = (opfunc_t) { &cpu_op_bf, 1, 4, 0 };
     
     optable[0xC1] = (opfunc_t) { &cpu_op_c1, 1, 12, 0 };
+    optable[0xC2] = (opfunc_t) { &cpu_op_c2, 3, 12, 2 };
+    optable[0xC3] = (opfunc_t) { &cpu_op_c3, 3, 12, 2 };
     optable[0xC5] = (opfunc_t) { &cpu_op_c5, 1, 16, 0 };
     optable[0xC6] = (opfunc_t) { &cpu_op_c6, 2, 8, 1 };
     optable[0xC9] = (opfunc_t) { &cpu_op_c9, 1, 16, 0 };
+    optable[0xCA] = (opfunc_t) { &cpu_op_ca, 3, 12, 2 };
     optable[0xCD] = (opfunc_t) { &cpu_op_cd, 3, 24, 0 };
 
     optable[0xD1] = (opfunc_t) { &cpu_op_d1, 1, 12, 0 };
+    optable[0xD2] = (opfunc_t) { &cpu_op_d2, 3, 12, 2 };
     optable[0xD5] = (opfunc_t) { &cpu_op_d5, 1, 16, 0 };
+    optable[0xDA] = (opfunc_t) { &cpu_op_da, 3, 12, 2 };
 
     optable[0xE0] = (opfunc_t) { &cpu_op_e0, 2, 12, 1 };
     optable[0xE1] = (opfunc_t) { &cpu_op_e1, 1, 12, 0 };
     optable[0xE2] = (opfunc_t) { &cpu_op_e2, 2, 8, 0 };
     optable[0xE5] = (opfunc_t) { &cpu_op_e5, 1, 16, 0 };
     optable[0xE8] = (opfunc_t) { &cpu_op_e8, 2, 16, 1 };
+    optable[0xE9] = (opfunc_t) { &cpu_op_e9, 0, 0, 0 }; // ZEROES because JP already fill 4t when condition is met
     optable[0xEA] = (opfunc_t) { &cpu_op_ea, 3, 16, 2 };
 
     optable[0xF0] = (opfunc_t) { &cpu_op_f0, 2, 12, 1 };
@@ -339,6 +345,9 @@ inline bool cpu_check_condition(cpu_t* cpu, condition_e condition)
             break;
         case CPU_CONDITION_NZ:
             c = !cpu_flag(cpu, CPU_FLAG_ZERO_BIT);
+            break;
+        case CPU_CONDITION_ALWAYS:
+            c = true;
             break;
     }
 
@@ -463,11 +472,22 @@ void cpu_ins_cp(cpu_t * cpu, uint8_t value)
     cpu_flag_set_carry(cpu, cpu->reg.af.hi < value);
 }
 
-void cpu_int_jr(cpu_t* cpu, int8_t offset, condition_e c)
+void cpu_ins_jr(cpu_t* cpu, int8_t offset, condition_e c)
 {
     if (cpu_check_condition(cpu, c))
     {
         cpu->reg.pc.word += offset;
+        cpu->currclock.m += 1;
+        cpu->currclock.t += 4;
+    }
+}
+
+void cpu_ins_jp(cpu_t* cpu, uint16_t addr, condition_e c)
+{
+    if (cpu_check_condition(cpu, c))
+    {
+        cpu->reg.pc.word = addr - 0x02;
+        cpu->currclock.m += 1;
         cpu->currclock.t += 4;
     }
 }
@@ -648,7 +668,7 @@ void cpu_op_20(cpu_t* cpu, mmu_t* mmu)
 {
     int8_t offset = (int8_t)mmu_read_byte(mmu, cpu->reg.pc.word);
     debug_instruction(cpu, mmu, "JR NZ, $%2X", (uint8_t)offset);
-    cpu_int_jr(cpu, offset, CPU_CONDITION_NZ);
+    cpu_ins_jr(cpu, offset, CPU_CONDITION_NZ);
 }
 
 void cpu_op_21(cpu_t* cpu, mmu_t* mmu)
@@ -694,7 +714,7 @@ void cpu_op_28(cpu_t * cpu, mmu_t * mmu)
 {
     int8_t offset = (int8_t)mmu_read_byte(mmu, cpu->reg.pc.word);
     debug_instruction(cpu, mmu, "JR Z, $%2X", (uint8_t)offset);
-    cpu_int_jr(cpu, offset, CPU_CONDITION_Z);
+    cpu_ins_jr(cpu, offset, CPU_CONDITION_Z);
 }
 
 void cpu_op_29(cpu_t * cpu, mmu_t * mmu)
@@ -739,7 +759,7 @@ void cpu_op_30(cpu_t * cpu, mmu_t * mmu)
 {
     int8_t offset = (int8_t)mmu_read_byte(mmu, cpu->reg.pc.word);
     debug_instruction(cpu, mmu, "JR NC, $%2X", (uint8_t)offset);
-    cpu_int_jr(cpu, offset, CPU_CONDITION_NC);
+    cpu_ins_jr(cpu, offset, CPU_CONDITION_NC);
 }
 
 void cpu_op_31(cpu_t* cpu, mmu_t* mmu)
@@ -790,7 +810,7 @@ void cpu_op_38(cpu_t * cpu, mmu_t * mmu)
 {
     int8_t offset = (int8_t)mmu_read_byte(mmu, cpu->reg.pc.word);
     debug_instruction(cpu, mmu, "JR C, $%2X", (uint8_t)offset);
-    cpu_int_jr(cpu, offset, CPU_CONDITION_C);
+    cpu_ins_jr(cpu, offset, CPU_CONDITION_C);
 }
 
 void cpu_op_39(cpu_t * cpu, mmu_t * mmu)
@@ -1443,6 +1463,20 @@ void cpu_op_c1(cpu_t * cpu, mmu_t * mmu)
     cpu->reg.sp.word += 2;
 }
 
+void cpu_op_c2(cpu_t * cpu, mmu_t * mmu)
+{
+    uint16_t addr = mmu_read_word(mmu, cpu->reg.pc.word);
+    debug_instruction(cpu, mmu, "JP NZ, $%04x", addr);
+    cpu_ins_jp(cpu, addr, CPU_CONDITION_NZ);
+}
+
+void cpu_op_c3(cpu_t * cpu, mmu_t * mmu)
+{
+    uint16_t addr = mmu_read_word(mmu, cpu->reg.pc.word);
+    debug_instruction(cpu, mmu, "JP $%04x", addr);
+    cpu_ins_jp(cpu, addr, CPU_CONDITION_ALWAYS);
+}
+
 void cpu_op_c5(cpu_t * cpu, mmu_t * mmu)
 {
     debug_instruction(cpu, mmu, "PUSH BC");
@@ -1463,6 +1497,13 @@ void cpu_op_c9(cpu_t * cpu, mmu_t * mmu)
     cpu_ins_ret(cpu, mmu);
 }
 
+void cpu_op_ca(cpu_t * cpu, mmu_t * mmu)
+{
+    uint16_t addr = mmu_read_word(mmu, cpu->reg.pc.word);
+    debug_instruction(cpu, mmu, "JP Z, $%04x", addr);
+    cpu_ins_jp(cpu, addr, CPU_CONDITION_Z);
+}
+
 void cpu_op_cd(cpu_t* cpu, mmu_t * mmu)
 {
     uint16_t addr = mmu_read_word(mmu, cpu->reg.pc.word);
@@ -1478,11 +1519,25 @@ void cpu_op_d1(cpu_t * cpu, mmu_t * mmu)
     cpu->reg.sp.word += 2;
 }
 
+void cpu_op_d2(cpu_t * cpu, mmu_t * mmu)
+{
+    uint16_t addr = mmu_read_word(mmu, cpu->reg.pc.word);
+    debug_instruction(cpu, mmu, "JP NC, $%04x", addr);
+    cpu_ins_jp(cpu, addr, CPU_CONDITION_NC);
+}
+
 void cpu_op_d5(cpu_t * cpu, mmu_t * mmu)
 {
     debug_instruction(cpu, mmu, "PUSH DE");
     cpu->reg.sp.word -= 2;
     mmu_write_word(mmu, cpu->reg.sp.word, cpu->reg.de.word);
+}
+
+void cpu_op_da(cpu_t * cpu, mmu_t * mmu)
+{
+    uint16_t addr = mmu_read_word(mmu, cpu->reg.pc.word);
+    debug_instruction(cpu, mmu, "JP C, $%04x", addr);
+    cpu_ins_jp(cpu, addr, CPU_CONDITION_C);
 }
 
 void cpu_op_e0(cpu_t* cpu, mmu_t* mmu)
@@ -1526,6 +1581,13 @@ void cpu_op_e8(cpu_t * cpu, mmu_t * mmu)
     cpu_flag_set_halfcarry(cpu, ((cpu->reg.sp.word & 0x0FFF) + (value & 0x0FFF)) > 0x0FFF);
 
     cpu->reg.sp.word += value;
+}
+
+void cpu_op_e9(cpu_t * cpu, mmu_t * mmu)
+{
+    uint16_t addr = mmu_read_word(mmu, cpu->reg.hl.word);
+    debug_instruction(cpu, mmu, "JP (HL)", addr);
+    cpu_ins_jp(cpu, addr, CPU_CONDITION_ALWAYS);
 }
 
 void cpu_op_ea(cpu_t * cpu, mmu_t * mmu)
