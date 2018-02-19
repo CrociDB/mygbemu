@@ -56,7 +56,11 @@ void debug_breakpoint_asm(cpu_t* cpu, const char* disasm)
     bp->type = DEBUG_BREAKPOINT_ASM;
     uint8_t size = (uint8_t)strlen(disasm);
     bp->asmline = (char*)malloc(size);
+#ifdef WINDOWS
     strcpy_s(bp->asmline, size, disasm);
+#else
+    strcpy(bp->asmline, disasm);
+#endif
     bp->next = NULL;
     _debug_breakpoint(debugger, bp);
 }
@@ -119,7 +123,11 @@ void debug_loop(debugger_t* debugger)
     {
         char cmd[50];
         printf("DBG > ");
+#ifdef WINDOWS
         scanf_s("%s", cmd, 50);
+#else
+        scanf("%s", cmd);
+#endif
 
         if (!strcmp(cmd, "c"))
         {
@@ -172,7 +180,12 @@ void debug_instruction(cpu_t* cpu, mmu_t* mmu, const char* disasm, ...)
     char buffer[0xFF];
     va_list argptr;
     va_start(argptr, disasm);
+
+#ifdef WINDOWS
     vsprintf_s(buffer, 0xFF, disasm, argptr);
+#else
+    vsprintf(buffer, disasm, argptr);
+#endif
 
     uint16_t pc_addr = (cpu->reg.pc.word - 1);
     bool isbreak = _debug_isbreak(debugger, pc_addr, buffer) || debugger->stopnext;
@@ -185,7 +198,11 @@ void debug_instruction(cpu_t* cpu, mmu_t* mmu, const char* disasm, ...)
     if (isbreak)
     {
         debugger->current_addr = pc_addr;
+#ifdef WINDOWS
         strcpy_s(debugger->current_disasm, sizeof(debugger->current_disasm), buffer);
+#else
+        strcpy(debugger->current_disasm, buffer);
+#endif
         debugger->stopnext = false;
         debugger->debug = true;
         //debug_loop(debugger);

@@ -8,7 +8,12 @@ cartridge_t* cartridge_load(const char* filename)
     cartridge_t* c = NULL;
     FILE *file = NULL;
 
+#ifdef WINDOWS
     fopen_s(&file, filename, "rb");
+#else
+    file = fopen(filename, "rb");
+#endif
+
     if (file)
     {
         fseek(file, 0, SEEK_END);
@@ -26,7 +31,11 @@ cartridge_t* cartridge_load(const char* filename)
                 fclose(file);
                 sys_error("Problem loading cartridge");
             }
+#ifdef WINDOWS
             c->title = _strdup(filename);
+#else
+            c->title = strdup(filename);
+#endif
 
         }
         fclose(file);
