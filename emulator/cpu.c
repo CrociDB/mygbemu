@@ -277,6 +277,14 @@ void cpu_init_table()
     optable[0x9E] = (opfunc_t) { &cpu_op_9e, 1, 8, 0 };
     optable[0x9F] = (opfunc_t) { &cpu_op_9f, 1, 4, 0 };
 
+    optable[0xA0] = (opfunc_t) { &cpu_op_a0, 1, 4, 0 };
+    optable[0xA1] = (opfunc_t) { &cpu_op_a1, 1, 4, 0 };
+    optable[0xA2] = (opfunc_t) { &cpu_op_a2, 1, 4, 0 };
+    optable[0xA3] = (opfunc_t) { &cpu_op_a3, 1, 4, 0 };
+    optable[0xA4] = (opfunc_t) { &cpu_op_a4, 1, 4, 0 };
+    optable[0xA5] = (opfunc_t) { &cpu_op_a5, 1, 4, 0 };
+    optable[0xA6] = (opfunc_t) { &cpu_op_a6, 2, 8, 0 };
+    optable[0xA7] = (opfunc_t) { &cpu_op_a7, 1, 4, 0 };
     optable[0xA8] = (opfunc_t) { &cpu_op_a8, 1, 4, 0 };
     optable[0xA9] = (opfunc_t) { &cpu_op_a9, 1, 4, 0 };
     optable[0xAA] = (opfunc_t) { &cpu_op_aa, 1, 4, 0 };
@@ -1484,6 +1492,55 @@ void cpu_op_9f(cpu_t * cpu, mmu_t * mmu)
 {
     debug_instruction(cpu, mmu, "SBC A, A");
     cpu_ins_sub8(cpu, cpu->reg.af.hi + cpu_flag(cpu, CPU_FLAG_CARRY_BIT));
+}
+
+void cpu_op_a0(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "AND B");
+    cpu_ins_and(cpu, cpu->reg.bc.hi);
+}
+
+void cpu_op_a1(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "AND C");
+    cpu_ins_and(cpu, cpu->reg.bc.lo);
+}
+
+void cpu_op_a2(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "AND D");
+    cpu_ins_and(cpu, cpu->reg.de.hi);
+}
+
+void cpu_op_a3(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "AND E");
+    cpu_ins_and(cpu, cpu->reg.de.lo);
+}
+
+void cpu_op_a4(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "AND H");
+    cpu_ins_and(cpu, cpu->reg.hl.hi);
+}
+
+void cpu_op_a5(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "AND L");
+    cpu_ins_and(cpu, cpu->reg.hl.lo);
+}
+
+void cpu_op_a6(cpu_t * cpu, mmu_t * mmu)
+{
+    uint8_t value = mmu_read_byte(mmu, cpu->reg.hl.word);
+    debug_instruction(cpu, mmu, "AND (HL)");
+    cpu_ins_and(cpu, value);
+}
+
+void cpu_op_a7(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "AND A");
+    cpu_ins_and(cpu, cpu->reg.af.hi);
 }
 
 void cpu_op_a8(cpu_t * cpu, mmu_t * mmu)
