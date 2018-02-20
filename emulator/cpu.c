@@ -277,6 +277,13 @@ void cpu_init_table()
     optable[0x9E] = (opfunc_t) { &cpu_op_9e, 1, 8, 0 };
     optable[0x9F] = (opfunc_t) { &cpu_op_9f, 1, 4, 0 };
 
+    optable[0xA8] = (opfunc_t) { &cpu_op_a8, 1, 4, 0 };
+    optable[0xA9] = (opfunc_t) { &cpu_op_a9, 1, 4, 0 };
+    optable[0xAA] = (opfunc_t) { &cpu_op_aa, 1, 4, 0 };
+    optable[0xAB] = (opfunc_t) { &cpu_op_ab, 1, 4, 0 };
+    optable[0xAC] = (opfunc_t) { &cpu_op_ac, 1, 4, 0 };
+    optable[0xAD] = (opfunc_t) { &cpu_op_ad, 1, 4, 0 };
+    optable[0xAE] = (opfunc_t) { &cpu_op_ae, 2, 8, 0 };
     optable[0xAF] = (opfunc_t) { &cpu_op_af, 1, 4, 0 };
 
     optable[0xB8] = (opfunc_t) { &cpu_op_b8, 1, 4, 0 };
@@ -1479,7 +1486,48 @@ void cpu_op_9f(cpu_t * cpu, mmu_t * mmu)
     cpu_ins_sub8(cpu, cpu->reg.af.hi + cpu_flag(cpu, CPU_FLAG_CARRY_BIT));
 }
 
+void cpu_op_a8(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "XOR B");
+    cpu_ins_xor(cpu, cpu->reg.bc.hi);
+}
 
+void cpu_op_a9(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "XOR C");
+    cpu_ins_xor(cpu, cpu->reg.bc.lo);
+}
+
+void cpu_op_aa(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "XOR D");
+    cpu_ins_xor(cpu, cpu->reg.de.hi);
+}
+
+void cpu_op_ab(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "XOR E");
+    cpu_ins_xor(cpu, cpu->reg.de.lo);
+}
+
+void cpu_op_ac(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "XOR H");
+    cpu_ins_xor(cpu, cpu->reg.hl.hi);
+}
+
+void cpu_op_ad(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "XOR L");
+    cpu_ins_xor(cpu, cpu->reg.hl.lo);
+}
+
+void cpu_op_ae(cpu_t * cpu, mmu_t * mmu)
+{
+    uint8_t value = mmu_read_byte(mmu, cpu->reg.hl.word);
+    debug_instruction(cpu, mmu, "XOR (HL)");
+    cpu_ins_xor(cpu, value);
+}
 
 void cpu_op_af(cpu_t* cpu, mmu_t* mmu)
 {

@@ -278,6 +278,13 @@ void cpu_op_9d(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_9e(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_9f(cpu_t* cpu, mmu_t* mmu);
 
+void cpu_op_a8(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_a9(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_aa(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_ab(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_ac(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_ad(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_ae(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_af(cpu_t* cpu, mmu_t* mmu);
 
 void cpu_op_b8(cpu_t* cpu, mmu_t* mmu);
