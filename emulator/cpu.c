@@ -18,6 +18,9 @@ void cpu_destroy(cpu_t* cpu)
 void cpu_reset(cpu_t* cpu)
 {
     memset((void*)(&cpu->reg), 0, sizeof(cpu->reg));
+    cpu->ime = false;
+    cpu->currclock = (clck_t){ 0,0 };
+    cpu->totalclock = (clck_t){ 0,0 };
 }
 
 void cpu_run_cartridge(cpu_t * cpu)

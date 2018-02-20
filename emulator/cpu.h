@@ -51,6 +51,8 @@ typedef struct _cpu_t
         reg16_t sp, pc;
     } reg;
 
+    bool ime;
+
     uint8_t currop;
 } cpu_t;
 
