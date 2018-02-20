@@ -86,7 +86,7 @@ void ppu_update_tile(ppu_t* ppu, uint16_t addr, uint8_t data)
 void ppu_tick(ppu_t* ppu, cpu_t* cpu, mmu_t* mmu)
 {
     ppu_update_memory(ppu, mmu);
-    if (!ppu->control->lcd_display) return;
+    //if (!ppu->control->lcd_display) return;
 
     ppu->clockcount += cpu->currclock.t;
 
