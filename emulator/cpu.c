@@ -294,6 +294,14 @@ void cpu_init_table()
     optable[0xAE] = (opfunc_t) { &cpu_op_ae, 2, 8, 0 };
     optable[0xAF] = (opfunc_t) { &cpu_op_af, 1, 4, 0 };
 
+    optable[0xB0] = (opfunc_t) { &cpu_op_b0, 1, 4, 0 };
+    optable[0xB1] = (opfunc_t) { &cpu_op_b1, 1, 4, 0 };
+    optable[0xB2] = (opfunc_t) { &cpu_op_b2, 1, 4, 0 };
+    optable[0xB3] = (opfunc_t) { &cpu_op_b3, 1, 4, 0 };
+    optable[0xB4] = (opfunc_t) { &cpu_op_b4, 1, 4, 0 };
+    optable[0xB5] = (opfunc_t) { &cpu_op_b5, 1, 4, 0 };
+    optable[0xB6] = (opfunc_t) { &cpu_op_b6, 2, 8, 0 };
+    optable[0xB7] = (opfunc_t) { &cpu_op_b7, 1, 4, 0 };
     optable[0xB8] = (opfunc_t) { &cpu_op_b8, 1, 4, 0 };
     optable[0xB9] = (opfunc_t) { &cpu_op_b9, 1, 4, 0 };
     optable[0xBA] = (opfunc_t) { &cpu_op_ba, 1, 4, 0 };
@@ -1590,6 +1598,55 @@ void cpu_op_af(cpu_t* cpu, mmu_t* mmu)
 {
     debug_instruction(cpu, mmu, "XOR A");
     cpu_ins_xor(cpu, cpu->reg.af.hi);
+}
+
+void cpu_op_b0(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "OR B");
+    cpu_ins_or(cpu, cpu->reg.bc.hi);
+}
+
+void cpu_op_b1(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "OR C");
+    cpu_ins_or(cpu, cpu->reg.bc.lo);
+}
+
+void cpu_op_b2(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "OR D");
+    cpu_ins_or(cpu, cpu->reg.de.hi);
+}
+
+void cpu_op_b3(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "OR E");
+    cpu_ins_or(cpu, cpu->reg.de.lo);
+}
+
+void cpu_op_b4(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "OR H");
+    cpu_ins_or(cpu, cpu->reg.hl.hi);
+}
+
+void cpu_op_b5(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "OR L");
+    cpu_ins_or(cpu, cpu->reg.hl.lo);
+}
+
+void cpu_op_b6(cpu_t * cpu, mmu_t * mmu)
+{
+    uint8_t value = mmu_read_byte(mmu, cpu->reg.hl.word);
+    debug_instruction(cpu, mmu, "OR (HL)");
+    cpu_ins_or(cpu, value);
+}
+
+void cpu_op_b7(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "OR A");
+    cpu_ins_or(cpu, cpu->reg.af.hi);
 }
 
 void cpu_op_b8(cpu_t * cpu, mmu_t * mmu)

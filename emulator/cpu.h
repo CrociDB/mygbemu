@@ -295,6 +295,14 @@ void cpu_op_ad(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_ae(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_af(cpu_t* cpu, mmu_t* mmu);
 
+void cpu_op_b0(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_b1(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_b2(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_b3(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_b4(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_b5(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_b6(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_b7(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_b8(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_b9(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_ba(cpu_t* cpu, mmu_t* mmu);
