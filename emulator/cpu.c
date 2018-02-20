@@ -59,8 +59,8 @@ void cpu_handle_int_vblank(cpu_t* cpu, mmu_t* mmu)
     (*mmu->intflags) &= ~CPU_INT_VBLANK;
 
     cpu_ins_call(cpu, mmu, 0x0040);
-    cpu->currclock.m = 4;
-    cpu->currclock.t = 16;
+    cpu->currclock.m += 4;
+    cpu->currclock.t += 16;
 }
 
 void cpu_tick(cpu_t* cpu, mmu_t* mmu)
@@ -92,6 +92,9 @@ void cpu_tick(cpu_t* cpu, mmu_t* mmu)
 
          cpu_handle_int(cpu, mmu, fired);
     }
+
+    cpu->totalclock.m += cpu->currclock.m;
+    cpu->totalclock.t += cpu->currclock.t;
 }
 
 // This is the caller for CB op code functions
@@ -113,9 +116,6 @@ void cpu_op_cb(cpu_t* cpu, mmu_t* mmu)
     cpu->currclock.m = opfunc_cb->m;
     cpu->currclock.t = opfunc_cb->t;
     cpu->reg.pc.word += opfunc_cb->b;
-
-    cpu->totalclock.m += cpu->currclock.m;
-    cpu->totalclock.t += cpu->currclock.t;
 }
 
 
