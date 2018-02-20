@@ -117,7 +117,14 @@ int debug_thread_loop(void* data)
 void debug_loop(debugger_t* debugger)
 {
     uint16_t pc_addr = (debugger->cpu->reg.pc.word - 1);
-    printf("\n> 0x%04X\t%02X\t%s\n\n", pc_addr, debugger->cpu->currop, debugger->current_disasm);
+    if (!(debugger->cpu->currop & 0xFF))
+    {
+        printf("\n> 0x%04X\t%02X\t%s\n\n", pc_addr, (debugger->cpu->currop >> 8), debugger->current_disasm);
+    }
+    else
+    {
+        printf("\n> 0x%04X\t%04X\t%s\n\n", pc_addr, debugger->cpu->currop, debugger->current_disasm);
+    }
 
     while (1)
     {
@@ -172,6 +179,24 @@ void debug_loop(debugger_t* debugger)
     }
 }
 
+void debug_opcode_error(cpu_t* cpu)
+{
+    debugger_t* debugger = debug_get(cpu);
+    assert(debugger != NULL);
+
+    uint16_t pc_addr = (cpu->reg.pc.word - 1);
+
+#ifdef WINDOWS
+    strcpy_s(debugger->current_disasm, sizeof(debugger->current_disasm), "OPCODE MISSING");
+#else
+    strcpy(debugger->current_disasm, "OPCODE MISSING");
+#endif
+
+    debugger->current_addr = pc_addr;
+    debugger->stopnext = false;
+    debugger->debug = true;
+}
+
 void debug_instruction(cpu_t* cpu, mmu_t* mmu, const char* disasm, ...)
 {
     debugger_t* debugger = debug_get(cpu);
@@ -205,7 +230,6 @@ void debug_instruction(cpu_t* cpu, mmu_t* mmu, const char* disasm, ...)
 #endif
         debugger->stopnext = false;
         debugger->debug = true;
-        //debug_loop(debugger);
     }
     
     va_end(argptr);

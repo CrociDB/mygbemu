@@ -70,14 +70,14 @@ void cpu_tick(cpu_t* cpu, mmu_t* mmu)
 
     // Fetch instruction
     uint8_t op = mmu_read_byte(mmu, cpu->reg.pc.word);
-    cpu->currop = op;
+    cpu->currop = op << 8;
 
     // Run instruction
     opfunc_t* opfunc = &optable[op];
     cpu->reg.pc.word++;
     if (!opfunc || !opfunc->func)
     {
-        log_error("Op '%02X' at 0x%04x does not exist", op, (cpu->reg.pc.word - 1));
+        debug_opcode_error(cpu);
         return;
     }
 
@@ -103,13 +103,14 @@ void cpu_op_cb(cpu_t* cpu, mmu_t* mmu)
 {
     // Fetch instruction
     uint8_t op = mmu_read_byte(mmu, cpu->reg.pc.word);
+    cpu->currop += op;
 
     // Run instruction
     opfunc_t* opfunc_cb = &optable_cb[op];
     cpu->reg.pc.word++;
     if (!opfunc_cb || !opfunc_cb->func)
     {
-        log_error("Op 'CB%02X' does not exist", op);
+        debug_opcode_error(cpu);
         return;
     }
 
