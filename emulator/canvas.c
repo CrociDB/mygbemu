@@ -53,8 +53,6 @@ canvas_t* canvas_init()
 
 void canvas_destroy(canvas_t* canvas)
 {
-    SDL_FreeSurface(canvas->surface);
-    canvas->surface = NULL;
     SDL_DestroyRenderer(canvas->renderer);
     canvas->renderer = NULL;
     SDL_DestroyWindow(canvas->window);

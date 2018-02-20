@@ -37,9 +37,9 @@ int main(int argc, const char* argv[])
     mmu_load_rom(mmu, rom);
     cartridge_free(rom);
 
-    //mmu_load_bios(mmu);
+    mmu_load_bios(mmu);
     cpu_reset(cpu);
-    cpu_run_cartridge(cpu, mmu, ppu);
+    //cpu_run_cartridge(cpu, mmu, ppu);
 
     debugger_init_loop(debugger, mmu, ppu);
     emu_run(cpu, mmu, ppu, canvas);
