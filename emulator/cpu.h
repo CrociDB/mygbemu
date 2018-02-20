@@ -107,15 +107,19 @@ inline bool cpu_check_condition(cpu_t* cpu, condition_e condition);
 void cpu_ins_bit(cpu_t* cpu, uint8_t bit, uint8_t bytereg);
 void cpu_ins_rl(cpu_t* cpu, uint8_t* reg);
 void cpu_ins_rr(cpu_t* cpu, uint8_t* reg);
+void cpu_ins_and(cpu_t* cpu, const uint8_t value);
+void cpu_ins_xor(cpu_t* cpu, const uint8_t value);
+void cpu_ins_or(cpu_t* cpu, const uint8_t value);
+void cpu_ins_cp(cpu_t* cpu, const uint8_t value);
+
 void cpu_ins_inc8(cpu_t* cpu, uint8_t* reg);
 void cpu_ins_add8(cpu_t* cpu, uint8_t* reg, const uint8_t value);
 void cpu_ins_add16(cpu_t* cpu, uint16_t* reg, const uint16_t value, bool zero);
 void cpu_ins_dec8(cpu_t* cpu, uint8_t* reg);
 void cpu_ins_sub8(cpu_t* cpu, uint8_t value);
+
 void cpu_ins_call(cpu_t* cpu, mmu_t* mmu, uint16_t addr);
 void cpu_ins_ret(cpu_t* cpu, mmu_t* mmu);
-void cpu_ins_cp(cpu_t* cpu, uint8_t value);
-
 void cpu_ins_jr(cpu_t* cpu, int8_t offset, condition_e c);
 void cpu_ins_jp(cpu_t* cpu, uint16_t addr, condition_e c);
 

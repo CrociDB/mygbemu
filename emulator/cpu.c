@@ -446,6 +446,39 @@ void cpu_ins_rr(cpu_t* cpu, uint8_t* reg)
     cpu_flag_set_halfcarry(cpu, false);
 }
 
+void cpu_ins_and(cpu_t * cpu, const uint8_t value)
+{
+    cpu_flag_set_carry(cpu, false);
+    cpu_flag_set_halfcarry(cpu, true);
+    cpu_flag_set_sub(cpu, false);
+
+    cpu->reg.af.hi &= value;
+
+    cpu_flag_set_zero(cpu, !cpu->reg.af.hi);
+}
+
+void cpu_ins_xor(cpu_t* cpu, const uint8_t value)
+{
+    cpu_flag_set_carry(cpu, false);
+    cpu_flag_set_halfcarry(cpu, false);
+    cpu_flag_set_sub(cpu, false);
+
+    cpu->reg.af.hi ^= value;
+
+    cpu_flag_set_zero(cpu, !cpu->reg.af.hi);
+}
+
+void cpu_ins_or(cpu_t * cpu, const uint8_t value)
+{
+    cpu_flag_set_carry(cpu, false);
+    cpu_flag_set_halfcarry(cpu, false);
+    cpu_flag_set_sub(cpu, false);
+
+    cpu->reg.af.hi |= value;
+
+    cpu_flag_set_zero(cpu, !cpu->reg.af.hi);
+}
+
 void cpu_ins_inc8(cpu_t* cpu, uint8_t* reg)
 {
     cpu_flag_set_sub(cpu, false);
@@ -516,7 +549,7 @@ void cpu_ins_ret(cpu_t * cpu, mmu_t * mmu)
     cpu->reg.pc.word = addr;
 }
 
-void cpu_ins_cp(cpu_t * cpu, uint8_t value)
+void cpu_ins_cp(cpu_t* cpu, const uint8_t value)
 {
     cpu_flag_set_sub(cpu, true);
 
@@ -1450,14 +1483,7 @@ void cpu_op_9f(cpu_t * cpu, mmu_t * mmu)
 void cpu_op_af(cpu_t* cpu, mmu_t* mmu)
 {
     debug_instruction(cpu, mmu, "XOR A");
-
-    cpu_flag_set_carry(cpu, false);
-    cpu_flag_set_halfcarry(cpu, false);
-    cpu_flag_set_sub(cpu, false);
-
-    cpu->reg.af.hi ^= cpu->reg.af.hi;
-
-    cpu_flag_set_zero(cpu, !cpu->reg.af.hi);
+    cpu_ins_xor(cpu, cpu->reg.af.hi);
 }
 
 void cpu_op_b8(cpu_t * cpu, mmu_t * mmu)
