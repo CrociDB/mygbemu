@@ -7,6 +7,7 @@ mmu_t* mmu_create()
     mmu_t* mmu = (mmu_t*)malloc(sizeof(mmu_t));
     mmu->joyflags = mmu->addr + 0xFF00;
     mmu->intflags = mmu->addr + 0xFF0F;
+    mmu->finished_bios = mmu->addr + 0xFF50;
 
 #ifdef _DEBUG_MEM
     // This will fill memory with specific values for each "block"
@@ -41,14 +42,14 @@ void mmu_load_rom(mmu_t* mmu, cartridge_t* cartridge)
 void mmu_load_bios(mmu_t* mmu)
 {
     memcpy((void*)mmu->bios, (const void*)BIOS, sizeof(BIOS));
-    mmu->inbios = true;
+    (*mmu->finished_bios) = false;
 }
 
 // Reading routines
 
 uint8_t mmu_read_byte(mmu_t * mmu, uint16_t addr)
 {
-    if (mmu->inbios && addr >= 0x00 && addr <= 0xFF)
+    if (!(*mmu->finished_bios) && addr >= 0x00 && addr <= 0xFF)
         return mmu->bios[addr];
 
     // Read fragmented memory
@@ -137,7 +138,7 @@ uint16_t mmu_read_word(mmu_t * mmu, uint16_t addr)
 
 uint8_t mmu_read_addr8(mmu_t* mmu, uint16_t addr)
 {
-    if (mmu->inbios && addr >= 0x00 && addr <= 0xFF)
+    if (!(*mmu->finished_bios) && addr >= 0x00 && addr <= 0xFF)
         return mmu->bios[addr];
 
     return *(mmu->addr + addr);
@@ -166,7 +167,7 @@ uint16_t mmu_read_addr16(mmu_t* mmu, uint16_t addr)
   */
 uint8_t mmu_write_byte(mmu_t* mmu, uint16_t addr, uint8_t data)
 {
-    if (mmu->inbios && addr >= 0x00 && addr <= 0xFF)
+    if (!(*mmu->finished_bios) && addr >= 0x00 && addr <= 0xFF)
         return 0;
 
     mmu->last_written.empty = false;

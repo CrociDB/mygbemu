@@ -68,7 +68,7 @@ typedef struct _mmu_t
         };
     } last_written;
 
-    bool inbios;
+    uint8_t* finished_bios;
 } mmu_t;
 
 mmu_t* mmu_create();
