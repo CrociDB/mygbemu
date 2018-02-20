@@ -6,7 +6,6 @@
 #include <stdint.h>
 
 #include "util.h"
-#include "mmu.h"
 #include "log.h"
 
 // Flag bits
@@ -14,6 +13,16 @@
 #define CPU_FLAG_SUB_BIT     6
 #define CPU_FLAG_HC_BIT      5
 #define CPU_FLAG_CARRY_BIT   4
+
+// Interruptins
+#define CPU_INT_VBLANK      0x01
+#define CPU_INT_LCD         (0x01 << 1)
+#define CPU_INT_TIMER       (0x01 << 2)
+#define CPU_INT_SERIAL      (0x01 << 3)
+#define CPU_INT_JOYPAD      (0x01 << 4)
+
+typedef struct _ppu_t ppu_t;
+typedef struct _mmu_t mmu_t;
 
 typedef enum _condition_e
 {
@@ -74,7 +83,12 @@ void cpu_destroy(cpu_t* cpu);
 void cpu_init_table();
 static void _cpu_init_table_cb();
 void cpu_reset(cpu_t* cpu);
-void cpu_run_cartridge(cpu_t* cpu);
+void cpu_run_cartridge(cpu_t* cpu, mmu_t* mmu, ppu_t* ppu);
+
+void cpu_enable_int(cpu_t* cpu);
+void cpu_disable_int(cpu_t* cpu);
+void cpu_handle_int(cpu_t* cpu, mmu_t* mmu, uint8_t in);
+void cpu_handle_int_vblank(cpu_t* cpu, mmu_t* mmu);
 
 void cpu_tick(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_cb(cpu_t* cpu, mmu_t* mmu);
@@ -296,8 +310,10 @@ void cpu_op_ea(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_f0(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_f1(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_f2(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_f3(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_f5(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_fa(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_fb(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_fe(cpu_t* cpu, mmu_t* mmu);
 
 // CBs

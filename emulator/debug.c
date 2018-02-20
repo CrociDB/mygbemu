@@ -210,3 +210,26 @@ void debug_instruction(cpu_t* cpu, mmu_t* mmu, const char* disasm, ...)
     
     va_end(argptr);
 }
+
+void debug_interruption(cpu_t* cpu, mmu_t* mmu, const char* msg, ...)
+{
+    debugger_t* debugger = debug_get(cpu);
+    assert(debugger != NULL);
+
+    char buffer[0xFF];
+    va_list argptr;
+    va_start(argptr, msg);
+
+#ifdef WINDOWS
+    vsprintf_s(buffer, 0xFF, msg, argptr);
+#else
+    vsprintf(buffer, msg, argptr);
+#endif
+
+    if (debugger->printall || true)
+    {
+        log_cpu(" >> INTERRUPTION FIRED: %s", buffer);
+    }
+
+    va_end(argptr);
+}

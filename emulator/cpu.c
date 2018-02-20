@@ -23,9 +23,44 @@ void cpu_reset(cpu_t* cpu)
     cpu->totalclock = (clck_t){ 0,0 };
 }
 
-void cpu_run_cartridge(cpu_t * cpu)
+void cpu_run_cartridge(cpu_t* cpu, mmu_t* mmu, ppu_t* ppu)
 {
     cpu->reg.pc.word = 0x0100;
+
+    // Reset VRAM
+    memset((void*)(mmu->vram), 0, sizeof(mmu->vram));
+
+    // Enable LCD
+    ppu->control->lcd_display = true;
+}
+
+void cpu_enable_int(cpu_t* cpu)
+{
+    cpu->ime = true;
+    cpu->currclock = (clck_t) { 1, 4 };
+}
+
+void cpu_disable_int(cpu_t* cpu)
+{
+    cpu->ime = false;
+    cpu->currclock = (clck_t) { 1, 4 };
+}
+
+void cpu_handle_int(cpu_t* cpu, mmu_t* mmu, uint8_t in)
+{
+    if (in & CPU_INT_VBLANK)
+        cpu_handle_int_vblank(cpu, mmu);
+}
+
+void cpu_handle_int_vblank(cpu_t* cpu, mmu_t* mmu)
+{
+    debug_interruption(cpu, mmu, "VBLANK");
+    cpu->ime = false;
+    (*mmu->intflags) &= ~CPU_INT_VBLANK;
+
+    cpu_ins_call(cpu, mmu, 0x0040);
+    cpu->currclock.m = 4;
+    cpu->currclock.t = 16;
 }
 
 void cpu_tick(cpu_t* cpu, mmu_t* mmu)
@@ -49,6 +84,14 @@ void cpu_tick(cpu_t* cpu, mmu_t* mmu)
     cpu->currclock.m = opfunc->m;
     cpu->currclock.t = opfunc->t;
     cpu->reg.pc.word += opfunc->b;
+
+    // Checking Interruptions
+    if (cpu->ime && mmu->intenable && (*mmu->intflags))
+    {
+         uint8_t fired = mmu->intenable & (*mmu->intflags);
+
+         cpu_handle_int(cpu, mmu, fired);
+    }
 }
 
 // This is the caller for CB op code functions
@@ -269,8 +312,10 @@ void cpu_init_table()
     optable[0xF0] = (opfunc_t) { &cpu_op_f0, 2, 12, 1 };
     optable[0xF1] = (opfunc_t) { &cpu_op_f1, 1, 12, 0 };
     optable[0xF2] = (opfunc_t) { &cpu_op_f2, 2, 8, 0 };
+    optable[0xF3] = (opfunc_t) { &cpu_op_f3, 1, 4, 0 };
     optable[0xF5] = (opfunc_t) { &cpu_op_f5, 1, 16, 0 };
     optable[0xFA] = (opfunc_t) { &cpu_op_fa, 3, 16, 2 };
+    optable[0xFB] = (opfunc_t) { &cpu_op_fb, 1, 4, 0 };
     optable[0xFE] = (opfunc_t) { &cpu_op_fe, 2, 8, 1 };
 
     _cpu_init_table_cb();
@@ -1627,6 +1672,12 @@ void cpu_op_f2(cpu_t * cpu, mmu_t * mmu)
     cpu->reg.af.hi = mmu_read_byte(mmu, addr);
 }
 
+void cpu_op_f3(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "DI");
+    cpu->ime = false;
+}
+
 void cpu_op_f5(cpu_t * cpu, mmu_t * mmu)
 {
     debug_instruction(cpu, mmu, "PUSH AF");
@@ -1639,6 +1690,12 @@ void cpu_op_fa(cpu_t * cpu, mmu_t * mmu)
     uint16_t addr = mmu_read_word(mmu, cpu->reg.pc.word);
     debug_instruction(cpu, mmu, "LD A, ($%04x)", addr);
     cpu->reg.af.hi = mmu_read_byte(mmu, addr);
+}
+
+void cpu_op_fb(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "EI");
+    cpu->ime = true;
 }
 
 void cpu_op_fe(cpu_t * cpu, mmu_t * mmu)

@@ -20,6 +20,8 @@ mmu_t* mmu_create()
     memset(mmu->empty, 0x66, sizeof(mmu->empty));
     memset(mmu->io, 0x77, sizeof(mmu->io));
     memset(mmu->zram, 0x88, sizeof(mmu->zram));
+    (*mmu->joyflags) = 0;
+    (*mmu->intflags) = 0;
 #endif
 
     return mmu;

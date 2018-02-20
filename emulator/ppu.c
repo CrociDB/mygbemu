@@ -118,7 +118,7 @@ void ppu_tick(ppu_t* ppu, cpu_t* cpu, mmu_t* mmu)
                 {
                     ppu->mode = PPU_MODE_VBLANK;
                     ppu->canrender = true;
-                    (*mmu->intflags) |= 1;
+                    (*mmu->intflags) |= CPU_INT_VBLANK;
                 }
                 else
                 {

@@ -76,6 +76,7 @@ static void _debug_breakpoint(debugger_t* debugger, debug_breakpoint_t* breakpoi
 static bool _debug_isbreak(debugger_t* debugger, uint16_t addr, char* asmline);
 
 void debug_instruction(cpu_t* cpu, mmu_t* mmu, const char* disasm, ...);
+void debug_interruption(cpu_t* cpu, mmu_t* mmu, const char* msg, ...);
 
 static int debug_thread_loop(void* data);
 void debug_loop(debugger_t* debugger);
