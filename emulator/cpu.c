@@ -312,18 +312,22 @@ void cpu_init_table()
     optable[0xBE] = (opfunc_t) { &cpu_op_be, 1, 8, 0 };
     optable[0xBF] = (opfunc_t) { &cpu_op_bf, 1, 4, 0 };
     
+    optable[0xC0] = (opfunc_t) { &cpu_op_c0, 2, 8, 0 };
     optable[0xC1] = (opfunc_t) { &cpu_op_c1, 1, 12, 0 };
     optable[0xC2] = (opfunc_t) { &cpu_op_c2, 3, 12, 2 };
     optable[0xC3] = (opfunc_t) { &cpu_op_c3, 3, 12, 2 };
     optable[0xC5] = (opfunc_t) { &cpu_op_c5, 1, 16, 0 };
     optable[0xC6] = (opfunc_t) { &cpu_op_c6, 2, 8, 1 };
+    optable[0xC8] = (opfunc_t) { &cpu_op_c8, 2, 8, 0 };
     optable[0xC9] = (opfunc_t) { &cpu_op_c9, 1, 16, 0 };
     optable[0xCA] = (opfunc_t) { &cpu_op_ca, 3, 12, 2 };
     optable[0xCD] = (opfunc_t) { &cpu_op_cd, 3, 24, 0 };
 
+    optable[0xD0] = (opfunc_t) { &cpu_op_d0, 2, 8, 0 };
     optable[0xD1] = (opfunc_t) { &cpu_op_d1, 1, 12, 0 };
     optable[0xD2] = (opfunc_t) { &cpu_op_d2, 3, 12, 2 };
     optable[0xD5] = (opfunc_t) { &cpu_op_d5, 1, 16, 0 };
+    optable[0xD8] = (opfunc_t) { &cpu_op_d8, 2, 8, 0 };
     optable[0xDA] = (opfunc_t) { &cpu_op_da, 3, 12, 2 };
 
     optable[0xE0] = (opfunc_t) { &cpu_op_e0, 2, 12, 1 };
@@ -572,6 +576,16 @@ void cpu_ins_ret(cpu_t * cpu, mmu_t * mmu)
     uint16_t addr = mmu_read_word(mmu, cpu->reg.sp.word);
     cpu->reg.sp.word += 2;
     cpu->reg.pc.word = addr;
+}
+
+void cpu_ins_ret_condition(cpu_t * cpu, mmu_t * mmu, condition_e c)
+{
+    if (cpu_check_condition(cpu, c))
+    {
+        cpu_ins_ret(cpu, mmu);
+        cpu->currclock.m += 3;
+        cpu->currclock.t += 12;
+    }
 }
 
 void cpu_ins_cp(cpu_t* cpu, const uint8_t value)
@@ -1699,6 +1713,12 @@ void cpu_op_bf(cpu_t * cpu, mmu_t * mmu)
     cpu_ins_cp(cpu, cpu->reg.af.hi);
 }
 
+void cpu_op_c0(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RET NZ");
+    cpu_ins_ret_condition(cpu, mmu, CPU_CONDITION_NZ);
+}
+
 void cpu_op_c1(cpu_t * cpu, mmu_t * mmu)
 {
     debug_instruction(cpu, mmu, "POP BC");
@@ -1734,6 +1754,12 @@ void cpu_op_c6(cpu_t * cpu, mmu_t * mmu)
     cpu_ins_add8(cpu, &cpu->reg.af.hi, value);
 }
 
+void cpu_op_c8(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RET Z");
+    cpu_ins_ret_condition(cpu, mmu, CPU_CONDITION_Z);
+}
+
 void cpu_op_c9(cpu_t * cpu, mmu_t * mmu)
 {
     debug_instruction(cpu, mmu, "RET");
@@ -1755,6 +1781,12 @@ void cpu_op_cd(cpu_t* cpu, mmu_t * mmu)
     cpu_ins_call(cpu, mmu, addr);
 }
 
+void cpu_op_d0(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RET NC");
+    cpu_ins_ret_condition(cpu, mmu, CPU_CONDITION_NC);
+}
+
 void cpu_op_d1(cpu_t * cpu, mmu_t * mmu)
 {
     debug_instruction(cpu, mmu, "POP DE");
@@ -1774,6 +1806,12 @@ void cpu_op_d5(cpu_t * cpu, mmu_t * mmu)
     debug_instruction(cpu, mmu, "PUSH DE");
     cpu->reg.sp.word -= 2;
     mmu_write_word(mmu, cpu->reg.sp.word, cpu->reg.de.word);
+}
+
+void cpu_op_d8(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RET C");
+    cpu_ins_ret_condition(cpu, mmu, CPU_CONDITION_C);
 }
 
 void cpu_op_da(cpu_t * cpu, mmu_t * mmu)

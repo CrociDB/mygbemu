@@ -120,6 +120,7 @@ void cpu_ins_sub8(cpu_t* cpu, uint8_t value);
 
 void cpu_ins_call(cpu_t* cpu, mmu_t* mmu, uint16_t addr);
 void cpu_ins_ret(cpu_t* cpu, mmu_t* mmu);
+void cpu_ins_ret_condition(cpu_t* cpu, mmu_t* mmu, condition_e c);
 void cpu_ins_jr(cpu_t* cpu, int8_t offset, condition_e c);
 void cpu_ins_jp(cpu_t* cpu, uint16_t addr, condition_e c);
 
@@ -312,18 +313,22 @@ void cpu_op_bd(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_be(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_bf(cpu_t* cpu, mmu_t* mmu);
 
+void cpu_op_c0(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_c1(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_c2(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_c3(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_c5(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_c6(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_c8(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_c9(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_ca(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_cd(cpu_t* cpu, mmu_t* mmu);
 
+void cpu_op_d0(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_d1(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_d2(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_d5(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_d8(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_da(cpu_t* cpu, mmu_t* mmu);
 
 void cpu_op_e0(cpu_t* cpu, mmu_t* mmu);
