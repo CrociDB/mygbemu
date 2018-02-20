@@ -71,6 +71,7 @@ void cpu_tick(cpu_t* cpu, mmu_t* mmu)
     // Fetch instruction
     uint8_t op = mmu_read_byte(mmu, cpu->reg.pc.word);
     cpu->currop = op << 8;
+    cpu->curropaddr = cpu->reg.pc.word;
 
     // Run instruction
     opfunc_t* opfunc = &optable[op];

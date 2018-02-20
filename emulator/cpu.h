@@ -63,6 +63,7 @@ typedef struct _cpu_t
     bool ime;
 
     uint16_t currop;
+    uint16_t curropaddr;
 } cpu_t;
 
 typedef struct _opfunc_t
