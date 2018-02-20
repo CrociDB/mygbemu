@@ -25,6 +25,7 @@ void cpu_reset(cpu_t* cpu)
 
 void cpu_run_cartridge(cpu_t* cpu, mmu_t* mmu, ppu_t* ppu)
 {
+    mmu->inbios = false;
     cpu->reg.pc.word = 0x0100;
 
     // Reset VRAM
