@@ -34,7 +34,7 @@ typedef union _reg16_t
     uint16_t word;
 } reg16_t;
 
-typedef union _clock_t
+typedef struct _clock_t
 {
     uint32_t m;
     uint32_t t;
