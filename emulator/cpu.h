@@ -330,6 +330,7 @@ void cpu_op_d1(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_d2(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_d5(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_d8(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_d9(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_da(cpu_t* cpu, mmu_t* mmu);
 
 void cpu_op_e0(cpu_t* cpu, mmu_t* mmu);

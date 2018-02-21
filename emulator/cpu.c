@@ -327,6 +327,7 @@ void cpu_init_table()
     optable[0xD2] = (opfunc_t) { &cpu_op_d2, 3, 12, 2 };
     optable[0xD5] = (opfunc_t) { &cpu_op_d5, 1, 16, 0 };
     optable[0xD8] = (opfunc_t) { &cpu_op_d8, 2, 8, 0 };
+    optable[0xD9] = (opfunc_t) { &cpu_op_d9, 4, 16, 0 };
     optable[0xDA] = (opfunc_t) { &cpu_op_da, 3, 12, 2 };
 
     optable[0xE0] = (opfunc_t) { &cpu_op_e0, 2, 12, 1 };
@@ -1811,6 +1812,13 @@ void cpu_op_d8(cpu_t * cpu, mmu_t * mmu)
 {
     debug_instruction(cpu, mmu, "RET C");
     cpu_ins_ret_condition(cpu, mmu, CPU_CONDITION_C);
+}
+
+void cpu_op_d9(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RETI");
+    cpu_ins_ret(cpu, mmu);
+    cpu->ime = true;
 }
 
 void cpu_op_da(cpu_t * cpu, mmu_t * mmu)
