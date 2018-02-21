@@ -258,15 +258,31 @@ void cpu_init_table()
 
 void _cpu_init_table_cb()
 {
+    optable_cb[0x00] = (opfunc_t) { &cpu_op_cb_00, 2, 8, 0 };
+    optable_cb[0x01] = (opfunc_t) { &cpu_op_cb_01, 2, 8, 0 };
+    optable_cb[0x02] = (opfunc_t) { &cpu_op_cb_02, 2, 8, 0 };
+    optable_cb[0x03] = (opfunc_t) { &cpu_op_cb_03, 2, 8, 0 };
+    optable_cb[0x04] = (opfunc_t) { &cpu_op_cb_04, 2, 8, 0 };
+    optable_cb[0x05] = (opfunc_t) { &cpu_op_cb_05, 2, 8, 0 };
+    optable_cb[0x06] = (opfunc_t) { &cpu_op_cb_06, 4, 16, 0 };
+    optable_cb[0x07] = (opfunc_t) { &cpu_op_cb_07, 2, 8, 0 };
+    optable_cb[0x08] = (opfunc_t) { &cpu_op_cb_08, 2, 8, 0 };
+    optable_cb[0x09] = (opfunc_t) { &cpu_op_cb_09, 2, 8, 0 };
+    optable_cb[0x0a] = (opfunc_t) { &cpu_op_cb_0a, 2, 8, 0 };
+    optable_cb[0x0b] = (opfunc_t) { &cpu_op_cb_0b, 2, 8, 0 };
+    optable_cb[0x0c] = (opfunc_t) { &cpu_op_cb_0c, 2, 8, 0 };
+    optable_cb[0x0d] = (opfunc_t) { &cpu_op_cb_0d, 2, 8, 0 };
+    optable_cb[0x0e] = (opfunc_t) { &cpu_op_cb_0e, 4, 16, 0 };
+    optable_cb[0x0f] = (opfunc_t) { &cpu_op_cb_0f, 2, 8, 0 };
+
     optable_cb[0x10] = (opfunc_t) { &cpu_op_cb_10, 2, 8, 0 };
     optable_cb[0x11] = (opfunc_t) { &cpu_op_cb_11, 2, 8, 0 };
     optable_cb[0x12] = (opfunc_t) { &cpu_op_cb_12, 2, 8, 0 };
     optable_cb[0x13] = (opfunc_t) { &cpu_op_cb_13, 2, 8, 0 };
     optable_cb[0x14] = (opfunc_t) { &cpu_op_cb_14, 2, 8, 0 };
     optable_cb[0x15] = (opfunc_t) { &cpu_op_cb_15, 2, 8, 0 };
-    optable_cb[0x16] = (opfunc_t) { &cpu_op_cb_16, 2, 16, 0 };
+    optable_cb[0x16] = (opfunc_t) { &cpu_op_cb_16, 4, 16, 0 };
     optable_cb[0x17] = (opfunc_t) { &cpu_op_cb_17, 2, 8, 0 };
-
     optable_cb[0x18] = (opfunc_t) { &cpu_op_cb_18, 2, 8, 0 };
     optable_cb[0x19] = (opfunc_t) { &cpu_op_cb_19, 2, 8, 0 };
     optable_cb[0x1A] = (opfunc_t) { &cpu_op_cb_1a, 2, 8, 0 };
@@ -1781,6 +1797,106 @@ void cpu_op_ff(cpu_t * cpu, mmu_t * mmu)
 {
     debug_instruction(cpu, mmu, "RST 38h");
     cpu_ins_call(cpu, mmu, 0x0038);
+}
+
+void cpu_op_cb_00(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RLC B");
+    cpu_ins_rlc(cpu, &cpu->reg.bc.hi);
+}
+
+void cpu_op_cb_01(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RLC C");
+    cpu_ins_rlc(cpu, &cpu->reg.bc.lo);
+}
+
+void cpu_op_cb_02(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RLC D");
+    cpu_ins_rlc(cpu, &cpu->reg.de.hi);
+}
+
+void cpu_op_cb_03(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RLC E");
+    cpu_ins_rlc(cpu, &cpu->reg.de.lo);
+}
+
+void cpu_op_cb_04(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RLC H");
+    cpu_ins_rlc(cpu, &cpu->reg.hl.hi);
+}
+
+void cpu_op_cb_05(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RLC L");
+    cpu_ins_rlc(cpu, &cpu->reg.hl.lo);
+}
+
+void cpu_op_cb_06(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RLC (HL)");
+    uint8_t v = mmu_read_byte(mmu, cpu->reg.hl.word);
+    cpu_ins_rlc(cpu, &v);
+    mmu_write_byte(mmu, cpu->reg.hl.word, v);
+}
+
+void cpu_op_cb_07(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RLC A");
+    cpu_ins_rlc(cpu, &cpu->reg.af.hi);
+}
+
+void cpu_op_cb_08(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RRC B");
+    cpu_ins_rrc(cpu, &cpu->reg.bc.hi);
+}
+
+void cpu_op_cb_09(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RRC C");
+    cpu_ins_rrc(cpu, &cpu->reg.bc.lo);
+}
+
+void cpu_op_cb_0a(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RRC D");
+    cpu_ins_rrc(cpu, &cpu->reg.de.hi);
+}
+
+void cpu_op_cb_0b(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RRC E");
+    cpu_ins_rrc(cpu, &cpu->reg.de.lo);
+}
+
+void cpu_op_cb_0c(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RRC H");
+    cpu_ins_rrc(cpu, &cpu->reg.hl.hi);
+}
+
+void cpu_op_cb_0d(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RRC L");
+    cpu_ins_rrc(cpu, &cpu->reg.hl.lo);
+}
+
+void cpu_op_cb_0e(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RRC (HL)");
+    uint8_t v = mmu_read_byte(mmu, cpu->reg.hl.word);
+    cpu_ins_rrc(cpu, &v);
+    mmu_write_byte(mmu, cpu->reg.hl.word, v);
+}
+
+void cpu_op_cb_0f(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RRC A");
+    cpu_ins_rrc(cpu, &cpu->reg.af.hi);
 }
 
 // CB OP Codes
