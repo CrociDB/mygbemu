@@ -338,6 +338,7 @@ void cpu_init_table()
     optable[0xE1] = (opfunc_t) { &cpu_op_e1, 1, 12, 0 };
     optable[0xE2] = (opfunc_t) { &cpu_op_e2, 2, 8, 0 };
     optable[0xE5] = (opfunc_t) { &cpu_op_e5, 1, 16, 0 };
+    optable[0xE6] = (opfunc_t) { &cpu_op_e6, 2, 8, 1 };
     optable[0xE8] = (opfunc_t) { &cpu_op_e8, 2, 16, 1 };
     optable[0xE9] = (opfunc_t) { &cpu_op_e9, 0, 0, 0 }; // ZEROES because JP already fill 4t when condition is met
     optable[0xEA] = (opfunc_t) { &cpu_op_ea, 3, 16, 2 };
@@ -1902,6 +1903,13 @@ void cpu_op_e5(cpu_t * cpu, mmu_t * mmu)
     debug_instruction(cpu, mmu, "PUSH HL");
     cpu->reg.sp.word -= 2;
     mmu_write_word(mmu, cpu->reg.sp.word, cpu->reg.hl.word);
+}
+
+void cpu_op_e6(cpu_t * cpu, mmu_t * mmu)
+{
+    uint8_t value = mmu_read_byte(mmu, cpu->reg.pc.word);
+    debug_instruction(cpu, mmu, "AND $%02X", value);
+    cpu_ins_and(cpu, value);
 }
 
 void cpu_op_e8(cpu_t * cpu, mmu_t * mmu)
