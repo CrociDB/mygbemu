@@ -66,8 +66,6 @@ void cpu_handle_int_vblank(cpu_t* cpu, mmu_t* mmu)
 
 void cpu_tick(cpu_t* cpu, mmu_t* mmu)
 {
-    if (cpu->reg.pc.word >= 0x8000) return;
-
     // Fetch instruction
     uint8_t op = mmu_read_byte(mmu, cpu->reg.pc.word);
     cpu->currop = op << 8;
