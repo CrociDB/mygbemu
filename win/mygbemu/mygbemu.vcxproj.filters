@@ -45,6 +45,9 @@
     <ClCompile Include="..\..\emulator\ppu.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\emulator\cpu_opcodes.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\emulator\cartridge.h">
@@ -72,6 +75,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\emulator\ppu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\emulator\cpu_opcodes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

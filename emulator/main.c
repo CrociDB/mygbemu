@@ -26,8 +26,6 @@ int main(int argc, const char* argv[])
     cpu_t* cpu = cpu_create();
     ppu_t* ppu = ppu_create(mmu);
 
-    cpu_init_table();
-
     debugger_t* debugger = debug_get(cpu);
     debugger->printall = false;
 

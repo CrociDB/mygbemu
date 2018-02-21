@@ -130,6 +130,7 @@
     <ClCompile Include="..\..\emulator\canvas.c" />
     <ClCompile Include="..\..\emulator\cartridge.c" />
     <ClCompile Include="..\..\emulator\cpu.c" />
+    <ClCompile Include="..\..\emulator\cpu_opcodes.c" />
     <ClCompile Include="..\..\emulator\debug.c" />
     <ClCompile Include="..\..\emulator\log.c" />
     <ClCompile Include="..\..\emulator\main.c" />
@@ -142,6 +143,7 @@
     <ClInclude Include="..\..\emulator\canvas.h" />
     <ClInclude Include="..\..\emulator\cartridge.h" />
     <ClInclude Include="..\..\emulator\cpu.h" />
+    <ClInclude Include="..\..\emulator\cpu_opcodes.h" />
     <ClInclude Include="..\..\emulator\debug.h" />
     <ClInclude Include="..\..\emulator\log.h" />
     <ClInclude Include="..\..\emulator\mmu.h" />
