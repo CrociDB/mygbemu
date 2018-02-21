@@ -137,6 +137,7 @@ void cpu_init_table()
     optable[0x0C] = (opfunc_t) { &cpu_op_0c, 1, 4, 0 };
     optable[0x0D] = (opfunc_t) { &cpu_op_0d, 1, 4, 0 };
     optable[0x0E] = (opfunc_t) { &cpu_op_0e, 2, 8, 1 };
+    optable[0x0F] = (opfunc_t) { &cpu_op_0f, 1, 4, 0 };
 
     optable[0x11] = (opfunc_t) { &cpu_op_11, 3, 12, 2 };
     optable[0x12] = (opfunc_t) { &cpu_op_12, 1, 8, 0 };
@@ -152,6 +153,7 @@ void cpu_init_table()
     optable[0x1C] = (opfunc_t) { &cpu_op_1c, 1, 4, 0 };
     optable[0x1D] = (opfunc_t) { &cpu_op_1d, 1, 4, 0 };
     optable[0x1E] = (opfunc_t) { &cpu_op_1e, 2, 8, 1 };
+    optable[0x1F] = (opfunc_t) { &cpu_op_1f, 1, 4, 0 };
 
     optable[0x20] = (opfunc_t) { &cpu_op_20, 2, 8, 1 };
     optable[0x21] = (opfunc_t) { &cpu_op_21, 3, 12, 2 };
@@ -167,6 +169,7 @@ void cpu_init_table()
     optable[0x2C] = (opfunc_t) { &cpu_op_2c, 1, 4, 0 };
     optable[0x2D] = (opfunc_t) { &cpu_op_2d, 1, 4, 0 };
     optable[0x2E] = (opfunc_t) { &cpu_op_2e, 2, 8, 1 };
+    optable[0x2F] = (opfunc_t) { &cpu_op_2f, 1, 4, 0 };
 
     optable[0x30] = (opfunc_t) { &cpu_op_30, 2, 8, 1 };
     optable[0x31] = (opfunc_t) { &cpu_op_31, 3, 13, 2 };
@@ -182,6 +185,7 @@ void cpu_init_table()
     optable[0x3C] = (opfunc_t) { &cpu_op_3c, 1, 4, 0 };
     optable[0x3D] = (opfunc_t) { &cpu_op_3d, 1, 4, 0 };
     optable[0x3E] = (opfunc_t) { &cpu_op_3e, 2, 8, 1 };
+    optable[0x3F] = (opfunc_t) { &cpu_op_3f, 1, 4, 0 };
 
     optable[0x40] = (opfunc_t) { &cpu_op_40, 1, 4, 0 };
     optable[0x41] = (opfunc_t) { &cpu_op_41, 1, 4, 0 };
@@ -475,6 +479,20 @@ void cpu_ins_rr(cpu_t* cpu, uint8_t* reg)
     cpu_flag_set_halfcarry(cpu, false);
 }
 
+void cpu_ins_rrc(cpu_t * cpu, uint8_t * reg)
+{
+    cpu_flag_set_carry(cpu, util_check_bit((*reg), 0));
+    uint8_t carry = cpu_flag(cpu, CPU_FLAG_CARRY_BIT);
+
+    uint8_t res = ((*reg) >> 1) | (carry << 7);
+    cpu_flag_set_zero(cpu, res == 0);
+
+    (*reg) = res;
+
+    cpu_flag_set_sub(cpu, false);
+    cpu_flag_set_halfcarry(cpu, false);
+}
+
 void cpu_ins_and(cpu_t * cpu, const uint8_t value)
 {
     cpu_flag_set_carry(cpu, false);
@@ -687,6 +705,12 @@ void cpu_op_0a(cpu_t * cpu, mmu_t * mmu)
     cpu->reg.af.hi = mmu_read_byte(mmu, cpu->reg.bc.word);
 }
 
+void cpu_op_0d(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "DEC C");
+    cpu_ins_dec8(cpu, &cpu->reg.bc.lo);
+}
+
 void cpu_op_0e(cpu_t * cpu, mmu_t * mmu)
 {
     uint8_t byte = mmu_read_byte(mmu, cpu->reg.pc.word);
@@ -694,11 +718,13 @@ void cpu_op_0e(cpu_t * cpu, mmu_t * mmu)
     cpu->reg.bc.lo = byte;
 }
 
-void cpu_op_0d(cpu_t * cpu, mmu_t * mmu)
+void cpu_op_0f(cpu_t * cpu, mmu_t * mmu)
 {
-    debug_instruction(cpu, mmu, "DEC C");
-    cpu_ins_dec8(cpu, &cpu->reg.bc.lo);
+    debug_instruction(cpu, mmu, "RRCA");
+    cpu_ins_rrc(cpu, &cpu->reg.af.hi);
+    cpu_flag_set_zero(cpu, false);
 }
+
 
 void cpu_op_11(cpu_t* cpu, mmu_t* mmu)
 {
@@ -787,6 +813,13 @@ void cpu_op_1e(cpu_t * cpu, mmu_t * mmu)
     uint8_t byte = mmu_read_byte(mmu, cpu->reg.pc.word);
     debug_instruction(cpu, mmu, "LD E, $%02X", byte);
     cpu->reg.de.lo = byte;
+}
+
+void cpu_op_1f(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RRA");
+    cpu_ins_rr(cpu, &cpu->reg.af.hi);
+    cpu_flag_set_zero(cpu, false);
 }
 
 void cpu_op_20(cpu_t* cpu, mmu_t* mmu)
@@ -878,6 +911,14 @@ void cpu_op_2e(cpu_t * cpu, mmu_t * mmu)
     uint8_t byte = mmu_read_byte(mmu, cpu->reg.pc.word);
     debug_instruction(cpu, mmu, "LD L, $%02X", byte);
     cpu->reg.hl.lo = byte;
+}
+
+void cpu_op_2f(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "CPL");
+    cpu_flag_set_sub(cpu, false);
+    cpu_flag_set_halfcarry(cpu, false);
+    cpu->reg.af.hi = ~cpu->reg.af.hi;
 }
 
 void cpu_op_30(cpu_t * cpu, mmu_t * mmu)
@@ -976,7 +1017,13 @@ void cpu_op_3e(cpu_t * cpu, mmu_t * mmu)
     cpu->reg.af.hi = byte;
 }
 
-
+void cpu_op_3f(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "CCF");
+    cpu_flag_set_sub(cpu, false);
+    cpu_flag_set_halfcarry(cpu, false);
+    cpu_flag_set_carry(cpu, !cpu_flag(cpu, CPU_FLAG_CARRY_BIT));
+}
 
 
 void cpu_op_40(cpu_t * cpu, mmu_t * mmu)
