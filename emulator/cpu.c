@@ -131,6 +131,8 @@ void cpu_init_table()
     optable[0x04] = (opfunc_t) { &cpu_op_04, 1, 4, 0 };
     optable[0x05] = (opfunc_t) { &cpu_op_05, 1, 4, 0 };
     optable[0x06] = (opfunc_t) { &cpu_op_06, 2, 8, 1 };
+    optable[0x07] = (opfunc_t) { &cpu_op_07, 1, 4, 0 };
+    optable[0x08] = (opfunc_t) { &cpu_op_08, 5, 20, 2 };
     optable[0x09] = (opfunc_t) { &cpu_op_09, 2, 8, 0 };
     optable[0x0A] = (opfunc_t) { &cpu_op_0a, 1, 8, 0 };
     optable[0x0B] = (opfunc_t) { &cpu_op_0b, 1, 8, 0 };
@@ -162,6 +164,7 @@ void cpu_init_table()
     optable[0x24] = (opfunc_t) { &cpu_op_24, 1, 4, 0 };
     optable[0x25] = (opfunc_t) { &cpu_op_25, 1, 4, 0 };
     optable[0x26] = (opfunc_t) { &cpu_op_26, 2, 8, 1 };
+    optable[0x27] = (opfunc_t) { &cpu_op_27, 1, 4, 0 };
     optable[0x28] = (opfunc_t) { &cpu_op_28, 2, 8, 1 };
     optable[0x29] = (opfunc_t) { &cpu_op_29, 2, 8, 0 };
     optable[0x2A] = (opfunc_t) { &cpu_op_2a, 1, 8, 0 };
@@ -178,6 +181,7 @@ void cpu_init_table()
     optable[0x34] = (opfunc_t) { &cpu_op_34, 1, 12, 0 };
     optable[0x35] = (opfunc_t) { &cpu_op_35, 1, 12, 0 };
     optable[0x36] = (opfunc_t) { &cpu_op_36, 2, 12, 1 };
+    optable[0x37] = (opfunc_t) { &cpu_op_37, 1, 4, 0 };
     optable[0x38] = (opfunc_t) { &cpu_op_38, 2, 8, 1 };
     optable[0x39] = (opfunc_t) { &cpu_op_39, 2, 8, 0 };
     optable[0x3A] = (opfunc_t) { &cpu_op_3a, 1, 8, 0 };
@@ -453,8 +457,21 @@ void cpu_ins_bit(cpu_t* cpu, uint8_t bit, uint8_t bytereg)
 void cpu_ins_rl(cpu_t* cpu, uint8_t* reg)
 {
     uint8_t carry = cpu_flag(cpu, CPU_FLAG_CARRY_BIT);
-
     cpu_flag_set_carry(cpu, util_check_bit((*reg), 7));
+
+    uint8_t res = ((*reg) << 1) | carry;
+    cpu_flag_set_zero(cpu, res == 0);
+
+    (*reg) = res;
+
+    cpu_flag_set_sub(cpu, false);
+    cpu_flag_set_halfcarry(cpu, false);
+}
+
+void cpu_ins_rlc(cpu_t * cpu, uint8_t * reg)
+{
+    cpu_flag_set_carry(cpu, util_check_bit((*reg), 7));
+    uint8_t carry = cpu_flag(cpu, CPU_FLAG_CARRY_BIT);
 
     uint8_t res = ((*reg) << 1) | carry;
     cpu_flag_set_zero(cpu, res == 0);
@@ -468,7 +485,6 @@ void cpu_ins_rl(cpu_t* cpu, uint8_t* reg)
 void cpu_ins_rr(cpu_t* cpu, uint8_t* reg)
 {
     uint8_t carry = cpu_flag(cpu, CPU_FLAG_CARRY_BIT);
-
     cpu_flag_set_carry(cpu, util_check_bit((*reg), 0));
 
     uint8_t res = ((*reg) >> 1) | (carry << 7);
@@ -688,6 +704,20 @@ void cpu_op_06(cpu_t * cpu, mmu_t * mmu)
     cpu->reg.bc.hi = byte;
 }
 
+void cpu_op_07(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RLCA");
+    cpu_ins_rlc(cpu, &cpu->reg.af.hi);
+    cpu_flag_set_zero(cpu, false);
+}
+
+void cpu_op_08(cpu_t * cpu, mmu_t * mmu)
+{
+    uint16_t addr = mmu_read_word(mmu, cpu->reg.pc.word);
+    debug_instruction(cpu, mmu, "LD ($%02X), SP");
+    mmu_write_word(mmu, addr, cpu->reg.sp.word);
+}
+
 void cpu_op_09(cpu_t* cpu, mmu_t* mmu)
 {
     debug_instruction(cpu, mmu, "ADD HL, BC");
@@ -869,6 +899,33 @@ void cpu_op_26(cpu_t * cpu, mmu_t * mmu)
     cpu->reg.hl.hi = byte;
 }
 
+void cpu_op_27(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "DAA");
+    uint8_t a = cpu->reg.af.hi;
+
+    if (cpu_flag(cpu, CPU_FLAG_SUB_BIT))
+    {
+        if (cpu_flag(cpu, CPU_FLAG_HC_BIT))
+            a = (a - 0x06) & 0xFF;
+        if (cpu_flag(cpu, CPU_FLAG_CARRY_BIT))
+            a -= 0x60;
+    }
+    else
+    {
+        if (cpu_flag(cpu, CPU_FLAG_HC_BIT) || (a & 0xF) > 9)
+            a += 0x06;
+        if (cpu_flag(cpu, CPU_FLAG_CARRY_BIT) || a > 0x9F)
+            a += 0x60;
+    }
+
+    cpu->reg.af.hi = a;
+
+    cpu_flag_set_halfcarry(cpu, false);
+    cpu_flag_set_zero(cpu, a == 0);
+    cpu_flag_set_carry(cpu, a >= 0x100);
+}
+
 void cpu_op_28(cpu_t * cpu, mmu_t * mmu)
 {
     int8_t offset = (int8_t)mmu_read_byte(mmu, cpu->reg.pc.word);
@@ -971,6 +1028,14 @@ void cpu_op_36(cpu_t * cpu, mmu_t * mmu)
     uint8_t byte = mmu_read_byte(mmu, cpu->reg.pc.word);
     debug_instruction(cpu, mmu, "LD (HL), $%02X", byte);
     mmu_write_byte(mmu, cpu->reg.hl.word, byte);
+}
+
+void cpu_op_37(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "SCF");
+    cpu_flag_set_sub(cpu, false);
+    cpu_flag_set_halfcarry(cpu, false);
+    cpu_flag_set_carry(cpu, true);
 }
 
 void cpu_op_38(cpu_t * cpu, mmu_t * mmu)
