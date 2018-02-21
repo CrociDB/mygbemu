@@ -292,6 +292,40 @@ void _cpu_init_table_cb()
     optable_cb[0x1E] = (opfunc_t) { &cpu_op_cb_1e, 2, 16, 0 };
     optable_cb[0x1F] = (opfunc_t) { &cpu_op_cb_1f, 2, 8, 0 };
 
+    optable_cb[0x20] = (opfunc_t) { &cpu_op_cb_20, 2, 8, 0 };
+    optable_cb[0x21] = (opfunc_t) { &cpu_op_cb_21, 2, 8, 0 };
+    optable_cb[0x22] = (opfunc_t) { &cpu_op_cb_22, 2, 8, 0 };
+    optable_cb[0x23] = (opfunc_t) { &cpu_op_cb_23, 2, 8, 0 };
+    optable_cb[0x24] = (opfunc_t) { &cpu_op_cb_24, 2, 8, 0 };
+    optable_cb[0x25] = (opfunc_t) { &cpu_op_cb_25, 2, 8, 0 };
+    optable_cb[0x26] = (opfunc_t) { &cpu_op_cb_26, 4, 16, 0 };
+    optable_cb[0x27] = (opfunc_t) { &cpu_op_cb_27, 2, 8, 0 };
+    optable_cb[0x28] = (opfunc_t) { &cpu_op_cb_28, 2, 8, 0 };
+    optable_cb[0x29] = (opfunc_t) { &cpu_op_cb_29, 2, 8, 0 };
+    optable_cb[0x2A] = (opfunc_t) { &cpu_op_cb_2a, 2, 8, 0 };
+    optable_cb[0x2B] = (opfunc_t) { &cpu_op_cb_2b, 2, 8, 0 };
+    optable_cb[0x2C] = (opfunc_t) { &cpu_op_cb_2c, 2, 8, 0 };
+    optable_cb[0x2D] = (opfunc_t) { &cpu_op_cb_2d, 2, 8, 0 };
+    optable_cb[0x2E] = (opfunc_t) { &cpu_op_cb_2e, 2, 16, 0 };
+    optable_cb[0x2F] = (opfunc_t) { &cpu_op_cb_2f, 2, 8, 0 };
+
+    optable_cb[0x30] = (opfunc_t) { &cpu_op_cb_30, 2, 8, 0 };
+    optable_cb[0x31] = (opfunc_t) { &cpu_op_cb_31, 2, 8, 0 };
+    optable_cb[0x32] = (opfunc_t) { &cpu_op_cb_32, 2, 8, 0 };
+    optable_cb[0x33] = (opfunc_t) { &cpu_op_cb_33, 2, 8, 0 };
+    optable_cb[0x34] = (opfunc_t) { &cpu_op_cb_34, 2, 8, 0 };
+    optable_cb[0x35] = (opfunc_t) { &cpu_op_cb_35, 2, 8, 0 };
+    optable_cb[0x36] = (opfunc_t) { &cpu_op_cb_36, 4, 16, 0 };
+    optable_cb[0x37] = (opfunc_t) { &cpu_op_cb_37, 2, 8, 0 };
+    optable_cb[0x38] = (opfunc_t) { &cpu_op_cb_38, 2, 8, 0 };
+    optable_cb[0x39] = (opfunc_t) { &cpu_op_cb_39, 2, 8, 0 };
+    optable_cb[0x3A] = (opfunc_t) { &cpu_op_cb_3a, 2, 8, 0 };
+    optable_cb[0x3B] = (opfunc_t) { &cpu_op_cb_3b, 2, 8, 0 };
+    optable_cb[0x3C] = (opfunc_t) { &cpu_op_cb_3c, 2, 8, 0 };
+    optable_cb[0x3D] = (opfunc_t) { &cpu_op_cb_3d, 2, 8, 0 };
+    optable_cb[0x3E] = (opfunc_t) { &cpu_op_cb_3e, 2, 16, 0 };
+    optable_cb[0x3F] = (opfunc_t) { &cpu_op_cb_3f, 2, 8, 0 };
+
     optable_cb[0x7C] = (opfunc_t) { &cpu_op_cb_7c, 2, 8, 0 };
 }
 
@@ -2000,6 +2034,209 @@ void cpu_op_cb_1f(cpu_t * cpu, mmu_t * mmu)
     debug_instruction(cpu, mmu, "RR A");
     cpu_ins_rr(cpu, &cpu->reg.af.hi);
 }
+
+void cpu_op_cb_20(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "SLA B");
+    cpu_ins_sla(cpu, &cpu->reg.bc.hi);
+}
+
+void cpu_op_cb_21(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "SLA C");
+    cpu_ins_sla(cpu, &cpu->reg.bc.lo);
+}
+
+void cpu_op_cb_22(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "SLA D");
+    cpu_ins_sla(cpu, &cpu->reg.de.hi);
+}
+
+void cpu_op_cb_23(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "SLA E");
+    cpu_ins_sla(cpu, &cpu->reg.de.lo);
+}
+
+void cpu_op_cb_24(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "SLA H");
+    cpu_ins_sla(cpu, &cpu->reg.hl.hi);
+}
+
+void cpu_op_cb_25(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "SLA L");
+    cpu_ins_sla(cpu, &cpu->reg.hl.hi);
+}
+
+void cpu_op_cb_26(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "SLA (HL)");
+    uint8_t v = mmu_read_byte(mmu, cpu->reg.hl.word);
+    cpu_ins_sla(cpu, &v);
+    mmu_write_byte(mmu, cpu->reg.hl.word, v);
+}
+
+void cpu_op_cb_27(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "SLA A");
+    cpu_ins_sla(cpu, &cpu->reg.af.hi);
+}
+
+void cpu_op_cb_28(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "SRA B");
+    cpu_ins_sra(cpu, &cpu->reg.bc.hi);
+}
+
+void cpu_op_cb_29(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "SRA C");
+    cpu_ins_sra(cpu, &cpu->reg.bc.lo);
+}
+
+void cpu_op_cb_2a(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "SRA D");
+    cpu_ins_sra(cpu, &cpu->reg.de.hi);
+}
+
+void cpu_op_cb_2b(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "SRA E");
+    cpu_ins_sra(cpu, &cpu->reg.de.lo);
+}
+
+void cpu_op_cb_2c(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "SRA H");
+    cpu_ins_sra(cpu, &cpu->reg.hl.hi);
+}
+
+void cpu_op_cb_2d(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "SRA L");
+    cpu_ins_sra(cpu, &cpu->reg.hl.lo);
+}
+
+void cpu_op_cb_2e(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "SRA (HL)");
+    uint8_t v = mmu_read_byte(mmu, cpu->reg.hl.word);
+    cpu_ins_sra(cpu, &v);
+    mmu_write_byte(mmu, cpu->reg.hl.word, v);
+}
+
+void cpu_op_cb_2f(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "SRA A");
+    cpu_ins_sra(cpu, &cpu->reg.af.hi);
+}
+
+
+void cpu_op_cb_30(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "SWAP B");
+    cpu_ins_swap(cpu, &cpu->reg.bc.hi);
+}
+
+void cpu_op_cb_31(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "SWAP C");
+    cpu_ins_swap(cpu, &cpu->reg.bc.lo);
+}
+
+void cpu_op_cb_32(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "SWAP D");
+    cpu_ins_swap(cpu, &cpu->reg.de.hi);
+}
+
+void cpu_op_cb_33(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "SWAP E");
+    cpu_ins_swap(cpu, &cpu->reg.de.lo);
+}
+
+void cpu_op_cb_34(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "SWAP H");
+    cpu_ins_swap(cpu, &cpu->reg.hl.hi);
+}
+
+void cpu_op_cb_35(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "SWAP L");
+    cpu_ins_swap(cpu, &cpu->reg.hl.hi);
+}
+
+void cpu_op_cb_36(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "SWAP (HL)");
+    uint8_t v = mmu_read_byte(mmu, cpu->reg.hl.word);
+    cpu_ins_swap(cpu, &v);
+    mmu_write_byte(mmu, cpu->reg.hl.word, v);
+}
+
+void cpu_op_cb_37(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "SWAP A");
+    cpu_ins_swap(cpu, &cpu->reg.af.hi);
+}
+
+void cpu_op_cb_38(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "SRL B");
+    cpu_ins_srl(cpu, &cpu->reg.bc.hi);
+}
+
+void cpu_op_cb_39(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "SRL C");
+    cpu_ins_srl(cpu, &cpu->reg.bc.lo);
+}
+
+void cpu_op_cb_3a(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "SRL D");
+    cpu_ins_srl(cpu, &cpu->reg.de.hi);
+}
+
+void cpu_op_cb_3b(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "SRL E");
+    cpu_ins_srl(cpu, &cpu->reg.de.lo);
+}
+
+void cpu_op_cb_3c(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "SRL H");
+    cpu_ins_srl(cpu, &cpu->reg.hl.hi);
+}
+
+void cpu_op_cb_3d(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "SRL L");
+    cpu_ins_srl(cpu, &cpu->reg.hl.lo);
+}
+
+void cpu_op_cb_3e(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "SRL (HL)");
+    uint8_t v = mmu_read_byte(mmu, cpu->reg.hl.word);
+    cpu_ins_srl(cpu, &v);
+    mmu_write_byte(mmu, cpu->reg.hl.word, v);
+}
+
+void cpu_op_cb_3f(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "SRL A");
+    cpu_ins_srl(cpu, &cpu->reg.af.hi);
+}
+
+
 
 void cpu_op_cb_7c(cpu_t* cpu, mmu_t* mmu)
 {

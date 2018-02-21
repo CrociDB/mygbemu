@@ -248,6 +248,59 @@ void cpu_ins_rrc(cpu_t * cpu, uint8_t * reg)
     cpu_flag_set_halfcarry(cpu, false);
 }
 
+void cpu_ins_sla(cpu_t * cpu, uint8_t * reg)
+{
+    cpu_flag_set_sub(cpu, false);
+    cpu_flag_set_halfcarry(cpu, false);
+
+    cpu_flag_set_carry(cpu, util_check_bit((*reg), 0));
+
+    (*reg) <<= 1;
+
+    cpu_flag_set_zero(cpu, (*reg) == 0);
+}
+
+void cpu_ins_sra(cpu_t * cpu, uint8_t * reg)
+{
+    cpu_flag_set_sub(cpu, false);
+    cpu_flag_set_halfcarry(cpu, false);
+
+    cpu_flag_set_carry(cpu, util_check_bit((*reg), 0));
+
+    uint8_t top = util_check_bit((*reg), 7);
+    (*reg) >>= 1;
+    (*reg) |= top;
+
+    cpu_flag_set_zero(cpu, (*reg) == 0);
+}
+
+void cpu_ins_srl(cpu_t * cpu, uint8_t * reg)
+{
+    cpu_flag_set_sub(cpu, false);
+    cpu_flag_set_halfcarry(cpu, false);
+
+    uint8_t top = util_check_bit((*reg), 7);
+    (*reg) >>= 1;
+    util_unset_bit(reg, 7);
+
+    cpu_flag_set_carry(cpu, top);
+    cpu_flag_set_zero(cpu, (*reg) == 0);
+}
+
+void cpu_ins_swap(cpu_t * cpu, uint8_t * reg)
+{
+    cpu_flag_set_sub(cpu, false);
+    cpu_flag_set_halfcarry(cpu, false);
+    cpu_flag_set_carry(cpu, false);
+
+    uint8_t lower = (*reg) & 0xF;
+    uint8_t higher = (*reg) >> 4;
+
+    (*reg) = lower << 4 | higher;
+
+    cpu_flag_set_zero(cpu, (*reg) == 0);
+}
+
 void cpu_ins_and(cpu_t * cpu, const uint8_t value)
 {
     cpu_flag_set_carry(cpu, false);
