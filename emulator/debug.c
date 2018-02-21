@@ -166,7 +166,14 @@ void debug_loop(debugger_t* debugger)
         }
         else if (!strcmp(cmd, "i"))
         {
-            printf("\n> 0x%04X\t%02X\t%s\n\n", pc_addr, debugger->cpu->currop, debugger->current_disasm);
+            if (!(debugger->cpu->currop & 0xFF))
+            {
+                printf("\n> 0x%04X\t%02X\t%s\n\n", pc_addr, (debugger->cpu->currop >> 8), debugger->current_disasm);
+            }
+            else
+            {
+                printf("\n> 0x%04X\t%04X\t%s\n\n", pc_addr, debugger->cpu->currop, debugger->current_disasm);
+            }
         }
         else if (!strcmp(cmd, "h"))
         {
@@ -217,7 +224,14 @@ void debug_instruction(cpu_t* cpu, mmu_t* mmu, const char* disasm, ...)
 
     if (debugger->printall)
     {
-        log_cpu("0x%04X\t%02X\t%s", pc_addr, cpu->currop, buffer);
+        if (!(debugger->cpu->currop & 0xFF))
+        {
+            log_cpu("0x%04X\t%02X\t%s", pc_addr, (cpu->currop >> 8), buffer);
+        }
+        else
+        {
+            log_cpu("0x%04X\t%04X\t%s", pc_addr, cpu->currop, buffer);
+        }
     }
 
     if (isbreak)
