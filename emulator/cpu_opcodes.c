@@ -1748,9 +1748,8 @@ void cpu_op_e8(cpu_t * cpu, mmu_t * mmu)
 
 void cpu_op_e9(cpu_t * cpu, mmu_t * mmu)
 {
-    uint16_t addr = mmu_read_word(mmu, cpu->reg.hl.word);
-    debug_instruction(cpu, mmu, "JP (HL)", addr);
-    cpu_ins_jp(cpu, addr, CPU_CONDITION_ALWAYS);
+    debug_instruction(cpu, mmu, "JP HL");
+    cpu_ins_jp(cpu, cpu->reg.hl.word, CPU_CONDITION_ALWAYS);
 }
 
 void cpu_op_ea(cpu_t * cpu, mmu_t * mmu)
