@@ -337,6 +337,11 @@ void cpu_ins_sub8(cpu_t* cpu, uint8_t value)
     cpu->reg.af.hi = a;
 }
 
+void cpu_ins_adc(cpu_t* cpu, const uint8_t value)
+{
+    cpu_ins_add8(cpu, &cpu->reg.af.hi, value + cpu_flag(cpu, CPU_FLAG_CARRY_BIT));
+}
+
 void cpu_ins_call(cpu_t * cpu, mmu_t * mmu, uint16_t addr)
 {
     cpu->reg.sp.word -= 2;

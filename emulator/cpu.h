@@ -105,6 +105,7 @@ void cpu_ins_add8(cpu_t* cpu, uint8_t* reg, const uint8_t value);
 void cpu_ins_add16(cpu_t* cpu, uint16_t* reg, const uint16_t value, bool zero);
 void cpu_ins_dec8(cpu_t* cpu, uint8_t* reg);
 void cpu_ins_sub8(cpu_t* cpu, uint8_t value);
+void cpu_ins_adc(cpu_t* cpu, const uint8_t value);
 
 void cpu_ins_call(cpu_t* cpu, mmu_t* mmu, uint16_t addr);
 void cpu_ins_ret(cpu_t* cpu, mmu_t* mmu);

@@ -163,6 +163,14 @@ void cpu_op_84(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_85(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_86(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_87(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_88(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_89(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_8a(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_8b(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_8c(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_8d(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_8e(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_8f(cpu_t* cpu, mmu_t* mmu);
 
 void cpu_op_90(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_91(cpu_t* cpu, mmu_t* mmu);
@@ -221,36 +229,44 @@ void cpu_op_c2(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_c3(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_c5(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_c6(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_c7(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_c8(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_c9(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_ca(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_cd(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_cf(cpu_t* cpu, mmu_t* mmu);
 
 void cpu_op_d0(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_d1(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_d2(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_d5(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_d7(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_d8(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_d9(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_da(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_df(cpu_t* cpu, mmu_t* mmu);
 
 void cpu_op_e0(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_e1(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_e2(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_e5(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_e6(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_e7(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_e8(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_e9(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_ea(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_ef(cpu_t* cpu, mmu_t* mmu);
 
 void cpu_op_f0(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_f1(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_f2(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_f3(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_f5(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_f7(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_fa(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_fb(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_fe(cpu_t* cpu, mmu_t* mmu);
+void cpu_op_ff(cpu_t* cpu, mmu_t* mmu);
 
 // CBs
 
