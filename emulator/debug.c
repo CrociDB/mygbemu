@@ -119,11 +119,11 @@ void debug_loop(debugger_t* debugger)
     uint16_t pc_addr = debugger->cpu->curropaddr;
     if (!(debugger->cpu->currop & 0xFF))
     {
-        printf("\n> 0x%04X\t%02X\t%s\n\n", pc_addr, (debugger->cpu->currop >> 8), debugger->current_disasm);
+        log_debug("> 0x%04X\t%02X\t%s\n", pc_addr, (debugger->cpu->currop >> 8), debugger->current_disasm);
     }
     else
     {
-        printf("\n> 0x%04X\t%04X\t%s\n\n", pc_addr, debugger->cpu->currop, debugger->current_disasm);
+        log_debug("> 0x%04X\t%04X\t%s\n", pc_addr, debugger->cpu->currop, debugger->current_disasm);
     }
 
     while (1)
@@ -168,11 +168,11 @@ void debug_loop(debugger_t* debugger)
         {
             if (!(debugger->cpu->currop & 0xFF))
             {
-                printf("\n> 0x%04X\t%02X\t%s\n\n", pc_addr, (debugger->cpu->currop >> 8), debugger->current_disasm);
+                log_debug("> 0x%04X\t%02X\t%s\n", pc_addr, (debugger->cpu->currop >> 8), debugger->current_disasm);
             }
             else
             {
-                printf("\n> 0x%04X\t%04X\t%s\n\n", pc_addr, debugger->cpu->currop, debugger->current_disasm);
+                log_debug("> 0x%04X\t%04X\t%s\n", pc_addr, debugger->cpu->currop, debugger->current_disasm);
             }
         }
         else if (!strcmp(cmd, "h"))

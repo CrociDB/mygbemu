@@ -18,6 +18,7 @@ int main(int argc, const char* argv[])
         exit(-1);
     }
 
+    log_init(LOG_MODE_STDOUT | LOG_MODE_FILE);
     log_set_level(LOG_VERBOSE);
 
     canvas_t* canvas = canvas_init();
@@ -27,9 +28,9 @@ int main(int argc, const char* argv[])
     ppu_t* ppu = ppu_create(mmu);
 
     debugger_t* debugger = debug_get(cpu);
-    debugger->printall = false;
+    debugger->printall = true;
 
-    //debug_breakpoint_addr(cpu, 0x0040);
+    //debug_breakpoint_addr(cpu, 0x0028);
 
     cartridge_t* rom = cartridge_load(argv[1]);
     mmu_load_rom(mmu, rom);
@@ -48,6 +49,8 @@ int main(int argc, const char* argv[])
     ppu_destroy(ppu);
     cpu_destroy(cpu);
     mmu_destroy(mmu);
+
+    log_destroy();
 
     return 0;
 }
