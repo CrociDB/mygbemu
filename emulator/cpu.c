@@ -349,7 +349,7 @@ void cpu_ins_add8(cpu_t* cpu, uint8_t* reg, const uint8_t value)
     uint8_t res = (*reg) + value;
 
     cpu_flag_set_zero(cpu, res == 0);
-    cpu_flag_set_carry(cpu, (res & 0x100) != 0);
+    cpu_flag_set_carry(cpu, ((*reg) + value) > 0xFF);
     cpu_flag_set_halfcarry(cpu, (((*reg) & 0xF) + (value & 0xF)) > 0xF);
 
     (*reg) = res;
