@@ -66,7 +66,10 @@ void cpu_handle_int_vblank(cpu_t* cpu, mmu_t* mmu)
     cpu->ime = false;
     (*mmu->intflags) &= ~CPU_INT_VBLANK;
 
-    cpu_ins_call(cpu, mmu, 0x0040);
+    cpu->reg.sp.word -= 2;
+    mmu_write_word(mmu, cpu->reg.sp.word, cpu->reg.pc.word);
+    cpu->reg.pc.word = 0x0040;
+
     cpu->currclock.m += 4;
     cpu->currclock.t += 16;
 }
