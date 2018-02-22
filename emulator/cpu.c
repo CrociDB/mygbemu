@@ -29,6 +29,11 @@ void cpu_run_cartridge(cpu_t* cpu, mmu_t* mmu, ppu_t* ppu)
 {
     (*mmu->finished_bios) = true;
     cpu->reg.pc.word = 0x0100;
+    cpu->reg.sp.word = 0xFFFE;
+    cpu->reg.af.word = 0x01B0;
+    cpu->reg.bc.word = 0x0013;
+    cpu->reg.de.word = 0x00d8;
+    cpu->reg.hl.word = 0x014d;
 
     // Reset VRAM
     memset((void*)(mmu->vram), 0, sizeof(mmu->vram));
