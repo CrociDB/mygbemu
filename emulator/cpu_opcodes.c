@@ -1595,7 +1595,7 @@ void cpu_op_c6(cpu_t * cpu, mmu_t * mmu)
 void cpu_op_c7(cpu_t * cpu, mmu_t * mmu)
 {
     debug_instruction(cpu, mmu, "RST 00h");
-    cpu_ins_call(cpu, mmu, 0x0000);
+    cpu_ins_call(cpu, mmu, 0x0000, 1);
 }
 
 void cpu_op_c8(cpu_t * cpu, mmu_t * mmu)
@@ -1622,13 +1622,13 @@ void cpu_op_cd(cpu_t* cpu, mmu_t * mmu)
     uint16_t addr = mmu_read_word(mmu, cpu->reg.pc.word);
     debug_instruction(cpu, mmu, "CALL $%04x", addr);
 
-    cpu_ins_call(cpu, mmu, addr);
+    cpu_ins_call(cpu, mmu, addr, 2);
 }
 
 void cpu_op_cf(cpu_t * cpu, mmu_t * mmu)
 {
     debug_instruction(cpu, mmu, "RST 08h");
-    cpu_ins_call(cpu, mmu, 0x0008);
+    cpu_ins_call(cpu, mmu, 0x0008, 0);
 }
 
 void cpu_op_d0(cpu_t * cpu, mmu_t * mmu)
@@ -1661,7 +1661,7 @@ void cpu_op_d5(cpu_t * cpu, mmu_t * mmu)
 void cpu_op_d7(cpu_t * cpu, mmu_t * mmu)
 {
     debug_instruction(cpu, mmu, "RST 10h");
-    cpu_ins_call(cpu, mmu, 0x0010);
+    cpu_ins_call(cpu, mmu, 0x0010, 0);
 }
 
 void cpu_op_d8(cpu_t * cpu, mmu_t * mmu)
@@ -1687,7 +1687,7 @@ void cpu_op_da(cpu_t * cpu, mmu_t * mmu)
 void cpu_op_df(cpu_t * cpu, mmu_t * mmu)
 {
     debug_instruction(cpu, mmu, "RST 18h");
-    cpu_ins_call(cpu, mmu, 0x0018);
+    cpu_ins_call(cpu, mmu, 0x0018, 0);
 }
 
 void cpu_op_e0(cpu_t* cpu, mmu_t* mmu)
@@ -1729,7 +1729,7 @@ void cpu_op_e6(cpu_t * cpu, mmu_t * mmu)
 void cpu_op_e7(cpu_t * cpu, mmu_t * mmu)
 {
     debug_instruction(cpu, mmu, "RST 20h");
-    cpu_ins_call(cpu, mmu, 0x0020);
+    cpu_ins_call(cpu, mmu, 0x0020, 0);
 }
 
 void cpu_op_e8(cpu_t * cpu, mmu_t * mmu)
@@ -1762,7 +1762,7 @@ void cpu_op_ea(cpu_t * cpu, mmu_t * mmu)
 void cpu_op_ef(cpu_t * cpu, mmu_t * mmu)
 {
     debug_instruction(cpu, mmu, "RST 28h");
-    cpu_ins_call(cpu, mmu, 0x0028);
+    cpu_ins_call(cpu, mmu, 0x0028, 0);
 }
 
 void cpu_op_f0(cpu_t * cpu, mmu_t * mmu)
@@ -1803,7 +1803,7 @@ void cpu_op_f5(cpu_t * cpu, mmu_t * mmu)
 void cpu_op_f7(cpu_t * cpu, mmu_t * mmu)
 {
     debug_instruction(cpu, mmu, "RST 30h");
-    cpu_ins_call(cpu, mmu, 0x0030);
+    cpu_ins_call(cpu, mmu, 0x0030, 0);
 }
 
 void cpu_op_fa(cpu_t * cpu, mmu_t * mmu)
@@ -1829,7 +1829,7 @@ void cpu_op_fe(cpu_t * cpu, mmu_t * mmu)
 void cpu_op_ff(cpu_t * cpu, mmu_t * mmu)
 {
     debug_instruction(cpu, mmu, "RST 38h");
-    cpu_ins_call(cpu, mmu, 0x0038);
+    cpu_ins_call(cpu, mmu, 0x0038, 0);
 }
 
 void cpu_op_cb_00(cpu_t * cpu, mmu_t * mmu)

@@ -111,7 +111,7 @@ void cpu_ins_dec8(cpu_t* cpu, uint8_t* reg);
 void cpu_ins_sub8(cpu_t* cpu, uint8_t value);
 void cpu_ins_adc(cpu_t* cpu, const uint8_t value);
 
-void cpu_ins_call(cpu_t* cpu, mmu_t* mmu, uint16_t addr);
+void cpu_ins_call(cpu_t* cpu, mmu_t* mmu, uint16_t addr, const uint8_t offset);
 void cpu_ins_ret(cpu_t* cpu, mmu_t* mmu);
 void cpu_ins_ret_condition(cpu_t* cpu, mmu_t* mmu, condition_e c);
 void cpu_ins_jr(cpu_t* cpu, int8_t offset, condition_e c);

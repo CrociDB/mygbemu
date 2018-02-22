@@ -66,9 +66,7 @@ void cpu_handle_int_vblank(cpu_t* cpu, mmu_t* mmu)
     cpu->ime = false;
     (*mmu->intflags) &= ~CPU_INT_VBLANK;
 
-    cpu->reg.sp.word -= 2;
-    mmu_write_word(mmu, cpu->reg.sp.word, cpu->reg.pc.word);
-    cpu->reg.pc.word = 0x0040;
+    cpu_ins_call(cpu, mmu, 0x0040, 0);
 
     cpu->currclock.m += 4;
     cpu->currclock.t += 16;
@@ -403,10 +401,10 @@ void cpu_ins_adc(cpu_t* cpu, const uint8_t value)
     cpu_ins_add8(cpu, &cpu->reg.af.hi, value + cpu_flag(cpu, CPU_FLAG_CARRY_BIT));
 }
 
-void cpu_ins_call(cpu_t * cpu, mmu_t * mmu, uint16_t addr)
+void cpu_ins_call(cpu_t * cpu, mmu_t * mmu, uint16_t addr, const uint8_t offset)
 {
     cpu->reg.sp.word -= 2;
-    mmu_write_word(mmu, cpu->reg.sp.word, cpu->reg.pc.word + 2);
+    mmu_write_word(mmu, cpu->reg.sp.word, cpu->reg.pc.word + offset);
     cpu->reg.pc.word = addr;
 }
 
