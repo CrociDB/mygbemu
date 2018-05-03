@@ -31,7 +31,7 @@ static uint8_t BIOS[0x100] = {
 
 typedef struct _mmu_t
 {
-    uint8_t bios[0xFF1];
+    uint8_t bios[0x100];
     struct
     {
         union

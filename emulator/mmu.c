@@ -271,7 +271,7 @@ void mmu_write_addr8(mmu_t* mmu, uint16_t addr, uint8_t data)
     mmu->last_written.empty = false;
     mmu->last_written.addr = addr;
     mmu->last_written.d8 = data;
-    return mmu->addr[addr] = data;
+    mmu->addr[addr] = data;
 }
 
 void mmu_write_addr16(mmu_t* mmu, uint16_t addr, uint16_t data)
@@ -280,5 +280,5 @@ void mmu_write_addr16(mmu_t* mmu, uint16_t addr, uint16_t data)
     mmu->last_written.addr = addr;
     mmu->last_written.d16 = data;
     uint16_t* pos = ((uint16_t*)(mmu->addr + addr));
-    return *pos = data;
+    *pos = data;
 }
