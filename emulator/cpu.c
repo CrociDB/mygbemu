@@ -376,9 +376,10 @@ void cpu_ins_add16(cpu_t* cpu, uint16_t* reg, const uint16_t value, bool zero)
 
 void cpu_ins_dec8(cpu_t * cpu, uint8_t * reg)
 {
-    cpu_flag_set_sub(cpu, false);
-    cpu_flag_set_halfcarry(cpu, !(((*reg) & 0xF) == 0xF));
     (*reg)--;
+
+    cpu_flag_set_sub(cpu, true);
+    cpu_flag_set_halfcarry(cpu, (((*reg) & 0x0F) == 0x0F));
     cpu_flag_set_zero(cpu, ((*reg) == 0));
 }
 
