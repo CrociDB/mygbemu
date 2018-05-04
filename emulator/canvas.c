@@ -12,7 +12,19 @@ canvas_t* canvas_init()
     {
         sys_error("Couldn't init video. SDL Error: %s", SDL_GetError());
     }
-    
+
+#ifdef CANVAS_THREAD
+    log_message("Creating Canvas thread");
+    canvas->thread = SDL_CreateThread(_canvas_thread_update, "canvas_thread", (void*)canvas);
+#else
+    _canvas_initialize_windows(canvas);
+#endif
+
+    return canvas;
+}
+
+void _canvas_initialize_windows(canvas_t* canvas)
+{
     canvas->scale = 2;
     canvas->window = SDL_CreateWindow(
         "MyGBEmu",
@@ -47,12 +59,16 @@ canvas_t* canvas_init()
 
     SDL_RenderSetScale(canvas->renderer, canvas->scale, canvas->scale);
     SDL_RenderSetScale(canvas->dbg_renderer, CANVAS_DEBUG_SCALE, CANVAS_DEBUG_SCALE);
-
-    return canvas;
 }
 
 void canvas_destroy(canvas_t* canvas)
 {
+#ifdef CANVAS_THREAD
+    int status;
+    SDL_WaitThread(canvas->thread, &status);
+    log_message("Canvas thread finished with status: %d", status);
+#endif
+
     SDL_DestroyRenderer(canvas->renderer);
     canvas->renderer = NULL;
     SDL_DestroyWindow(canvas->window);
@@ -64,7 +80,27 @@ void canvas_destroy(canvas_t* canvas)
     canvas = NULL;
 }
 
+int _canvas_thread_update(void* data)
+{
+    canvas_t* canvas = (canvas_t*)data;
+    _canvas_initialize_windows(canvas);
+
+    while (canvas->running)
+    {
+        _canvas_event_loop(canvas);
+    }
+
+    return 0;
+}
+
 void canvas_event_loop(canvas_t* canvas)
+{
+#ifndef CANVAS_THREAD
+    _canvas_event_loop(canvas);
+#endif
+}
+
+void _canvas_event_loop(canvas_t* canvas)
 {
     while (SDL_PollEvent(&canvas->event_handler) != 0)
     {
