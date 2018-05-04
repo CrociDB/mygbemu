@@ -23,22 +23,6 @@ debugger_t* debug_get(cpu_t* cpu)
     return NULL;
 }
 
-void debugger_init_loop(debugger_t* debugger, mmu_t* mmu, ppu_t* ppu)
-{
-    debugger->mmu = mmu;
-    debugger->ppu = ppu;
-    debugger->running = true;
-
-    debugger->thread = SDL_CreateThread(debug_thread_loop, "debugger_thread", (void*)debugger);
-}
-
-void debugger_end_loop(debugger_t* debugger)
-{
-    debugger->running = false;
-    int status;
-    SDL_WaitThread(debugger->thread, &status);
-}
-
 void debug_breakpoint_addr(cpu_t* cpu, uint16_t addr)
 {
     debugger_t* debugger = debug_get(cpu);
@@ -96,22 +80,6 @@ bool _debug_isbreak(debugger_t* debugger, uint16_t addr, char* asmline)
     } 
 
     return false;
-}
-
-int debug_thread_loop(void* data)
-{
-    debugger_t* debugger = (debugger_t*)data;
-
-    while (debugger->running)
-    {
-        if (debugger->debug)
-        {
-            debug_loop(debugger);
-            debugger->debug = false;
-        }
-    }
-
-    return 0;
 }
 
 void debug_loop(debugger_t* debugger)
@@ -201,7 +169,7 @@ void debug_opcode_error(cpu_t* cpu)
 
     debugger->current_addr = pc_addr;
     debugger->stopnext = false;
-    debugger->debug = true;
+    debug_loop(debugger);
 }
 
 void debug_instruction(cpu_t* cpu, mmu_t* mmu, const char* disasm, ...)
@@ -243,7 +211,8 @@ void debug_instruction(cpu_t* cpu, mmu_t* mmu, const char* disasm, ...)
         strcpy(debugger->current_disasm, buffer);
 #endif
         debugger->stopnext = false;
-        debugger->debug = true;
+
+        debug_loop(debugger);
     }
     
     va_end(argptr);

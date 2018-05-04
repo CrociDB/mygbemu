@@ -18,8 +18,8 @@ int main(int argc, const char* argv[])
         exit(-1);
     }
 
-    log_init(LOG_MODE_STDOUT | LOG_MODE_FILE);
-    log_set_level(LOG_VERBOSE);
+    log_init(LOG_MODE_STDOUT);
+    log_set_level(LOG_DEBUG);
 
     canvas_t* canvas = canvas_init();
 
@@ -28,9 +28,9 @@ int main(int argc, const char* argv[])
     ppu_t* ppu = ppu_create(mmu);
 
     debugger_t* debugger = debug_get(cpu);
-    debugger->printall = true;
+    debugger->printall = false;
 
-    //debug_breakpoint_addr(cpu, 0x0028);
+    debug_breakpoint_addr(cpu, 0x0000);
 
     cartridge_t* rom = cartridge_load(argv[1]);
     mmu_load_rom(mmu, rom);
@@ -38,11 +38,9 @@ int main(int argc, const char* argv[])
 
     mmu_load_bios(mmu);
     cpu_reset(cpu);
-    cpu_run_cartridge(cpu, mmu, ppu);
+    //cpu_run_cartridge(cpu, mmu, ppu);
 
-    debugger_init_loop(debugger, mmu, ppu);
     emu_run(cpu, mmu, ppu, canvas);
-    debugger_end_loop(debugger);
 
     // Destroy everything
     canvas_destroy(canvas);
@@ -63,11 +61,8 @@ void emu_run(cpu_t* cpu, mmu_t* mmu, ppu_t* ppu, canvas_t* canvas)
     {
         canvas_event_loop(canvas);
 
-        if (!debugger->debug)
-        {
-            cpu_tick(cpu, mmu);
-            ppu_tick(ppu, cpu, mmu);
-        }
+        cpu_tick(cpu, mmu);
+        ppu_tick(ppu, cpu, mmu);
 
         canvas_update(canvas, ppu);
     }

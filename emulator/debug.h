@@ -53,8 +53,6 @@ typedef struct _debugger_t
     bool printall;
     bool stopnext;
 
-    bool running;
-    bool debug;
     SDL_Thread* thread;
 
     uint16_t current_addr;
@@ -66,8 +64,6 @@ typedef struct _debugger_t
 static debugger_t debuggers[DEBUGGERS_MAX];
 
 debugger_t* debug_get(cpu_t* cpu);
-void debugger_init_loop(debugger_t* debugger, mmu_t* mmu, ppu_t* ppu);
-void debugger_end_loop(debugger_t* debugger);
 
 void debug_breakpoint_addr(cpu_t* cpu, uint16_t addr);
 void debug_breakpoint_asm(cpu_t* cpu, const char* disasm);
@@ -79,7 +75,6 @@ void debug_opcode_error(cpu_t* cpu);
 void debug_instruction(cpu_t* cpu, mmu_t* mmu, const char* disasm, ...);
 void debug_interruption(cpu_t* cpu, mmu_t* mmu, const char* msg, ...);
 
-static int debug_thread_loop(void* data);
 void debug_loop(debugger_t* debugger);
 
 #endif
