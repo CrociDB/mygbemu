@@ -125,12 +125,16 @@ void debug_loop(debugger_t* debugger)
                 "\tB: %02x \tC: %02x \tBC: %04x\n"\
                 "\tD: %02x \tE: %02x \tDE: %04x\n"\
                 "\tH: %02x \tL: %02x \tHL: %04x\n"\
-                "\tSP: %04x \tPC: %04x\n",
+                "\tSP: %04x \tPC: %04x\n"\
+                "\nCPU FLAGS\n"\
+                "\tZ: %d \tS: %d \tH: %d \tC: %d\n",
                 debugger->cpu->reg.af.hi, debugger->cpu->reg.af.lo, debugger->cpu->reg.af.word,
                 debugger->cpu->reg.bc.hi, debugger->cpu->reg.bc.lo, debugger->cpu->reg.bc.word,
                 debugger->cpu->reg.de.hi, debugger->cpu->reg.de.lo, debugger->cpu->reg.de.word,
                 debugger->cpu->reg.hl.hi, debugger->cpu->reg.hl.lo, debugger->cpu->reg.hl.word,
-                debugger->cpu->reg.sp.word, pc_addr);
+                debugger->cpu->reg.sp.word, pc_addr,
+                cpu_flag(debugger->cpu, CPU_FLAG_ZERO_BIT), cpu_flag(debugger->cpu, CPU_FLAG_SUB_BIT),
+                cpu_flag(debugger->cpu, CPU_FLAG_HC_BIT), cpu_flag(debugger->cpu, CPU_FLAG_CARRY_BIT));
         }
         else if (!strcmp(cmd, "i"))
         {
