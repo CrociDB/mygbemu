@@ -151,6 +151,9 @@
     <ClInclude Include="..\..\emulator\sys.h" />
     <ClInclude Include="..\..\emulator\util.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\README.md" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
