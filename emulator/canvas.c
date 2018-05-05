@@ -15,7 +15,14 @@ canvas_t* canvas_init()
 
 #ifdef CANVAS_THREAD
     log_message("Creating Canvas thread");
+    canvas->init_mutex = SDL_CreateMutex();
     canvas->thread = SDL_CreateThread(_canvas_thread_update, "canvas_thread", (void*)canvas);
+
+    // This mutex will make sure the window is properly initiated before continuing
+    SDL_Delay(10);
+    SDL_LockMutex(canvas->init_mutex);
+    SDL_UnlockMutex(canvas->init_mutex);
+    SDL_DestroyMutex(canvas->init_mutex);
 #else
     _canvas_initialize_windows(canvas);
 #endif
@@ -25,6 +32,10 @@ canvas_t* canvas_init()
 
 void _canvas_initialize_windows(canvas_t* canvas)
 {
+#ifdef CANVAS_THREAD
+    SDL_LockMutex(canvas->init_mutex);
+#endif
+
     canvas->scale = 2;
     canvas->window = SDL_CreateWindow(
         "MyGBEmu",
@@ -59,6 +70,10 @@ void _canvas_initialize_windows(canvas_t* canvas)
 
     SDL_RenderSetScale(canvas->renderer, canvas->scale, canvas->scale);
     SDL_RenderSetScale(canvas->dbg_renderer, CANVAS_DEBUG_SCALE, CANVAS_DEBUG_SCALE);
+
+#ifdef CANVAS_THREAD
+    SDL_UnlockMutex(canvas->init_mutex);
+#endif
 }
 
 void canvas_destroy(canvas_t* canvas)
@@ -175,12 +190,12 @@ void canvas_update_debug(canvas_t* canvas, ppu_t* ppu)
 
                 uint16_t wx = ((i % (CANVAS_DEBUG_WINDOW_W / (CANVAS_DEBUG_TILE_PAD * CANVAS_DEBUG_SCALE)))) * CANVAS_DEBUG_TILE_PAD + (CANVAS_DEBUG_TILE_PAD / CANVAS_DEBUG_SCALE / 2);
                 uint16_t wy = ((i / (CANVAS_DEBUG_WINDOW_W / (CANVAS_DEBUG_TILE_PAD * CANVAS_DEBUG_SCALE)))) * CANVAS_DEBUG_TILE_PAD + (CANVAS_DEBUG_TILE_PAD / CANVAS_DEBUG_SCALE / 2);
-                
+
                 SDL_SetRenderDrawColor(canvas->dbg_renderer, col >> 16, col >> 8, col & 0xff, 0xff);
                 SDL_RenderDrawPoint(canvas->dbg_renderer, x + wx, y + wy);
             }
         }
     }
-    
+
     SDL_RenderPresent(canvas->dbg_renderer);
 }

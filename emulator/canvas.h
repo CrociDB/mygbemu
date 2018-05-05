@@ -32,6 +32,7 @@ typedef struct _canvas_t
 
 #ifdef CANVAS_THREAD
     SDL_Thread* thread;
+    SDL_mutex* init_mutex;
 #endif
 
     bool running;
