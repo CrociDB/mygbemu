@@ -115,6 +115,6 @@ void cpu_ins_call(cpu_t* cpu, mmu_t* mmu, uint16_t addr, const uint8_t offset);
 void cpu_ins_ret(cpu_t* cpu, mmu_t* mmu);
 void cpu_ins_ret_condition(cpu_t* cpu, mmu_t* mmu, condition_e c);
 void cpu_ins_jr(cpu_t* cpu, int8_t offset, condition_e c);
-void cpu_ins_jp(cpu_t* cpu, uint16_t addr, condition_e c);
+void cpu_ins_jp(cpu_t* cpu, uint16_t addr, condition_e c, uint8_t offset);
 
 #endif

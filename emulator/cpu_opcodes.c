@@ -1568,14 +1568,14 @@ void cpu_op_c2(cpu_t * cpu, mmu_t * mmu)
 {
     uint16_t addr = mmu_read_word(mmu, cpu->reg.pc.word);
     debug_instruction(cpu, mmu, "JP NZ, $%04x", addr);
-    cpu_ins_jp(cpu, addr, CPU_CONDITION_NZ);
+    cpu_ins_jp(cpu, addr, CPU_CONDITION_NZ, 0x02);
 }
 
 void cpu_op_c3(cpu_t * cpu, mmu_t * mmu)
 {
     uint16_t addr = mmu_read_word(mmu, cpu->reg.pc.word);
     debug_instruction(cpu, mmu, "JP $%04x", addr);
-    cpu_ins_jp(cpu, addr, CPU_CONDITION_ALWAYS);
+    cpu_ins_jp(cpu, addr, CPU_CONDITION_ALWAYS, 0x02);
 }
 
 void cpu_op_c5(cpu_t * cpu, mmu_t * mmu)
@@ -1614,7 +1614,7 @@ void cpu_op_ca(cpu_t * cpu, mmu_t * mmu)
 {
     uint16_t addr = mmu_read_word(mmu, cpu->reg.pc.word);
     debug_instruction(cpu, mmu, "JP Z, $%04x", addr);
-    cpu_ins_jp(cpu, addr, CPU_CONDITION_Z);
+    cpu_ins_jp(cpu, addr, CPU_CONDITION_Z, 0x02);
 }
 
 void cpu_op_cd(cpu_t* cpu, mmu_t * mmu)
@@ -1648,7 +1648,7 @@ void cpu_op_d2(cpu_t * cpu, mmu_t * mmu)
 {
     uint16_t addr = mmu_read_word(mmu, cpu->reg.pc.word);
     debug_instruction(cpu, mmu, "JP NC, $%04x", addr);
-    cpu_ins_jp(cpu, addr, CPU_CONDITION_NC);
+    cpu_ins_jp(cpu, addr, CPU_CONDITION_NC, 0x02);
 }
 
 void cpu_op_d5(cpu_t * cpu, mmu_t * mmu)
@@ -1681,7 +1681,7 @@ void cpu_op_da(cpu_t * cpu, mmu_t * mmu)
 {
     uint16_t addr = mmu_read_word(mmu, cpu->reg.pc.word);
     debug_instruction(cpu, mmu, "JP C, $%04x", addr);
-    cpu_ins_jp(cpu, addr, CPU_CONDITION_C);
+    cpu_ins_jp(cpu, addr, CPU_CONDITION_C, 0x02);
 }
 
 void cpu_op_df(cpu_t * cpu, mmu_t * mmu)
@@ -1749,7 +1749,7 @@ void cpu_op_e8(cpu_t * cpu, mmu_t * mmu)
 void cpu_op_e9(cpu_t * cpu, mmu_t * mmu)
 {
     debug_instruction(cpu, mmu, "JP HL");
-    cpu_ins_jp(cpu, cpu->reg.hl.word, CPU_CONDITION_ALWAYS);
+    cpu_ins_jp(cpu, cpu->reg.hl.word, CPU_CONDITION_ALWAYS, 0);
 }
 
 void cpu_op_ea(cpu_t * cpu, mmu_t * mmu)

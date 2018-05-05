@@ -445,11 +445,11 @@ void cpu_ins_jr(cpu_t* cpu, int8_t offset, condition_e c)
     }
 }
 
-void cpu_ins_jp(cpu_t* cpu, uint16_t addr, condition_e c)
+void cpu_ins_jp(cpu_t* cpu, uint16_t addr, condition_e c, uint8_t offset)
 {
     if (cpu_check_condition(cpu, c))
     {
-        cpu->reg.pc.word = addr - 0x02;
+        cpu->reg.pc.word = addr - offset;
         cpu->currclock.m += 1;
         cpu->currclock.t += 4;
     }
