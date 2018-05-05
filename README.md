@@ -9,3 +9,7 @@ It's a simple gameboy emulator written in C for study purpose.
 I'm writing about the development of this project:
 
  * [Part 1: Setting up and Memory Management Unit](http://crocidb.com/articles/gameboy-emulator-1.html)
+
+## License
+
+This project is under the MIT License. For more info, read the LICENSE file.
