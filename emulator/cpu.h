@@ -91,6 +91,8 @@ inline bool cpu_check_condition(cpu_t* cpu, condition_e condition);
 // CPU Instructions
 
 void cpu_ins_bit(cpu_t* cpu, uint8_t bit, uint8_t bytereg);
+void cpu_ins_res(cpu_t* cpu, uint8_t bit, uint8_t* value);
+void cpu_ins_set(cpu_t* cpu, uint8_t bit, uint8_t* value);
 void cpu_ins_rl(cpu_t* cpu, uint8_t* reg);
 void cpu_ins_rlc(cpu_t* cpu, uint8_t* reg);
 void cpu_ins_rr(cpu_t* cpu, uint8_t* reg);

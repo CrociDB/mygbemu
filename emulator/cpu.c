@@ -198,6 +198,16 @@ void cpu_ins_bit(cpu_t* cpu, uint8_t bit, uint8_t bytereg)
     cpu_flag_set_halfcarry(cpu, true);
 }
 
+void cpu_ins_res(cpu_t* cpu, uint8_t bit, uint8_t* value)
+{
+    util_unset_bit(value, bit);
+}
+
+void cpu_ins_set(cpu_t* cpu, uint8_t bit, uint8_t* value)
+{
+    util_set_bit(value, bit);
+}
+
 void cpu_ins_rl(cpu_t* cpu, uint8_t* reg)
 {
     uint8_t carry = cpu_flag(cpu, CPU_FLAG_CARRY_BIT);

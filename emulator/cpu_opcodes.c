@@ -393,6 +393,74 @@ void _cpu_init_table_cb()
     optable_cb[0x7D] = (opfunc_t) { &cpu_op_cb_7d, 2, 8, 0 };
     optable_cb[0x7E] = (opfunc_t) { &cpu_op_cb_7e, 2, 16, 0 };
     optable_cb[0x7F] = (opfunc_t) { &cpu_op_cb_7f, 2, 8, 0 };
+
+    optable_cb[0x80] = (opfunc_t) { &cpu_op_cb_80, 2, 8, 0 };
+    optable_cb[0x81] = (opfunc_t) { &cpu_op_cb_81, 2, 8, 0 };
+    optable_cb[0x82] = (opfunc_t) { &cpu_op_cb_82, 2, 8, 0 };
+    optable_cb[0x83] = (opfunc_t) { &cpu_op_cb_83, 2, 8, 0 };
+    optable_cb[0x84] = (opfunc_t) { &cpu_op_cb_84, 2, 8, 0 };
+    optable_cb[0x85] = (opfunc_t) { &cpu_op_cb_85, 2, 8, 0 };
+    optable_cb[0x86] = (opfunc_t) { &cpu_op_cb_86, 2, 16, 0 };
+    optable_cb[0x87] = (opfunc_t) { &cpu_op_cb_87, 2, 8, 0 };
+    optable_cb[0x88] = (opfunc_t) { &cpu_op_cb_88, 2, 8, 0 };
+    optable_cb[0x89] = (opfunc_t) { &cpu_op_cb_89, 2, 8, 0 };
+    optable_cb[0x8A] = (opfunc_t) { &cpu_op_cb_8a, 2, 8, 0 };
+    optable_cb[0x8B] = (opfunc_t) { &cpu_op_cb_8b, 2, 8, 0 };
+    optable_cb[0x8C] = (opfunc_t) { &cpu_op_cb_8c, 2, 8, 0 };
+    optable_cb[0x8D] = (opfunc_t) { &cpu_op_cb_8d, 2, 8, 0 };
+    optable_cb[0x8E] = (opfunc_t) { &cpu_op_cb_8e, 2, 16, 0 };
+    optable_cb[0x8F] = (opfunc_t) { &cpu_op_cb_8f, 2, 8, 0 };
+
+    optable_cb[0x90] = (opfunc_t) { &cpu_op_cb_90, 2, 8, 0 };
+    optable_cb[0x91] = (opfunc_t) { &cpu_op_cb_91, 2, 8, 0 };
+    optable_cb[0x92] = (opfunc_t) { &cpu_op_cb_92, 2, 8, 0 };
+    optable_cb[0x93] = (opfunc_t) { &cpu_op_cb_93, 2, 8, 0 };
+    optable_cb[0x94] = (opfunc_t) { &cpu_op_cb_94, 2, 8, 0 };
+    optable_cb[0x95] = (opfunc_t) { &cpu_op_cb_95, 2, 8, 0 };
+    optable_cb[0x96] = (opfunc_t) { &cpu_op_cb_96, 2, 16, 0 };
+    optable_cb[0x97] = (opfunc_t) { &cpu_op_cb_97, 2, 8, 0 };
+    optable_cb[0x98] = (opfunc_t) { &cpu_op_cb_98, 2, 8, 0 };
+    optable_cb[0x99] = (opfunc_t) { &cpu_op_cb_99, 2, 8, 0 };
+    optable_cb[0x9A] = (opfunc_t) { &cpu_op_cb_9a, 2, 8, 0 };
+    optable_cb[0x9B] = (opfunc_t) { &cpu_op_cb_9b, 2, 8, 0 };
+    optable_cb[0x9C] = (opfunc_t) { &cpu_op_cb_9c, 2, 8, 0 };
+    optable_cb[0x9D] = (opfunc_t) { &cpu_op_cb_9d, 2, 8, 0 };
+    optable_cb[0x9E] = (opfunc_t) { &cpu_op_cb_9e, 2, 16, 0 };
+    optable_cb[0x9F] = (opfunc_t) { &cpu_op_cb_9f, 2, 8, 0 };
+
+    optable_cb[0xA0] = (opfunc_t) { &cpu_op_cb_a0, 2, 8, 0 };
+    optable_cb[0xA1] = (opfunc_t) { &cpu_op_cb_a1, 2, 8, 0 };
+    optable_cb[0xA2] = (opfunc_t) { &cpu_op_cb_a2, 2, 8, 0 };
+    optable_cb[0xA3] = (opfunc_t) { &cpu_op_cb_a3, 2, 8, 0 };
+    optable_cb[0xA4] = (opfunc_t) { &cpu_op_cb_a4, 2, 8, 0 };
+    optable_cb[0xA5] = (opfunc_t) { &cpu_op_cb_a5, 2, 8, 0 };
+    optable_cb[0xA6] = (opfunc_t) { &cpu_op_cb_a6, 2, 16, 0 };
+    optable_cb[0xA7] = (opfunc_t) { &cpu_op_cb_a7, 2, 8, 0 };
+    optable_cb[0xA8] = (opfunc_t) { &cpu_op_cb_a8, 2, 8, 0 };
+    optable_cb[0xA9] = (opfunc_t) { &cpu_op_cb_a9, 2, 8, 0 };
+    optable_cb[0xAA] = (opfunc_t) { &cpu_op_cb_aa, 2, 8, 0 };
+    optable_cb[0xAB] = (opfunc_t) { &cpu_op_cb_ab, 2, 8, 0 };
+    optable_cb[0xAC] = (opfunc_t) { &cpu_op_cb_ac, 2, 8, 0 };
+    optable_cb[0xAD] = (opfunc_t) { &cpu_op_cb_ad, 2, 8, 0 };
+    optable_cb[0xAE] = (opfunc_t) { &cpu_op_cb_ae, 2, 16, 0 };
+    optable_cb[0xAF] = (opfunc_t) { &cpu_op_cb_af, 2, 8, 0 };
+
+    optable_cb[0xB0] = (opfunc_t) { &cpu_op_cb_b0, 2, 8, 0 };
+    optable_cb[0xB1] = (opfunc_t) { &cpu_op_cb_b1, 2, 8, 0 };
+    optable_cb[0xB2] = (opfunc_t) { &cpu_op_cb_b2, 2, 8, 0 };
+    optable_cb[0xB3] = (opfunc_t) { &cpu_op_cb_b3, 2, 8, 0 };
+    optable_cb[0xB4] = (opfunc_t) { &cpu_op_cb_b4, 2, 8, 0 };
+    optable_cb[0xB5] = (opfunc_t) { &cpu_op_cb_b5, 2, 8, 0 };
+    optable_cb[0xB6] = (opfunc_t) { &cpu_op_cb_b6, 2, 16, 0 };
+    optable_cb[0xB7] = (opfunc_t) { &cpu_op_cb_b7, 2, 8, 0 };
+    optable_cb[0xB8] = (opfunc_t) { &cpu_op_cb_b8, 2, 8, 0 };
+    optable_cb[0xB9] = (opfunc_t) { &cpu_op_cb_b9, 2, 8, 0 };
+    optable_cb[0xBA] = (opfunc_t) { &cpu_op_cb_ba, 2, 8, 0 };
+    optable_cb[0xBB] = (opfunc_t) { &cpu_op_cb_bb, 2, 8, 0 };
+    optable_cb[0xBC] = (opfunc_t) { &cpu_op_cb_bc, 2, 8, 0 };
+    optable_cb[0xBD] = (opfunc_t) { &cpu_op_cb_bd, 2, 8, 0 };
+    optable_cb[0xBE] = (opfunc_t) { &cpu_op_cb_be, 2, 16, 0 };
+    optable_cb[0xBF] = (opfunc_t) { &cpu_op_cb_bf, 2, 8, 0 };
 }
 
 // OPs implementation
@@ -2697,3 +2765,407 @@ void cpu_op_cb_7f(cpu_t * cpu, mmu_t * mmu)
     cpu_ins_bit(cpu, 7, cpu->reg.af.hi);
 }
 
+
+void cpu_op_cb_80(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RES 0, B");
+    cpu_ins_res(cpu, 0, &cpu->reg.bc.hi);
+}
+
+void cpu_op_cb_81(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RES 0, C");
+    cpu_ins_res(cpu, 0, &cpu->reg.bc.lo);
+}
+
+void cpu_op_cb_82(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RES 0, D");
+    cpu_ins_res(cpu, 0, &cpu->reg.de.hi);
+}
+
+void cpu_op_cb_83(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RES 0, E");
+    cpu_ins_res(cpu, 0, &cpu->reg.de.lo);
+}
+
+void cpu_op_cb_84(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RES 0, H");
+    cpu_ins_res(cpu, 0, &cpu->reg.hl.hi);
+}
+
+void cpu_op_cb_85(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RES 0, L");
+    cpu_ins_res(cpu, 0, &cpu->reg.hl.lo);
+}
+
+void cpu_op_cb_86(cpu_t * cpu, mmu_t * mmu)
+{
+    uint8_t value = mmu_read_byte(mmu, cpu->reg.hl.word);
+    debug_instruction(cpu, mmu, "RES 0, (HL)");
+    cpu_ins_res(cpu, 0, &value);
+    mmu_write_byte(mmu, cpu->reg.hl.word, value);
+}
+
+void cpu_op_cb_87(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RES 0, A");
+    cpu_ins_res(cpu, 0, &cpu->reg.af.hi);
+}
+
+void cpu_op_cb_88(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RES 1, B");
+    cpu_ins_res(cpu, 1, &cpu->reg.bc.hi);
+}
+
+void cpu_op_cb_89(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RES 1, C");
+    cpu_ins_res(cpu, 1, &cpu->reg.bc.lo);
+}
+
+void cpu_op_cb_8a(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RES 1, D");
+    cpu_ins_res(cpu, 1, &cpu->reg.de.hi);
+}
+
+void cpu_op_cb_8b(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RES 1, E");
+    cpu_ins_res(cpu, 1, &cpu->reg.de.lo);
+}
+
+void cpu_op_cb_8c(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RES 1, H");
+    cpu_ins_res(cpu, 1, &cpu->reg.hl.hi);
+}
+
+void cpu_op_cb_8d(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RES 1, L");
+    cpu_ins_res(cpu, 1, &cpu->reg.hl.lo);
+}
+
+void cpu_op_cb_8e(cpu_t * cpu, mmu_t * mmu)
+{
+    uint8_t value = mmu_read_byte(mmu, cpu->reg.hl.word);
+    debug_instruction(cpu, mmu, "RES 1, (HL)");
+    cpu_ins_res(cpu, 1, &value);
+    mmu_write_byte(mmu, cpu->reg.hl.word, value);
+}
+
+void cpu_op_cb_8f(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RES 1, A");
+    cpu_ins_res(cpu, 1, &cpu->reg.af.hi);
+}
+
+
+void cpu_op_cb_90(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RES 2, B");
+    cpu_ins_res(cpu, 2, &cpu->reg.bc.hi);
+}
+
+void cpu_op_cb_91(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RES 2, C");
+    cpu_ins_res(cpu, 2, &cpu->reg.bc.lo);
+}
+
+void cpu_op_cb_92(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RES 2, D");
+    cpu_ins_res(cpu, 2, &cpu->reg.de.hi);
+}
+
+void cpu_op_cb_93(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RES 2, E");
+    cpu_ins_res(cpu, 2, &cpu->reg.de.lo);
+}
+
+void cpu_op_cb_94(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RES 2, H");
+    cpu_ins_res(cpu, 2, &cpu->reg.hl.hi);
+}
+
+void cpu_op_cb_95(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RES 2, L");
+    cpu_ins_res(cpu, 2, &cpu->reg.hl.lo);
+}
+
+void cpu_op_cb_96(cpu_t * cpu, mmu_t * mmu)
+{
+    uint8_t value = mmu_read_byte(mmu, cpu->reg.hl.word);
+    debug_instruction(cpu, mmu, "RES 2, (HL)");
+    cpu_ins_res(cpu, 2, &value);
+    mmu_write_byte(mmu, cpu->reg.hl.word, value);
+}
+
+void cpu_op_cb_97(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RES 2, A");
+    cpu_ins_res(cpu, 2, &cpu->reg.af.hi);
+}
+
+void cpu_op_cb_98(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RES 3, B");
+    cpu_ins_res(cpu, 3, &cpu->reg.bc.hi);
+}
+
+void cpu_op_cb_99(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RES 3, C");
+    cpu_ins_res(cpu, 3, &cpu->reg.bc.lo);
+}
+
+void cpu_op_cb_9a(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RES 3, D");
+    cpu_ins_res(cpu, 3, &cpu->reg.de.hi);
+}
+
+void cpu_op_cb_9b(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RES 3, E");
+    cpu_ins_res(cpu, 3, &cpu->reg.de.lo);
+}
+
+void cpu_op_cb_9c(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RES 3, H");
+    cpu_ins_res(cpu, 3, &cpu->reg.hl.hi);
+}
+
+void cpu_op_cb_9d(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RES 3, L");
+    cpu_ins_res(cpu, 3, &cpu->reg.hl.lo);
+}
+
+void cpu_op_cb_9e(cpu_t * cpu, mmu_t * mmu)
+{
+    uint8_t value = mmu_read_byte(mmu, cpu->reg.hl.word);
+    debug_instruction(cpu, mmu, "RES 3, (HL)");
+    cpu_ins_res(cpu, 3, &value);
+    mmu_write_byte(mmu, cpu->reg.hl.word, value);
+}
+
+void cpu_op_cb_9f(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RES 3, A");
+    cpu_ins_res(cpu, 3, &cpu->reg.af.hi);
+}
+
+
+void cpu_op_cb_a0(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RES 4, B");
+    cpu_ins_res(cpu, 4, &cpu->reg.bc.hi);
+}
+
+void cpu_op_cb_a1(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RES 4, C");
+    cpu_ins_res(cpu, 4, &cpu->reg.bc.lo);
+}
+
+void cpu_op_cb_a2(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RES 4, D");
+    cpu_ins_res(cpu, 4, &cpu->reg.de.hi);
+}
+
+void cpu_op_cb_a3(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RES 4, E");
+    cpu_ins_res(cpu, 4, &cpu->reg.de.lo);
+}
+
+void cpu_op_cb_a4(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RES 4, H");
+    cpu_ins_res(cpu, 4, &cpu->reg.hl.hi);
+}
+
+void cpu_op_cb_a5(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RES 4, L");
+    cpu_ins_res(cpu, 4, &cpu->reg.hl.lo);
+}
+
+void cpu_op_cb_a6(cpu_t * cpu, mmu_t * mmu)
+{
+    uint8_t value = mmu_read_byte(mmu, cpu->reg.hl.word);
+    debug_instruction(cpu, mmu, "RES 4, (HL)");
+    cpu_ins_res(cpu, 4, &value);
+    mmu_write_byte(mmu, cpu->reg.hl.word, value);
+}
+
+void cpu_op_cb_a7(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RES 4, A");
+    cpu_ins_res(cpu, 4, &cpu->reg.af.hi);
+}
+
+void cpu_op_cb_a8(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RES 5, B");
+    cpu_ins_res(cpu, 5, &cpu->reg.bc.hi);
+}
+
+void cpu_op_cb_a9(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RES 5, C");
+    cpu_ins_res(cpu, 5, &cpu->reg.bc.lo);
+}
+
+void cpu_op_cb_aa(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RES 5, D");
+    cpu_ins_res(cpu, 5, &cpu->reg.de.hi);
+}
+
+void cpu_op_cb_ab(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RES 5, E");
+    cpu_ins_res(cpu, 5, &cpu->reg.de.lo);
+}
+
+void cpu_op_cb_ac(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RES 5, H");
+    cpu_ins_res(cpu, 5, &cpu->reg.hl.hi);
+}
+
+void cpu_op_cb_ad(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RES 5, L");
+    cpu_ins_res(cpu, 5, &cpu->reg.hl.lo);
+}
+
+void cpu_op_cb_ae(cpu_t * cpu, mmu_t * mmu)
+{
+    uint8_t value = mmu_read_byte(mmu, cpu->reg.hl.word);
+    debug_instruction(cpu, mmu, "RES 5, (HL)");
+    cpu_ins_res(cpu, 5, &value);
+    mmu_write_byte(mmu, cpu->reg.hl.word, value);
+}
+
+void cpu_op_cb_af(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RES 5, A");
+    cpu_ins_res(cpu, 5, &cpu->reg.af.hi);
+}
+
+
+
+void cpu_op_cb_b0(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RES 6, B");
+    cpu_ins_res(cpu, 6, &cpu->reg.bc.hi);
+}
+
+void cpu_op_cb_b1(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RES 6, C");
+    cpu_ins_res(cpu, 6, &cpu->reg.bc.lo);
+}
+
+void cpu_op_cb_b2(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RES 6, D");
+    cpu_ins_res(cpu, 6, &cpu->reg.de.hi);
+}
+
+void cpu_op_cb_b3(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RES 6, E");
+    cpu_ins_res(cpu, 6, &cpu->reg.de.lo);
+}
+
+void cpu_op_cb_b4(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RES 6, H");
+    cpu_ins_res(cpu, 6, &cpu->reg.hl.hi);
+}
+
+void cpu_op_cb_b5(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RES 6, L");
+    cpu_ins_res(cpu, 6, &cpu->reg.hl.lo);
+}
+
+void cpu_op_cb_b6(cpu_t * cpu, mmu_t * mmu)
+{
+    uint8_t value = mmu_read_byte(mmu, cpu->reg.hl.word);
+    debug_instruction(cpu, mmu, "RES 6, (HL)");
+    cpu_ins_res(cpu, 6, &value);
+    mmu_write_byte(mmu, cpu->reg.hl.word, value);
+}
+
+void cpu_op_cb_b7(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RES 6, A");
+    cpu_ins_res(cpu, 6, &cpu->reg.af.hi);
+}
+
+void cpu_op_cb_b8(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RES 7, B");
+    cpu_ins_res(cpu, 7, &cpu->reg.bc.hi);
+}
+
+void cpu_op_cb_b9(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RES 7, C");
+    cpu_ins_res(cpu, 7, &cpu->reg.bc.lo);
+}
+
+void cpu_op_cb_ba(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RES 7, D");
+    cpu_ins_res(cpu, 7, &cpu->reg.de.hi);
+}
+
+void cpu_op_cb_bb(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RES 7, E");
+    cpu_ins_res(cpu, 7, &cpu->reg.de.lo);
+}
+
+void cpu_op_cb_bc(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RES 7, H");
+    cpu_ins_res(cpu, 7, &cpu->reg.hl.hi);
+}
+
+void cpu_op_cb_bd(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RES 7, L");
+    cpu_ins_res(cpu, 7, &cpu->reg.hl.lo);
+}
+
+void cpu_op_cb_be(cpu_t * cpu, mmu_t * mmu)
+{
+    uint8_t value = mmu_read_byte(mmu, cpu->reg.hl.word);
+    debug_instruction(cpu, mmu, "RES 7, (HL)");
+    cpu_ins_res(cpu, 7, &value);
+    mmu_write_byte(mmu, cpu->reg.hl.word, value);
+}
+
+void cpu_op_cb_bf(cpu_t * cpu, mmu_t * mmu)
+{
+    debug_instruction(cpu, mmu, "RES 7, A");
+    cpu_ins_res(cpu, 7, &cpu->reg.af.hi);
+}
