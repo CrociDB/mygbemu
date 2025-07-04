@@ -3,11 +3,8 @@
 
 #define DEBUGGERS_MAX   2
 
-#include <stdio.h>
-#include <stdlib.h>
 #include <stdint.h>
 #include <stdbool.h>
-#include <string.h>
 #include <assert.h>
 
 #include <SDL.h>
@@ -15,7 +12,6 @@
 #include "cpu.h"
 #include "mmu.h"
 #include "ppu.h"
-#include "log.h"
 
 static const char* DEBUGGER_INSTRUCTIONS = "Usage:\n\t- c \t\t\t continue\n\t- s \t\t\t step\n\n\t- r \t\t\t display cpu registers"\
                                            "\n\t- i \t\t\t info\n"\

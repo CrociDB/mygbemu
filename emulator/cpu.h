@@ -1,12 +1,8 @@
 #ifndef _CPU_H_
 #define _CPU_H_
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdint.h>
-
-#include "util.h"
-#include "log.h"
+#include <inttypes.h>
+#include <stdbool.h>
 
 // Flag bits
 #define CPU_FLAG_ZERO_BIT    7

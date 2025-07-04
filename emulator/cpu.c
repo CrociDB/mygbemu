@@ -1,6 +1,7 @@
 #include "cpu.h"
 #include "cpu_opcodes.h"
 #include "debug.h"
+#include "util.h"
 
 cpu_t* cpu_create()
 {

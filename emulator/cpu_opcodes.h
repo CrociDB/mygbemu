@@ -12,8 +12,8 @@ typedef struct _opfunc_t
 
 } opfunc_t;
 
-opfunc_t optable[0xFF];
-opfunc_t optable_cb[0xFF];
+extern opfunc_t optable[0xFF];
+extern opfunc_t optable_cb[0xFF];
 
 void cpu_init_table();
 static void _cpu_init_table_cb();

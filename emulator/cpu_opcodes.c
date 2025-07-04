@@ -1,4 +1,10 @@
 #include "cpu_opcodes.h"
+#include "log.h"
+#include "mmu.h"
+#include "debug.h"
+
+opfunc_t optable[0xFF];
+opfunc_t optable_cb[0xFF];
 
 void cpu_init_table()
 {
