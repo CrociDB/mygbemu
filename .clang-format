@@ -1,0 +1,3 @@
+BreakBeforeBraces: Allman
+DerivePointerAlignment: false
+PointerAlignment: Left

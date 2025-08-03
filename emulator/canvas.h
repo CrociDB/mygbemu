@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#include <SDL.h>
+#include <SDL3/SDL.h>
 
 #include "ppu.h"
 
@@ -32,7 +32,7 @@ typedef struct _canvas_t
 
 #ifdef CANVAS_THREAD
     SDL_Thread* thread;
-    SDL_mutex* init_mutex;
+    SDL_Mutex* init_mutex;
 #endif
 
     bool running;

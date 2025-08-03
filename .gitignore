@@ -9,3 +9,4 @@ mygbemu
 .vscode
 log.txt
 build/
+.cache

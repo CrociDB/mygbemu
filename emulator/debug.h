@@ -7,7 +7,7 @@
 #include <stdbool.h>
 #include <assert.h>
 
-#include <SDL.h>
+#include <SDL3/SDL.h>
 
 #include "cpu.h"
 #include "mmu.h"
