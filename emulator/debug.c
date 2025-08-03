@@ -253,7 +253,7 @@ void debug_interruption(cpu_t* cpu, mmu_t* mmu, const char* msg, ...)
   vsprintf(buffer, msg, argptr);
 #endif
 
-  if (debugger->printall || true)
+  if (debugger->printall)
   {
     log_cpu(" >> INTERRUPTION FIRED: %s", buffer);
   }

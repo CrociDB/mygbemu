@@ -141,7 +141,6 @@ void _canvas_event_loop(canvas_t* canvas)
     {
       if (event.key.key == SDLK_SPACE)
       {
-        log_message("PRESSED SPACE");
         canvas->dbg_draw = true;
       }
     }
