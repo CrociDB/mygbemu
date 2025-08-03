@@ -1,10 +1,8 @@
 #ifndef _UTIL_H_
 #define _UTIL_H_
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdint.h>
 #include <stdbool.h>
+#include <stdint.h>
 
 bool util_check_bit(const uint8_t value, const uint8_t n);
 

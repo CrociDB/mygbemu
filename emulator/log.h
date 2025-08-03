@@ -1,23 +1,23 @@
 #ifndef _LOG_H_
 #define _LOG_H_
 
+#include <stdarg.h>
+#include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdarg.h>
-#include <stdint.h>
-#include <stdbool.h>
 
-#define LOG_FILE    "log.txt"
+#define LOG_FILE "log.txt"
 
-#define LOG_MODE_STDOUT     0x01
-#define LOG_MODE_FILE       0x02
+#define LOG_MODE_STDOUT 0x01
+#define LOG_MODE_FILE 0x02
 
 enum
 {
-    LOG_VERBOSE = 0,
-    LOG_DEBUG,
-    LOG_MESSAGE,
-    LOG_ERROR,
+  LOG_VERBOSE = 0,
+  LOG_DEBUG,
+  LOG_MESSAGE,
+  LOG_ERROR,
 };
 
 static const uint8_t* LEVELS[4] = {"VERBOSE", "DEBUG", "MESSAGE", "ERROR"};

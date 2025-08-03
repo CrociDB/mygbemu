@@ -1,8 +1,6 @@
 #ifndef _CANVAS_H_
 #define _CANVAS_H_
 
-#include <stdio.h>
-#include <stdlib.h>
 #include <stdbool.h>
 
 #include <SDL3/SDL.h>
@@ -10,32 +8,32 @@
 #include "ppu.h"
 
 // A specific thread for canvas is created if this is set
-#define CANVAS_THREAD  1
+#define CANVAS_THREAD 1
 
-#define CANVAS_DEBUG_WINDOW_W   810
-#define CANVAS_DEBUG_WINDOW_H   600
+#define CANVAS_DEBUG_WINDOW_W 810
+#define CANVAS_DEBUG_WINDOW_H 600
 
-#define CANVAS_DEBUG_TILE_PAD   10
-#define CANVAS_DEBUG_SCALE      3
+#define CANVAS_DEBUG_TILE_PAD 10
+#define CANVAS_DEBUG_SCALE 3
 
 typedef struct _canvas_t
 {
-    SDL_Window* window;
-    SDL_Renderer* renderer;
-    SDL_Event event_handler;
-    uint8_t scale;
+  SDL_Window* window;
+  SDL_Renderer* renderer;
+  SDL_Event event_handler;
+  uint8_t scale;
 
-    // Debug
-    SDL_Window* dbg_window;
-    SDL_Renderer* dbg_renderer;
-    bool dbg_draw;
+  // Debug
+  SDL_Window* dbg_window;
+  SDL_Renderer* dbg_renderer;
+  bool dbg_draw;
 
 #ifdef CANVAS_THREAD
-    SDL_Thread* thread;
-    SDL_Mutex* init_mutex;
+  SDL_Thread* thread;
+  SDL_Mutex* init_mutex;
 #endif
 
-    bool running;
+  bool running;
 } canvas_t;
 
 canvas_t* canvas_init();

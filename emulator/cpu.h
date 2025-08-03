@@ -5,61 +5,61 @@
 #include <stdbool.h>
 
 // Flag bits
-#define CPU_FLAG_ZERO_BIT    7
-#define CPU_FLAG_SUB_BIT     6
-#define CPU_FLAG_HC_BIT      5
-#define CPU_FLAG_CARRY_BIT   4
+#define CPU_FLAG_ZERO_BIT 7
+#define CPU_FLAG_SUB_BIT 6
+#define CPU_FLAG_HC_BIT 5
+#define CPU_FLAG_CARRY_BIT 4
 
 // Interruptins
-#define CPU_INT_VBLANK      0x01
-#define CPU_INT_LCD         (0x01 << 1)
-#define CPU_INT_TIMER       (0x01 << 2)
-#define CPU_INT_SERIAL      (0x01 << 3)
-#define CPU_INT_JOYPAD      (0x01 << 4)
+#define CPU_INT_VBLANK 0x01
+#define CPU_INT_LCD (0x01 << 1)
+#define CPU_INT_TIMER (0x01 << 2)
+#define CPU_INT_SERIAL (0x01 << 3)
+#define CPU_INT_JOYPAD (0x01 << 4)
 
 typedef struct _ppu_t ppu_t;
 typedef struct _mmu_t mmu_t;
 
 typedef enum _condition_e
 {
-    CPU_CONDITION_C,
-    CPU_CONDITION_NC,
-    CPU_CONDITION_Z,
-    CPU_CONDITION_NZ,
-    CPU_CONDITION_ALWAYS
+  CPU_CONDITION_C,
+  CPU_CONDITION_NC,
+  CPU_CONDITION_Z,
+  CPU_CONDITION_NZ,
+  CPU_CONDITION_ALWAYS
 } condition_e;
 
 typedef union _reg16_t
 {
-    struct
-    {
-        uint8_t lo;
-        uint8_t hi;
-    };
-    uint16_t word;
+  struct
+  {
+    uint8_t lo;
+    uint8_t hi;
+  };
+  uint16_t word;
 } reg16_t;
 
 typedef struct _clock_t
 {
-    uint32_t m;
-    uint32_t t;
+  uint32_t m;
+  uint32_t t;
 } clck_t;
 
 typedef struct _cpu_t
 {
-    clck_t currclock;
-    clck_t totalclock;
-    
-    struct
-    {
-        reg16_t af, bc, de, hl;
-        reg16_t sp, pc;
-    } reg;
+  clck_t currclock;
+  clck_t totalclock;
 
-    bool ime;
+  struct
+  {
+    reg16_t af, bc, de, hl;
+    reg16_t sp, pc;
+  } reg;
 
-    uint16_t currop;
-    uint16_t curropaddr;
+  bool ime;
+
+  uint16_t currop;
+  uint16_t curropaddr;
 } cpu_t;
 
 cpu_t* cpu_create();

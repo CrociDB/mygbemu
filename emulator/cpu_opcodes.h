@@ -5,10 +5,10 @@
 
 typedef struct _opfunc_t
 {
-    void(*func)(cpu_t* cpu, mmu_t* mmu);
-    uint8_t m;
-    uint8_t t;
-    uint8_t b;
+  void (*func)(cpu_t* cpu, mmu_t* mmu);
+  uint8_t m;
+  uint8_t t;
+  uint8_t b;
 
 } opfunc_t;
 
@@ -144,7 +144,7 @@ void cpu_op_72(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_73(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_74(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_75(cpu_t* cpu, mmu_t* mmu);
-//void cpu_op_76(cpu_t* cpu, mmu_t* mmu);
+// void cpu_op_76(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_77(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_78(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_79(cpu_t* cpu, mmu_t* mmu);
@@ -473,6 +473,5 @@ void cpu_op_cb_bc(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_cb_bd(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_cb_be(cpu_t* cpu, mmu_t* mmu);
 void cpu_op_cb_bf(cpu_t* cpu, mmu_t* mmu);
-
 
 #endif
